@@ -131,7 +131,7 @@ create_slist() {
     struct cstl_slist* pList = new_cstl_slist(free_element, compare_integers_ptr);
     int i = 0;
     for (i = 0; i <= 10; i++) {
-        int *v = (int *)malloc(sizeof(int));
+        int *v = (int *)calloc(1, sizeof(int));
         *v = i; // memcpy ( v, &i, sizeof ( int ));
         push_back_cstl_slist(pList, &v, sizeof(int *));
     }

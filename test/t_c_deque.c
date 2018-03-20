@@ -149,7 +149,7 @@ test_c_deque() {
 
     myDeq = new_cstl_deque(10, compare_e_ptr, free_e);
     for (i = 0; i <= limit; i++) {
-        int *v = (int*)malloc(sizeof(int));
+        int *v = (int*)calloc(1, sizeof(int));
         memcpy(v, &i, sizeof(int));
         push_back_cstl_deque(myDeq, &v, sizeof(int*));
     }

@@ -42,7 +42,7 @@ void
 add_elements_to_list(struct cstl_slist* ll, int x, int y) {
     int i = 0;
     for (i = x; i <= y; i++) {
-        int *v = (int *)malloc(sizeof(int));
+        int *v = (int *)calloc(1, sizeof(int));
         memcpy(v, &i, sizeof(int));
         push_back_cstl_slist(ll, &v, sizeof(int *));
     }
@@ -88,7 +88,7 @@ replace_values_using_iterators(struct cstl_slist* pList) {
         int new_value = **((int**)old_value);
         new_value = new_value * 2;
 
-        int *v = (int *)malloc(sizeof(int));
+        int *v = (int *)calloc(1, sizeof(int));
         *v = new_value;
         myItr->replace_value(myItr, &v, sizeof(int *));
         free(old_value);
@@ -119,7 +119,7 @@ test_c_slist() {
     for_each_cstl_slist(list, print_e);
 
     i = 55;
-    v = (int *)malloc(sizeof(int));
+    v = (int *)calloc(1, sizeof(int));
     memcpy(v, &i, sizeof(int));
     insert_cstl_slist(list, 5, &v, sizeof(int *));
     for_each_cstl_slist(list, print_e);
@@ -134,19 +134,19 @@ test_c_slist() {
     for_each_cstl_slist(list, print_e);
 
     i = 1;
-    v = (int *)malloc(sizeof(int));
+    v = (int *)calloc(1, sizeof(int));
     memcpy(v, &i, sizeof(int));
     insert_cstl_slist(list, 1, &v, sizeof(int *));
     for_each_cstl_slist(list, print_e);
 
     i = 11;
-    v = (int *)malloc(sizeof(int));
+    v = (int *)calloc(1, sizeof(int));
     memcpy(v, &i, sizeof(int));
     insert_cstl_slist(list, 11, &v, sizeof(int *));
     for_each_cstl_slist(list, print_e);
 
     i = 12;
-    v = (int *)malloc(sizeof(int));
+    v = (int *)calloc(1, sizeof(int));
     memcpy(v, &i, sizeof(int));
     insert_cstl_slist(list, 200, &v, sizeof(int *));
     for_each_cstl_slist(list, print_e);
@@ -154,7 +154,7 @@ test_c_slist() {
     remove_cstl_slist(list, list->size);
     for_each_cstl_slist(list, print_e);
 
-    int *tmp = (int *)malloc(sizeof(int));
+    int *tmp = (int *)calloc(1, sizeof(int));
     *tmp = 10;
     if (cstl_true == find_cstl_slist(list, &tmp, &outValue)) {
         assert(*tmp == **((int**)outValue));

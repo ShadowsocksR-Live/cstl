@@ -1,25 +1,25 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-*  This file is part of cstl library
-*  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  The above copyright notice and this permission notice shall be included in
-*  all copies or substantial portions of the Software.
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
+ *  This file is part of cstl library
+ *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
+ * 
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ * 
+ *  The above copyright notice and this permission notice shall be included in
+ *  all copies or substantial portions of the Software.
+ * 
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include "c_lib.h"
 #include <string.h>
@@ -37,13 +37,12 @@ array_check_and_grow(struct cstl_array* pArray) {
 
 struct cstl_array*
 new_cstl_array(int array_size, cstl_compare fn_c, cstl_destroy fn_d) {
-
-    struct cstl_array* pArray = (struct cstl_array*)malloc(sizeof(struct cstl_array));
-    if (!pArray)
+    struct cstl_array* pArray = (struct cstl_array*)calloc(1, sizeof(struct cstl_array));
+    if (!pArray) {
         return (struct cstl_array*)0;
-
+    }
     pArray->no_max_elements = array_size < 8 ? 8 : array_size;
-    pArray->pElements = (struct cstl_object**) malloc(pArray->no_max_elements * sizeof(struct cstl_object*));
+    pArray->pElements = (struct cstl_object**) calloc(pArray->no_max_elements, sizeof(struct cstl_object*));
     if (!pArray->pElements) {
         free(pArray);
         return (struct cstl_array*)0;
@@ -57,12 +56,11 @@ new_cstl_array(int array_size, cstl_compare fn_c, cstl_destroy fn_d) {
 
 static cstl_error
 insert_c_array(struct cstl_array* pArray, int index, void* elem, size_t elem_size) {
-
     cstl_error rc = CSTL_ERROR_SUCCESS;
     struct cstl_object* pObject = new_cstl_object(elem, elem_size);
-    if (!pObject)
+    if (!pObject) {
         return CSTL_ARRAY_INSERT_FAILED;
-
+    }
     pArray->pElements[index] = pObject;
     pArray->no_of_elements++;
     return rc;
@@ -72,9 +70,9 @@ cstl_error
 push_back_cstl_array(struct cstl_array* pArray, void* elem, size_t elem_size) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
 
-    if (!pArray)
+    if (!pArray) {
         return CSTL_ARRAY_NOT_INITIALIZED;
-
+    }
     array_check_and_grow(pArray);
 
     rc = insert_c_array(pArray, pArray->no_of_elements, elem, elem_size);
@@ -86,48 +84,50 @@ cstl_error
 element_at_cstl_array(struct cstl_array* pArray, int index, void** elem) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
 
-    if (!pArray)
+    if (!pArray) {
         return CSTL_ARRAY_NOT_INITIALIZED;
-
-    if (index < 0 || index > pArray->no_max_elements)
+    }
+    if (index < 0 || index > pArray->no_max_elements) {
         return CSTL_ARRAY_INDEX_OUT_OF_BOUND;
-
+    }
     get_raw_cstl_object(pArray->pElements[index], elem);
     return rc;
 }
 
 int
 size_cstl_array(struct cstl_array* pArray) {
-    if (pArray == (struct cstl_array*)0)
+    if (pArray == (struct cstl_array*)0) {
         return 0;
+    }
     return pArray->no_of_elements - 1;
 }
 
 int
 capacity_cstl_array(struct cstl_array* pArray) {
-    if (pArray == (struct cstl_array*)0)
+    if (pArray == (struct cstl_array*)0) {
         return 0;
+    }
     return pArray->no_max_elements;
 }
 
 cstl_bool
 empty_cstl_array(struct cstl_array* pArray) {
-    if (pArray == (struct cstl_array*)0)
+    if (pArray == (struct cstl_array*)0) {
         return 0;
+    }
     return pArray->no_of_elements == 0 ? cstl_true : cstl_false;
 }
 
 cstl_error
 reserve_cstl_array(struct cstl_array* pArray, int new_size) {
-    if (pArray == (struct cstl_array*)0)
+    if (pArray == (struct cstl_array*)0) {
         return CSTL_ARRAY_NOT_INITIALIZED;
-
-    if (new_size <= pArray->no_max_elements)
+    }
+    if (new_size <= pArray->no_max_elements) {
         return CSTL_ERROR_SUCCESS;
-
+    }
     array_check_and_grow(pArray);
     return CSTL_ERROR_SUCCESS;
-
 }
 
 cstl_error
@@ -143,12 +143,12 @@ back_cstl_array(struct cstl_array* pArray, void* elem) {
 cstl_error
 insert_at_cstl_array(struct cstl_array* pArray, int index, void* elem, size_t elem_size) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
-    if (!pArray)
+    if (!pArray) {
         return CSTL_ARRAY_NOT_INITIALIZED;
-
-    if (index < 0 || index > pArray->no_max_elements)
+    }
+    if (index < 0 || index > pArray->no_max_elements) {
         return CSTL_ARRAY_INDEX_OUT_OF_BOUND;
-
+    }
     array_check_and_grow(pArray);
 
     memmove(&(pArray->pElements[index + 1]),
@@ -164,11 +164,12 @@ cstl_error
 remove_from_cstl_array(struct cstl_array* pArray, int index) {
     cstl_error   rc = CSTL_ERROR_SUCCESS;
 
-    if (!pArray)
+    if (!pArray) {
         return rc;
-    if (index < 0 || index > pArray->no_max_elements)
+    }
+    if (index < 0 || index > pArray->no_max_elements) {
         return CSTL_ARRAY_INDEX_OUT_OF_BOUND;
-
+    }
     if (pArray->destruct_fn) {
         void* elem;
         if (CSTL_ERROR_SUCCESS == element_at_cstl_array(pArray, index, &elem)) {
@@ -191,9 +192,9 @@ delete_cstl_array(struct cstl_array* pArray) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     int i = 0;
 
-    if (pArray == (struct cstl_array*)0)
+    if (pArray == (struct cstl_array*)0) {
         return rc;
-
+    }
     if (pArray->destruct_fn) {
         for (i = 0; i < pArray->no_of_elements; i++) {
             void* elem;
@@ -204,9 +205,9 @@ delete_cstl_array(struct cstl_array* pArray) {
         }
     }
 
-    for (i = 0; i < pArray->no_of_elements; i++)
+    for (i = 0; i < pArray->no_of_elements; i++) {
         delete_cstl_object(pArray->pElements[i]);
-
+    }
     free(pArray->pElements);
     free(pArray);
     return rc;
@@ -214,12 +215,10 @@ delete_cstl_array(struct cstl_array* pArray) {
 
 static struct cstl_object*
 get_next_c_array(struct cstl_iterator* pIterator) {
-
     struct cstl_array *pArray = (struct cstl_array*)pIterator->pContainer;
-
-    if (pIterator->pCurrent > size_cstl_array(pArray))
+    if (pIterator->pCurrent > size_cstl_array(pArray)) {
         return (struct cstl_object*)0;
-
+    }
     pIterator->pCurrentElement = pArray->pElements[pIterator->pCurrent++];
     return pIterator->pCurrentElement;
 }

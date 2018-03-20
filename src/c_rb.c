@@ -1,25 +1,25 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-*  This file is part of cstl library
-*  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  The above copyright notice and this permission notice shall be included in
-*  all copies or substantial portions of the Software.
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
+ *  This file is part of cstl library
+ *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
+ * 
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ * 
+ *  The above copyright notice and this permission notice shall be included in
+ *  all copies or substantial portions of the Software.
+ * 
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include "c_lib.h"
 
@@ -42,40 +42,50 @@ __left_rotate(struct cstl_rb* pTree, struct cstl_rb_node* x) {
     struct cstl_rb_node* y;
     y = x->right;
     x->right = y->left;
-    if (y->left != rb_sentinel)
+    if (y->left != rb_sentinel) {
         y->left->parent = x;
-    if (y != rb_sentinel)
+    }
+    if (y != rb_sentinel) {
         y->parent = x->parent;
+    }
     if (x->parent) {
-        if (x == x->parent->left)
+        if (x == x->parent->left) {
             x->parent->left = y;
-        else
+        } else {
             x->parent->right = y;
-    } else
+        }
+    } else {
         pTree->root = y;
+    }
     y->left = x;
-    if (x != rb_sentinel)
+    if (x != rb_sentinel) {
         x->parent = y;
+    }
 }
 
 static void
 __right_rotate(struct cstl_rb* pTree, struct cstl_rb_node* x) {
     struct cstl_rb_node* y = x->left;
     x->left = y->right;
-    if (y->right != rb_sentinel)
+    if (y->right != rb_sentinel) {
         y->right->parent = x;
-    if (y != rb_sentinel)
+    }
+    if (y != rb_sentinel) {
         y->parent = x->parent;
+    }
     if (x->parent) {
-        if (x == x->parent->right)
+        if (x == x->parent->right) {
             x->parent->right = y;
-        else
+        } else {
             x->parent->left = y;
-    } else
+        }
+    } else {
         pTree->root = y;
+    }
     y->right = x;
-    if (x != rb_sentinel)
+    if (x != rb_sentinel) {
         x->parent = y;
+    }
 }
 
 struct cstl_rb*
@@ -137,12 +147,12 @@ __rb_insert_fixup(struct cstl_rb* pTree, struct cstl_rb_node* x) {
 }
 
 struct cstl_rb_node*
-    find_cstl_rb(struct cstl_rb* pTree, void* key) {
+find_cstl_rb(struct cstl_rb* pTree, void* key) {
     struct cstl_rb_node* x = pTree->root;
 
     while (x != rb_sentinel) {
         int c = 0;
-        void* cur_key;
+        void* cur_key = (void *)0;
         get_raw_cstl_object(x->key, &cur_key);
         c = pTree->compare_fn(key, cur_key);
         free(cur_key);
@@ -152,9 +162,9 @@ struct cstl_rb_node*
             x = c < 0 ? x->left : x->right;
         }
     }
-    if (x == rb_sentinel)
+    if (x == rb_sentinel) {
         return (struct cstl_rb_node*)0;
-
+    }
     return x;
 }
 
@@ -166,9 +176,9 @@ insert_cstl_rb(struct cstl_rb* pTree, void* k, size_t key_size, void* v, size_t 
     struct cstl_rb_node* z;
 
     x = (struct cstl_rb_node*)calloc(1, sizeof(struct cstl_rb_node));
-    if (x == (struct cstl_rb_node*)0)
+    if (x == (struct cstl_rb_node*)0) {
         return CSTL_ERROR_MEMORY;
-
+    }
     x->left = rb_sentinel;
     x->right = rb_sentinel;
     x->color = cstl_red;
@@ -199,10 +209,11 @@ insert_cstl_rb(struct cstl_rb* pTree, void* k, size_t key_size, void* v, size_t 
             return CSTL_RBTREE_KEY_DUPLICATE;
         }
         z = y;
-        if (c < 0)
+        if (c < 0) {
             y = y->left;
-        else
+        } else {
             y = y->right;
+        }
     }
     x->parent = z;
     if (z) {
@@ -220,9 +231,9 @@ insert_cstl_rb(struct cstl_rb* pTree, void* k, size_t key_size, void* v, size_t 
         } else {
             z->right = x;
         }
-    } else
+    } else {
         pTree->root = x;
-
+    }
     __rb_insert_fixup(pTree, x);
 
     debug_verify_properties(pTree);
@@ -290,27 +301,29 @@ __remove_c_rb(struct cstl_rb* pTree, struct cstl_rb_node* z) {
     struct cstl_rb_node* x = (struct cstl_rb_node*)0;
     struct cstl_rb_node* y = (struct cstl_rb_node*)0;
 
-    if (z->left == rb_sentinel || z->right == rb_sentinel)
+    if (z->left == rb_sentinel || z->right == rb_sentinel) {
         y = z;
-    else {
+    } else {
         y = z->right;
-        while (y->left != rb_sentinel)
+        while (y->left != rb_sentinel) {
             y = y->left;
+        }
     }
-    if (y->left != rb_sentinel)
+    if (y->left != rb_sentinel) {
         x = y->left;
-    else
+    } else {
         x = y->right;
-
+    }
     x->parent = y->parent;
-    if (y->parent)
-    {
-        if (y == y->parent->left)
+    if (y->parent) {
+        if (y == y->parent->left) {
             y->parent->left = x;
-        else
+        } else {
             y->parent->right = x;
-    } else
+        }
+    } else {
         pTree->root = x;
+    }
     if (y != z) {
         struct cstl_object* tmp;
         tmp = z->key;
@@ -321,9 +334,9 @@ __remove_c_rb(struct cstl_rb* pTree, struct cstl_rb_node* z) {
         z->value = y->value;
         y->value = tmp;
     }
-    if (y->color == cstl_black)
+    if (y->color == cstl_black) {
         __rb_remove_fixup(pTree, x);
-
+    }
     debug_verify_properties(pTree);
     return y;
 }
@@ -345,8 +358,9 @@ struct cstl_rb_node*
             z = (c < 0) ? z->left : z->right;
         }
     }
-    if (z == rb_sentinel)
+    if (z == rb_sentinel) {
         return (struct cstl_rb_node*)0;
+    }
     return __remove_c_rb(pTree, z);
 }
 
@@ -378,11 +392,11 @@ delete_cstl_rb(struct cstl_rb* pTree) {
     struct cstl_rb_node* z = pTree->root;
 
     while (z != rb_sentinel) {
-        if (z->left != rb_sentinel)
+        if (z->left != rb_sentinel) {
             z = z->left;
-        else if (z->right != rb_sentinel)
+        } else if (z->right != rb_sentinel) {
             z = z->right;
-        else {
+        } else {
             __delete_c_rb_node(pTree, z);
             if (z->parent) {
                 z = z->parent;
@@ -405,34 +419,37 @@ delete_cstl_rb(struct cstl_rb* pTree) {
 
 struct cstl_rb_node *
 minimum_cstl_rb(struct cstl_rb* pTree, struct cstl_rb_node* x) {
-    while (x->left != rb_sentinel)
+    while (x->left != rb_sentinel) {
         x = x->left;
+    }
     return x;
 }
 
 struct cstl_rb_node *
 maximum_cstl_rb(struct cstl_rb* pTree, struct cstl_rb_node* x) {
-    while (x->right != rb_sentinel)
+    while (x->right != rb_sentinel) {
         x = x->right;
+    }
     return x;
 }
 
 cstl_bool
 empty_cstl_rb(struct cstl_rb* pTree) {
-    if (pTree->root != rb_sentinel)
+    if (pTree->root != rb_sentinel) {
         return cstl_true;
+    }
     return cstl_false;
 }
 
 struct cstl_rb_node*
 cstl_rb_tree_successor(struct cstl_rb* pTree, struct cstl_rb_node* x) {
     struct cstl_rb_node *y = (struct cstl_rb_node*)0;
-    if (x->right != rb_sentinel)
+    if (x->right != rb_sentinel) {
         return minimum_cstl_rb(pTree, x->right);
-
-    if (x == maximum_cstl_rb(pTree, pTree->root))
+    }
+    if (x == maximum_cstl_rb(pTree, pTree->root)) {
         return (struct cstl_rb_node*)0;
-
+    }
     y = x->parent;
     while (y != rb_sentinel && x == y->right) {
         x = y;
@@ -477,7 +494,7 @@ void debug_verify_properties(struct cstl_rb* t) {
 
 void debug_verify_property_1(struct cstl_rb* pTree, struct cstl_rb_node* n) {
     assert(debug_node_color(pTree, n) == cstl_red || debug_node_color(pTree, n) == cstl_black);
-    if (n == rb_sentinel) return;
+    if (n == rb_sentinel) { return; }
     debug_verify_property_1(pTree, n->left);
     debug_verify_property_1(pTree, n->right);
 }
@@ -496,7 +513,7 @@ void debug_verify_property_4(struct cstl_rb* pTree, struct cstl_rb_node* n) {
         assert(debug_node_color(pTree, n->right) == cstl_black);
         assert(debug_node_color(pTree, n->parent) == cstl_black);
     }
-    if (n == rb_sentinel) return;
+    if (n == rb_sentinel) { return; }
     debug_verify_property_4(pTree, n->left);
     debug_verify_property_4(pTree, n->right);
 }

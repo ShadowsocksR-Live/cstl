@@ -1,25 +1,25 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-*  This file is part of cstl library
-*  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  The above copyright notice and this permission notice shall be included in
-*  all copies or substantial portions of the Software.
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
+ *  This file is part of cstl library
+ *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
+ * 
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ * 
+ *  The above copyright notice and this permission notice shall be included in
+ *  all copies or substantial portions of the Software.
+ * 
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include "c_lib.h"
 #include <string.h>
@@ -30,9 +30,9 @@ static cstl_error
 insert_c_deque(struct cstl_deque* pDeq, int index, void* elem, size_t elem_size) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     struct cstl_object* pObject = new_cstl_object(elem, elem_size);
-    if (!pObject)
+    if (!pObject) {
         return CSTL_ARRAY_INSERT_FAILED;
-
+    }
     pDeq->pElements[index] = pObject;
     pDeq->no_of_elements++;
     return rc;
@@ -40,7 +40,6 @@ insert_c_deque(struct cstl_deque* pDeq, int index, void* elem, size_t elem_size)
 
 static struct cstl_deque*
 grow_deque(struct cstl_deque* pDeq) {
-
     pDeq->no_max_elements = pDeq->no_max_elements * 2;
     pDeq->pElements = (struct cstl_object**) realloc(pDeq->pElements,
         pDeq->no_max_elements * sizeof(struct cstl_object*));
@@ -49,17 +48,16 @@ grow_deque(struct cstl_deque* pDeq) {
 
 struct cstl_deque*
 new_cstl_deque(int deq_size, cstl_compare fn_c, cstl_destroy fn_d) {
-
-    struct cstl_deque* pDeq = (struct cstl_deque*)malloc(sizeof(struct cstl_deque));
-    if (pDeq == (struct cstl_deque*)0)
+    struct cstl_deque* pDeq = (struct cstl_deque*)calloc(1, sizeof(struct cstl_deque));
+    if (pDeq == (struct cstl_deque*)0) {
         return (struct cstl_deque*)0;
-
+    }
     pDeq->no_max_elements = deq_size < 8 ? 8 : deq_size;
-    pDeq->pElements = (struct cstl_object**) malloc(pDeq->no_max_elements * sizeof(struct cstl_object*));
+    pDeq->pElements = (struct cstl_object**) calloc(pDeq->no_max_elements, sizeof(struct cstl_object*));
 
-    if (pDeq == (struct cstl_deque*)0)
+    if (pDeq == (struct cstl_deque*)0) {
         return (struct cstl_deque*)0;
-
+    }
     pDeq->compare_fn = fn_c;
     pDeq->destruct_fn = fn_d;
     pDeq->head = (int)pDeq->no_max_elements / 2;
@@ -71,12 +69,12 @@ new_cstl_deque(int deq_size, cstl_compare fn_c, cstl_destroy fn_d) {
 
 cstl_error
 push_back_cstl_deque(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
-    if (pDeq == (struct cstl_deque*)0)
+    if (pDeq == (struct cstl_deque*)0) {
         return CSTL_DEQUE_NOT_INITIALIZED;
-
-    if (pDeq->tail == pDeq->no_max_elements)
+    }
+    if (pDeq->tail == pDeq->no_max_elements) {
         pDeq = grow_deque(pDeq);
-
+    }
     insert_c_deque(pDeq, pDeq->tail, elem, elem_size);
     pDeq->tail++;
 
@@ -106,25 +104,27 @@ push_front_cstl_deque(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
 
 cstl_error
 front_cstl_deque(struct cstl_deque* pDeq, void* elem) {
-    if (pDeq == (struct cstl_deque*)0)
+    if (pDeq == (struct cstl_deque*)0) {
         return CSTL_DEQUE_NOT_INITIALIZED;
+    }
     element_at_cstl_deque(pDeq, pDeq->head + 1, elem);
     return CSTL_ERROR_SUCCESS;
 }
 
 cstl_error
 back_cstl_deque(struct cstl_deque* pDeq, void* elem) {
-    if (pDeq == (struct cstl_deque*)0)
+    if (pDeq == (struct cstl_deque*)0) {
         return CSTL_DEQUE_NOT_INITIALIZED;
+    }
     element_at_cstl_deque(pDeq, pDeq->tail - 1, elem);
     return CSTL_ERROR_SUCCESS;
 }
 
 cstl_error
 pop_back_cstl_deque(struct cstl_deque* pDeq) {
-    if (pDeq == (struct cstl_deque*)0)
+    if (pDeq == (struct cstl_deque*)0) {
         return CSTL_DEQUE_NOT_INITIALIZED;
-
+    }
     if (pDeq->destruct_fn) {
         void* elem;
         if (element_at_cstl_deque(pDeq, pDeq->tail - 1, &elem) == CSTL_ERROR_SUCCESS) {
@@ -141,10 +141,9 @@ pop_back_cstl_deque(struct cstl_deque* pDeq) {
 
 cstl_error
 pop_front_cstl_deque(struct cstl_deque* pDeq) {
-
-    if (pDeq == (struct cstl_deque*)0)
+    if (pDeq == (struct cstl_deque*)0) {
         return CSTL_DEQUE_NOT_INITIALIZED;
-
+    }
     if (pDeq->destruct_fn) {
         void* elem;
         if (element_at_cstl_deque(pDeq, pDeq->head + 1, &elem) == CSTL_ERROR_SUCCESS) {
@@ -162,28 +161,26 @@ pop_front_cstl_deque(struct cstl_deque* pDeq) {
 
 cstl_bool
 empty_cstl_deque(struct cstl_deque* pDeq) {
-    if (pDeq == (struct cstl_deque*)0)
+    if (pDeq == (struct cstl_deque*)0) {
         return cstl_true;
-
+    }
     return pDeq->no_of_elements == 0 ? cstl_true : cstl_false;
 }
 
 int
 size_cstl_deque(struct cstl_deque* pDeq) {
-    if (pDeq == (struct cstl_deque*)0)
+    if (pDeq == (struct cstl_deque*)0) {
         return cstl_true;
-
+    }
     return pDeq->no_of_elements - 1;
 }
 
 cstl_error
 element_at_cstl_deque(struct cstl_deque* pDeq, int index, void**elem) {
-
     cstl_error rc = CSTL_ERROR_SUCCESS;
-
-    if (!pDeq)
+    if (!pDeq) {
         return CSTL_DEQUE_NOT_INITIALIZED;
-
+    }
     get_raw_cstl_object(pDeq->pElements[index], elem);
     return rc;
 }
@@ -192,9 +189,9 @@ cstl_error
 delete_cstl_deque(struct cstl_deque* pDeq) {
     int i = 0;
 
-    if (pDeq == (struct cstl_deque*)0)
+    if (pDeq == (struct cstl_deque*)0) {
         return CSTL_ERROR_SUCCESS;
-
+    }
     if (pDeq->destruct_fn) {
         for (i = pDeq->head + 1; i < pDeq->tail; i++) {
             void* elem;
@@ -227,7 +224,7 @@ get_next_c_deque(struct cstl_iterator* pIterator) {
 
 static void*
 get_value_c_deque(void* pObject) {
-    void* elem;
+    void* elem = (void *)0;
     get_raw_cstl_object(pObject, &elem);
     return elem;
 }

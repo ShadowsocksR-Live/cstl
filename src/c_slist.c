@@ -1,31 +1,31 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-*  This file is part of cstl library
-*  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
-*
-*  Permission is hereby granted, free of charge, to any person obtaining a copy
-*  of this software and associated documentation files (the "Software"), to deal
-*  in the Software without restriction, including without limitation the rights
-*  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-*  copies of the Software, and to permit persons to whom the Software is
-*  furnished to do so, subject to the following conditions:
-*
-*  The above copyright notice and this permission notice shall be included in
-*  all copies or substantial portions of the Software.
-*
-*  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-*  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-*  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-*  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-*  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-*  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-*  THE SOFTWARE.
-** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
+ *  This file is part of cstl library
+ *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
+ * 
+ *  Permission is hereby granted, free of charge, to any person obtaining a copy
+ *  of this software and associated documentation files (the "Software"), to deal
+ *  in the Software without restriction, including without limitation the rights
+ *  to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ *  copies of the Software, and to permit persons to whom the Software is
+ *  furnished to do so, subject to the following conditions:
+ * 
+ *  The above copyright notice and this permission notice shall be included in
+ *  all copies or substantial portions of the Software.
+ * 
+ *  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ *  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ *  FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ *  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ *  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+ *  THE SOFTWARE.
+ ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include "c_lib.h"
 
 struct cstl_slist*
 new_cstl_slist(cstl_destroy fn_d, cstl_compare fn_c) {
-    struct cstl_slist* pSlist = (struct cstl_slist*)malloc(sizeof(struct cstl_slist));
+    struct cstl_slist* pSlist = (struct cstl_slist*)calloc(1, sizeof(struct cstl_slist));
     pSlist->head = (struct cstl_slist_node*)0;
     pSlist->destruct_fn = fn_d;
     pSlist->compare_key_fn = fn_c;
@@ -47,11 +47,12 @@ push_back_cstl_slist(struct cstl_slist* pSlist, void* elem, size_t elem_size) {
     struct cstl_slist_node* current = (struct cstl_slist_node*)0;
     struct cstl_slist_node* new_node = (struct cstl_slist_node*)0;
 
-    new_node = (struct cstl_slist_node*)malloc(sizeof(struct cstl_slist_node));
+    new_node = (struct cstl_slist_node*)calloc(1, sizeof(struct cstl_slist_node));
 
     new_node->elem = new_cstl_object(elem, elem_size);
-    if (!new_node->elem)
+    if (!new_node->elem) {
         return CSTL_SLIST_INSERT_FAILED;
+    }
     new_node->next = (struct cstl_slist_node*)0;
 
     if (pSlist->head == (struct cstl_slist_node*)0) {
@@ -60,8 +61,9 @@ push_back_cstl_slist(struct cstl_slist* pSlist, void* elem, size_t elem_size) {
         return CSTL_ERROR_SUCCESS;
     }
     current = pSlist->head;
-    while (current->next != (struct cstl_slist_node*)0)
+    while (current->next != (struct cstl_slist_node*)0) {
         current = current->next;
+    }
     current->next = new_node;
     pSlist->size++;
 
@@ -89,7 +91,7 @@ remove_cstl_slist(struct cstl_slist* pSlist, int pos) {
     struct cstl_slist_node* current = pSlist->head;
     struct cstl_slist_node* temp = (struct cstl_slist_node*)0;
 
-    if (pos > pSlist->size) return;
+    if (pos > pSlist->size) { return; }
 
     if (pos == 0) {
         pSlist->head = current->next;
@@ -97,9 +99,9 @@ remove_cstl_slist(struct cstl_slist* pSlist, int pos) {
         pSlist->size--;
         return;
     }
-    for (i = 1; i < pos - 1; i++)
+    for (i = 1; i < pos - 1; i++) {
         current = current->next;
-
+    }
     temp = current->next;
     current->next = current->next->next;
     __remove_c_list(pSlist, temp);
@@ -114,7 +116,7 @@ insert_cstl_slist(struct cstl_slist* pSlist, int pos, void* elem, size_t elem_si
     struct cstl_slist_node* new_node = (struct cstl_slist_node*)0;
 
     if (pos == 1) {
-        new_node = (struct cstl_slist_node*)malloc(sizeof(struct cstl_slist_node));
+        new_node = (struct cstl_slist_node*)calloc(1, sizeof(struct cstl_slist_node));
         new_node->elem = new_cstl_object(elem, elem_size);
         if (!new_node->elem) {
             free(new_node);
@@ -133,7 +135,7 @@ insert_cstl_slist(struct cstl_slist* pSlist, int pos, void* elem, size_t elem_si
     for (i = 1; i < pos - 1; i++) {
         current = current->next;
     }
-    new_node = (struct cstl_slist_node*)malloc(sizeof(struct cstl_slist_node));
+    new_node = (struct cstl_slist_node*)calloc(1, sizeof(struct cstl_slist_node));
     new_node->elem = new_cstl_object(elem, elem_size);
     if (!new_node->elem) {
         free(new_node);
@@ -178,16 +180,15 @@ find_cstl_slist(struct cstl_slist* pSlist, void* find_value, void**out_value) {
 
 static struct cstl_object*
 get_next_c_slist(struct cstl_iterator* pIterator) {
-
     struct cstl_slist *pSlist = (struct cstl_slist*)pIterator->pContainer;
     if (!pIterator->pCurrentElement) {
         pIterator->pCurrentElement = (struct cstl_slist_node*)pSlist->head;
     } else {
         pIterator->pCurrentElement = ((struct cstl_slist_node*)pIterator->pCurrentElement)->next;
     }
-    if (!pIterator->pCurrentElement)
+    if (!pIterator->pCurrentElement) {
         return (struct cstl_object*)0;
-
+    }
     return ((struct cstl_slist_node*)pIterator->pCurrentElement)->elem;
 }
 
@@ -215,7 +216,7 @@ replace_value_c_slist(struct cstl_iterator *pIterator, void* elem, size_t elem_s
 
 struct cstl_iterator*
 new_iterator_cstl_slist(struct cstl_slist* pSlist) {
-    struct cstl_iterator *itr = (struct cstl_iterator*) malloc(sizeof(struct cstl_iterator));
+    struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
     itr->get_next = get_next_c_slist;
     itr->get_value = get_value_c_slist;
     itr->replace_value = replace_value_c_slist;

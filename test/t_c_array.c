@@ -150,7 +150,7 @@ test_with_pointers() {
     assert(cstl_true == empty_cstl_array(myArray));
 
     for (i = 0; i <= size; i++) {
-        int *v = (int*)malloc(sizeof(int));
+        int *v = (int*)calloc(1, sizeof(int));
         memcpy(v, &i, sizeof(int));
         push_back_cstl_array(myArray, &v, sizeof(int*));
     }

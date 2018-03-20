@@ -96,7 +96,7 @@ __find_c_rb ( struct cstl_rb* tree, cstl_compare fn_c, void* key ) {
     void* current_key = (void*)0;
     int compare_result = 0;
 
-    current_key = (void*)malloc ( tree->size_of_key);
+    current_key = (void*)calloc (1, tree->size_of_key);
     memcpy ( current_key, key, tree->size_of_key);
 
     compare_result = (fn_c)(current_key, node->raw_data.key);
