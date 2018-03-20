@@ -55,7 +55,7 @@ free_e ( void* ptr ) {
 static void 
 replace_values_using_iterators(struct clib_deque* myDeq) {
 	struct cstl_iterator *myItr;
-	struct clib_object *pElement;
+	struct cstl_object *pElement;
 
 	myItr     = new_iterator_c_deque (myDeq);
 	pElement  = myItr->get_next(myItr);
@@ -91,7 +91,7 @@ create_deque() {
 static void
 print_using_iterator(struct clib_deque* myDeq) {
 	struct cstl_iterator *myItr;
-	struct clib_object *pElement;
+	struct cstl_object *pElement;
 
 	printf ( "------------------------------------------------\n");
 	myItr     = new_iterator_c_deque (myDeq);

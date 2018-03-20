@@ -176,7 +176,7 @@ find_c_slist(struct clib_slist* pSlist, void* find_value, void**out_value) {
     return clib_false;
 }
 
-static struct clib_object*
+static struct cstl_object*
 get_next_c_slist(struct cstl_iterator* pIterator) {
 
     struct clib_slist *pSlist = (struct clib_slist*)pIterator->pContainer;
@@ -186,7 +186,7 @@ get_next_c_slist(struct cstl_iterator* pIterator) {
         pIterator->pCurrentElement = ((struct clib_slist_node*)pIterator->pCurrentElement)->next;
     }
     if (!pIterator->pCurrentElement)
-        return (struct clib_object*)0;
+        return (struct cstl_object*)0;
 
     return ((struct clib_slist_node*)pIterator->pCurrentElement)->elem;
 }
@@ -201,7 +201,7 @@ get_value_c_slist(void* pObject) {
 static void
 replace_value_c_slist(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
     struct clib_slist*  pSlist = (struct clib_slist*)pIterator->pContainer;
-    struct clib_object *pObj = ((struct clib_slist_node*)pIterator->pCurrentElement)->elem;
+    struct cstl_object *pObj = ((struct clib_slist_node*)pIterator->pCurrentElement)->elem;
 
     if (pSlist->destruct_fn) {
         void* old_element;

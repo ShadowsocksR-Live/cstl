@@ -29,8 +29,8 @@ static struct clib_array*
 array_check_and_grow(struct clib_array* pArray) {
     if (pArray->no_of_elements >= pArray->no_max_elements) {
         pArray->no_max_elements = 2 * pArray->no_max_elements;
-        pArray->pElements = (struct clib_object**) realloc(pArray->pElements,
-            pArray->no_max_elements * sizeof(struct clib_object*));
+        pArray->pElements = (struct cstl_object**) realloc(pArray->pElements,
+            pArray->no_max_elements * sizeof(struct cstl_object*));
     }
     return pArray;
 }
@@ -43,7 +43,7 @@ struct clib_array*
         return (struct clib_array*)0;
 
     pArray->no_max_elements = array_size < 8 ? 8 : array_size;
-    pArray->pElements = (struct clib_object**) malloc(pArray->no_max_elements * sizeof(struct clib_object*));
+    pArray->pElements = (struct cstl_object**) malloc(pArray->no_max_elements * sizeof(struct cstl_object*));
     if (!pArray->pElements) {
         free(pArray);
         return (struct clib_array*)0;
@@ -59,7 +59,7 @@ static clib_error
 insert_c_array(struct clib_array* pArray, int index, void* elem, size_t elem_size) {
 
     clib_error rc = CLIB_ERROR_SUCCESS;
-    struct clib_object* pObject = new_clib_object(elem, elem_size);
+    struct cstl_object* pObject = new_clib_object(elem, elem_size);
     if (!pObject)
         return CLIB_ARRAY_INSERT_FAILED;
 
@@ -153,7 +153,7 @@ insert_at_c_array(struct clib_array* pArray, int index, void* elem, size_t elem_
 
     memmove(&(pArray->pElements[index + 1]),
         &pArray->pElements[index],
-        (pArray->no_of_elements - index) * sizeof(struct clib_object*));
+        (pArray->no_of_elements - index) * sizeof(struct cstl_object*));
 
     rc = insert_c_array(pArray, index, elem, elem_size);
 
@@ -180,7 +180,7 @@ remove_from_c_array(struct clib_array* pArray, int index) {
 
     memmove(&(pArray->pElements[index]),
         &pArray->pElements[index + 1],
-        (pArray->no_of_elements - index) * sizeof(struct clib_object*));
+        (pArray->no_of_elements - index) * sizeof(struct cstl_object*));
     pArray->no_of_elements--;
 
     return rc;
@@ -212,13 +212,13 @@ delete_c_array(struct clib_array* pArray) {
     return rc;
 }
 
-static struct clib_object*
+static struct cstl_object*
 get_next_c_array(struct cstl_iterator* pIterator) {
 
     struct clib_array *pArray = (struct clib_array*)pIterator->pContainer;
 
     if (pIterator->pCurrent > size_c_array(pArray))
-        return (struct clib_object*)0;
+        return (struct cstl_object*)0;
 
     pIterator->pCurrentElement = pArray->pElements[pIterator->pCurrent++];
     return pIterator->pCurrentElement;

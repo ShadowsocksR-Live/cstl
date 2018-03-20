@@ -29,8 +29,8 @@ struct clib_rb_node {
     struct clib_rb_node *right;
     struct clib_rb_node *parent;
     int color; 
-    struct clib_object* key;
-    struct clib_object* value; 
+    struct cstl_object* key;
+    struct cstl_object* value;
 };
 
 struct clib_rb {

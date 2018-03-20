@@ -47,14 +47,14 @@ typedef int  clib_bool;
 /*                            P  A  I   R                                  */
 /* ------------------------------------------------------------------------*/
 
-struct clib_object {
+struct cstl_object {
     void* raw_data;
     size_t size;
 };
 
 
 struct cstl_iterator {
-	struct clib_object* (*get_next)(struct cstl_iterator*);
+	struct cstl_object* (*get_next)(struct cstl_iterator*);
 	void (*replace_value)(struct cstl_iterator*,void*,size_t);
 	void* (*get_value)(void*);
 	void* pContainer;
@@ -79,9 +79,9 @@ extern void  clib_copy ( void* destination, void* source, size_t size );
 extern void  clib_get  ( void* destination, void* source, size_t size);
 extern char* clib_strdup ( char *ptr );
 
-extern struct clib_object* new_clib_object (void* inObject, size_t obj_size);
-extern clib_error get_raw_clib_object (struct clib_object *inObject, void**elem);
-extern void  delete_clib_object  (struct clib_object* inObject );
-extern void replace_raw_clib_object(struct clib_object* current_object,void* elem, size_t elem_size);
+extern struct cstl_object* new_clib_object (void* inObject, size_t obj_size);
+extern clib_error get_raw_clib_object (struct cstl_object *inObject, void**elem);
+extern void  delete_clib_object  (struct cstl_object* inObject );
+extern void replace_raw_clib_object(struct cstl_object* current_object,void* elem, size_t elem_size);
 
 #endif

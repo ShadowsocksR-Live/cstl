@@ -24,12 +24,12 @@
 #include "c_lib.h"
 #include <string.h>
 
-#define CLIB_DEQUE_INDEX(x)  ((char *)(pDeq)->pElements + (sizeof(struct clib_object) * (x)))
+#define CLIB_DEQUE_INDEX(x)  ((char *)(pDeq)->pElements + (sizeof(struct cstl_object) * (x)))
 
 static clib_error
 insert_c_deque(struct clib_deque* pDeq, int index, void* elem, size_t elem_size) {
     clib_error rc = CLIB_ERROR_SUCCESS;
-    struct clib_object* pObject = new_clib_object(elem, elem_size);
+    struct cstl_object* pObject = new_clib_object(elem, elem_size);
     if (!pObject)
         return CLIB_ARRAY_INSERT_FAILED;
 
@@ -42,8 +42,8 @@ static struct clib_deque*
 grow_deque(struct clib_deque* pDeq) {
 
     pDeq->no_max_elements = pDeq->no_max_elements * 2;
-    pDeq->pElements = (struct clib_object**) realloc(pDeq->pElements,
-        pDeq->no_max_elements * sizeof(struct clib_object*));
+    pDeq->pElements = (struct cstl_object**) realloc(pDeq->pElements,
+        pDeq->no_max_elements * sizeof(struct cstl_object*));
     return pDeq;
 }
 
@@ -55,7 +55,7 @@ struct clib_deque*
         return (struct clib_deque*)0;
 
     pDeq->no_max_elements = deq_size < 8 ? 8 : deq_size;
-    pDeq->pElements = (struct clib_object**) malloc(pDeq->no_max_elements * sizeof(struct clib_object*));
+    pDeq->pElements = (struct cstl_object**) malloc(pDeq->no_max_elements * sizeof(struct cstl_object*));
 
     if (pDeq == (struct clib_deque*)0)
         return (struct clib_deque*)0;
@@ -95,7 +95,7 @@ push_front_c_deque(struct clib_deque* pDeq, void* elem, size_t elem_size) {
         to = (pDeq->no_max_elements - pDeq->no_of_elements) / 2;
         from = pDeq->head + 1;
         count = pDeq->tail - from + 1;
-        memmove(&(pDeq->pElements[to]), &(pDeq->pElements[from]), count * sizeof(struct clib_object*));
+        memmove(&(pDeq->pElements[to]), &(pDeq->pElements[from]), count * sizeof(struct cstl_object*));
         pDeq->head = to - 1;
         pDeq->tail = pDeq->head + count;
     }
@@ -213,13 +213,13 @@ delete_c_deque(struct clib_deque* pDeq) {
     return CLIB_ERROR_SUCCESS;
 }
 
-static struct clib_object*
+static struct cstl_object*
 get_next_c_deque(struct cstl_iterator* pIterator) {
     struct clib_deque *pDeq = (struct clib_deque*)pIterator->pContainer;
     int index = ((struct cstl_iterator*)pIterator)->pCurrent;
 
     if (index < 0 || index >= pDeq->tail) {
-        return (struct clib_object*)0;
+        return (struct cstl_object*)0;
     }
     pIterator->pCurrentElement = pDeq->pElements[pIterator->pCurrent++];
     return pIterator->pCurrentElement;

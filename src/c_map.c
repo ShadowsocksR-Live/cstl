@@ -122,7 +122,7 @@ minimum_c_map(struct clib_map *x) {
     return minimum_c_rb(x->root, x->root->root);
 }
 
-static struct clib_object*
+static struct cstl_object*
 get_next_c_map(struct cstl_iterator* pIterator) {
     if (!pIterator->pCurrentElement) {
         pIterator->pCurrentElement = minimum_c_map(pIterator->pContainer);
@@ -131,7 +131,7 @@ get_next_c_map(struct cstl_iterator* pIterator) {
         pIterator->pCurrentElement = tree_successor(x->root, pIterator->pCurrentElement);
     }
     if (!pIterator->pCurrentElement)
-        return (struct clib_object*)0;
+        return (struct cstl_object*)0;
 
     return ((struct clib_rb_node*)pIterator->pCurrentElement)->value;
 }

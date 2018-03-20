@@ -5,7 +5,7 @@
 struct clib_array {
     int no_max_elements; /* Number of maximum elements array can hold without reallocation */
     int no_of_elements;  /* Number of current elements in the array */
-    struct clib_object** pElements; /* actual storage area */
+    struct cstl_object** pElements; /* actual storage area */
     clib_compare compare_fn; /* Compare function pointer*/
     clib_destroy destruct_fn; /* Destructor function pointer*/
 };
@@ -30,7 +30,7 @@ void delete_iterator_c_array ( struct cstl_iterator* pItr);
 ## deque
 ```cpp
 struct clib_deque {
-    struct clib_object**pElements;
+    struct cstl_object**pElements;
     int no_max_elements;
     int head;
     int tail;
@@ -59,7 +59,7 @@ void delete_iterator_c_deque ( struct cstl_iterator* pItr);
 ## list
 ```cpp
 struct clib_slist_node {
-    struct clib_object* elem;
+    struct cstl_object* elem;
     struct clib_slist_node *next;
 };
 struct clib_slist {

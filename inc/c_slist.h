@@ -25,7 +25,7 @@
 #define _C_SLIST_H_
 
 struct clib_slist_node {
-    struct clib_object* elem;
+    struct cstl_object* elem;
     struct clib_slist_node *next;
 };
 

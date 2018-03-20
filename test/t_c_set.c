@@ -61,7 +61,7 @@ test_with_iterators() {
 	int	index  = 0;
 	int size   = sizeof (test) /sizeof(test[0]);
 	struct cstl_iterator *myItr;
-	struct clib_object *pElement;
+	struct cstl_object *pElement;
 
 	struct clib_set* pSet = new_c_set ( compare_int, NULL);
 
@@ -145,7 +145,7 @@ test_c_set(){
         }
         // */
 
-        struct clib_object *pElement;
+        struct cstl_object *pElement;
         struct cstl_iterator *myItr = new_iterator_c_set(pSet);
         while ((pElement = myItr->get_next(myItr))) {
             void* value = myItr->get_value(pElement);

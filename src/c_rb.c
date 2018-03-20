@@ -177,7 +177,7 @@ insert_c_rb(struct clib_rb* pTree, void* k, size_t key_size, void* v, size_t val
     if (v) {
         x->value = new_clib_object(v, value_size);
     } else {
-        x->value = (struct clib_object*)0;
+        x->value = (struct cstl_object*)0;
     }
 
     y = pTree->root;
@@ -312,7 +312,7 @@ __remove_c_rb(struct clib_rb* pTree, struct clib_rb_node* z) {
     } else
         pTree->root = x;
     if (y != z) {
-        struct clib_object* tmp;
+        struct cstl_object* tmp;
         tmp = z->key;
         z->key = y->key;
         y->key = tmp;

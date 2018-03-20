@@ -114,7 +114,7 @@ minimum_c_set(struct clib_set *x) {
     return minimum_c_rb(x->root, x->root->root);
 }
 
-static struct clib_object*
+static struct cstl_object*
 get_next_c_set(struct cstl_iterator* pIterator) {
     if (!pIterator->pCurrentElement) {
         pIterator->pCurrentElement = minimum_c_set(pIterator->pContainer);
@@ -123,7 +123,7 @@ get_next_c_set(struct cstl_iterator* pIterator) {
         pIterator->pCurrentElement = tree_successor(x->root, pIterator->pCurrentElement);
     }
     if (!pIterator->pCurrentElement)
-        return (struct clib_object*)0;
+        return (struct cstl_object*)0;
 
     return ((struct clib_rb_node*)pIterator->pCurrentElement)->key;
 }

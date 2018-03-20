@@ -26,7 +26,7 @@
 
 void
 cstl_for_each(struct cstl_iterator *pIterator, void(*fn)(void*)) {
-    struct clib_object *pElement;
+    struct cstl_object *pElement;
 
     pElement = pIterator->get_next(pIterator);
     while (pElement) {
