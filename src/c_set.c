@@ -1,5 +1,5 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-*  This file is part of clib library
+*  This file is part of cstl library
 *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
 *
 *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,94 +24,94 @@
 #include "c_lib.h"
 #include <stdio.h>
 
-struct clib_set*
-new_c_set(clib_compare fn_c, clib_destroy fn_d) {
-    struct clib_set* pSet = (struct clib_set*)malloc(sizeof(struct clib_set));
-    if (pSet == (struct clib_set*)0)
-        return (struct clib_set*)0;
+struct cstl_set*
+new_c_set(cstl_compare fn_c, cstl_destroy fn_d) {
+    struct cstl_set* pSet = (struct cstl_set*)malloc(sizeof(struct cstl_set));
+    if (pSet == (struct cstl_set*)0)
+        return (struct cstl_set*)0;
 
-    pSet->root = new_c_rb(fn_c, fn_d, (void*)0);
-    if (pSet->root == (struct clib_rb*)0)
-        return (struct clib_set*)0;
+    pSet->root = new_cstl_rb(fn_c, fn_d, (void*)0);
+    if (pSet->root == (struct cstl_rb*)0)
+        return (struct cstl_set*)0;
 
     return pSet;
 }
 
-clib_error
-insert_c_set(struct clib_set* pSet, void* key, size_t key_size) {
-    if (pSet == (struct clib_set*)0)
-        return CLIB_SET_NOT_INITIALIZED;
+cstl_error
+insert_c_set(struct cstl_set* pSet, void* key, size_t key_size) {
+    if (pSet == (struct cstl_set*)0)
+        return CSTL_SET_NOT_INITIALIZED;
 
-    return insert_c_rb(pSet->root, key, key_size, (void*)0, 0);
+    return insert_cstl_rb(pSet->root, key, key_size, (void*)0, 0);
 }
 
-clib_bool
-exists_c_set(struct clib_set* pSet, void* key) {
-    clib_bool found = clib_false;
-    struct clib_rb_node* node;
+cstl_bool
+exists_c_set(struct cstl_set* pSet, void* key) {
+    cstl_bool found = cstl_false;
+    struct cstl_rb_node* node;
 
-    if (pSet == (struct clib_set*)0)
-        return clib_false;
+    if (pSet == (struct cstl_set*)0)
+        return cstl_false;
 
-    node = find_c_rb(pSet->root, key);
-    if (node != (struct clib_rb_node*)0) {
-        return clib_true;
+    node = find_cstl_rb(pSet->root, key);
+    if (node != (struct cstl_rb_node*)0) {
+        return cstl_true;
     }
     return found;
 }
 
-clib_error
-remove_c_set(struct clib_set* pSet, void* key) {
-    clib_error rc = CLIB_ERROR_SUCCESS;
-    struct clib_rb_node* node;
-    if (pSet == (struct clib_set*)0)
-        return CLIB_SET_NOT_INITIALIZED;
+cstl_error
+remove_c_set(struct cstl_set* pSet, void* key) {
+    cstl_error rc = CSTL_ERROR_SUCCESS;
+    struct cstl_rb_node* node;
+    if (pSet == (struct cstl_set*)0)
+        return CSTL_SET_NOT_INITIALIZED;
 
-    node = remove_c_rb(pSet->root, key);
-    if (node != (struct clib_rb_node*)0) {
+    node = remove_cstl_rb(pSet->root, key);
+    if (node != (struct cstl_rb_node*)0) {
         if (pSet->root->destruct_k_fn) {
             void* key = (void*)0;
-            if (CLIB_ERROR_SUCCESS == get_raw_clib_object(node->key, &key)) {
+            if (CSTL_ERROR_SUCCESS == get_raw_cstl_object(node->key, &key)) {
                 pSet->root->destruct_k_fn(key);
                 free(key);
             }
         }
-        delete_clib_object(node->key);
+        delete_cstl_object(node->key);
 
         free(node);
     }
     return rc;
 }
 
-clib_bool
-find_c_set(struct clib_set* pSet, void* key, void* outKey) {
-    struct clib_rb_node* node;
+cstl_bool
+find_c_set(struct cstl_set* pSet, void* key, void* outKey) {
+    struct cstl_rb_node* node;
 
-    if (pSet == (struct clib_set*)0)
-        return clib_false;
+    if (pSet == (struct cstl_set*)0)
+        return cstl_false;
 
-    node = find_c_rb(pSet->root, key);
-    if (node == (struct clib_rb_node*)0)
-        return clib_false;
+    node = find_cstl_rb(pSet->root, key);
+    if (node == (struct cstl_rb_node*)0)
+        return cstl_false;
 
-    get_raw_clib_object(node->key, outKey);
+    get_raw_cstl_object(node->key, outKey);
 
-    return clib_true;
+    return cstl_true;
 }
 
-clib_error
-delete_c_set(struct clib_set* x) {
-    clib_error rc = CLIB_ERROR_SUCCESS;
-    if (x != (struct clib_set*)0) {
-        rc = delete_c_rb(x->root);
+cstl_error
+delete_c_set(struct cstl_set* x) {
+    cstl_error rc = CSTL_ERROR_SUCCESS;
+    if (x != (struct cstl_set*)0) {
+        rc = delete_cstl_rb(x->root);
         free(x);
     }
     return rc;
 }
 
-static struct clib_rb_node *
-minimum_c_set(struct clib_set *x) {
-    return minimum_c_rb(x->root, x->root->root);
+static struct cstl_rb_node *
+minimum_c_set(struct cstl_set *x) {
+    return minimum_cstl_rb(x->root, x->root->root);
 }
 
 static struct cstl_object*
@@ -119,24 +119,24 @@ get_next_c_set(struct cstl_iterator* pIterator) {
     if (!pIterator->pCurrentElement) {
         pIterator->pCurrentElement = minimum_c_set(pIterator->pContainer);
     } else {
-        struct clib_set *x = (struct clib_set*)pIterator->pContainer;
-        pIterator->pCurrentElement = tree_successor(x->root, pIterator->pCurrentElement);
+        struct cstl_set *x = (struct cstl_set*)pIterator->pContainer;
+        pIterator->pCurrentElement = cstl_rb_tree_successor(x->root, pIterator->pCurrentElement);
     }
     if (!pIterator->pCurrentElement)
         return (struct cstl_object*)0;
 
-    return ((struct clib_rb_node*)pIterator->pCurrentElement)->key;
+    return ((struct cstl_rb_node*)pIterator->pCurrentElement)->key;
 }
 
 static void*
 get_value_c_set(void* pObject) {
     void* elem;
-    get_raw_clib_object(pObject, &elem);
+    get_raw_cstl_object(pObject, &elem);
     return elem;
 }
 
 struct cstl_iterator*
-    new_iterator_c_set(struct clib_set* pSet) {
+    new_iterator_c_set(struct cstl_set* pSet) {
     struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
     itr->get_next = get_next_c_set;
     itr->get_value = get_value_c_set;

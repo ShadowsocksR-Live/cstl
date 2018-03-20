@@ -1,5 +1,5 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-*  This file is part of clib library
+*  This file is part of cstl library
 *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
 *
 *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -25,8 +25,8 @@
 #include <string.h>
 #include <stdio.h>
 
-static struct clib_array*
-array_check_and_grow(struct clib_array* pArray) {
+static struct cstl_array*
+array_check_and_grow(struct cstl_array* pArray) {
     if (pArray->no_of_elements >= pArray->no_max_elements) {
         pArray->no_max_elements = 2 * pArray->no_max_elements;
         pArray->pElements = (struct cstl_object**) realloc(pArray->pElements,
@@ -35,18 +35,18 @@ array_check_and_grow(struct clib_array* pArray) {
     return pArray;
 }
 
-struct clib_array*
-    new_c_array(int array_size, clib_compare fn_c, clib_destroy fn_d) {
+struct cstl_array*
+new_c_array(int array_size, cstl_compare fn_c, cstl_destroy fn_d) {
 
-    struct clib_array* pArray = (struct clib_array*)malloc(sizeof(struct clib_array));
+    struct cstl_array* pArray = (struct cstl_array*)malloc(sizeof(struct cstl_array));
     if (!pArray)
-        return (struct clib_array*)0;
+        return (struct cstl_array*)0;
 
     pArray->no_max_elements = array_size < 8 ? 8 : array_size;
     pArray->pElements = (struct cstl_object**) malloc(pArray->no_max_elements * sizeof(struct cstl_object*));
     if (!pArray->pElements) {
         free(pArray);
-        return (struct clib_array*)0;
+        return (struct cstl_array*)0;
     }
     pArray->compare_fn = fn_c;
     pArray->destruct_fn = fn_d;
@@ -55,25 +55,25 @@ struct clib_array*
     return pArray;
 }
 
-static clib_error
-insert_c_array(struct clib_array* pArray, int index, void* elem, size_t elem_size) {
+static cstl_error
+insert_c_array(struct cstl_array* pArray, int index, void* elem, size_t elem_size) {
 
-    clib_error rc = CLIB_ERROR_SUCCESS;
-    struct cstl_object* pObject = new_clib_object(elem, elem_size);
+    cstl_error rc = CSTL_ERROR_SUCCESS;
+    struct cstl_object* pObject = new_cstl_object(elem, elem_size);
     if (!pObject)
-        return CLIB_ARRAY_INSERT_FAILED;
+        return CSTL_ARRAY_INSERT_FAILED;
 
     pArray->pElements[index] = pObject;
     pArray->no_of_elements++;
     return rc;
 }
 
-clib_error
-push_back_c_array(struct clib_array* pArray, void* elem, size_t elem_size) {
-    clib_error rc = CLIB_ERROR_SUCCESS;
+cstl_error
+push_back_c_array(struct cstl_array* pArray, void* elem, size_t elem_size) {
+    cstl_error rc = CSTL_ERROR_SUCCESS;
 
     if (!pArray)
-        return CLIB_ARRAY_NOT_INITIALIZED;
+        return CSTL_ARRAY_NOT_INITIALIZED;
 
     array_check_and_grow(pArray);
 
@@ -82,72 +82,72 @@ push_back_c_array(struct clib_array* pArray, void* elem, size_t elem_size) {
     return rc;
 }
 
-clib_error
-element_at_c_array(struct clib_array* pArray, int index, void** elem) {
-    clib_error rc = CLIB_ERROR_SUCCESS;
+cstl_error
+element_at_c_array(struct cstl_array* pArray, int index, void** elem) {
+    cstl_error rc = CSTL_ERROR_SUCCESS;
 
     if (!pArray)
-        return CLIB_ARRAY_NOT_INITIALIZED;
+        return CSTL_ARRAY_NOT_INITIALIZED;
 
     if (index < 0 || index > pArray->no_max_elements)
-        return CLIB_ARRAY_INDEX_OUT_OF_BOUND;
+        return CSTL_ARRAY_INDEX_OUT_OF_BOUND;
 
-    get_raw_clib_object(pArray->pElements[index], elem);
+    get_raw_cstl_object(pArray->pElements[index], elem);
     return rc;
 }
 
 int
-size_c_array(struct clib_array* pArray) {
-    if (pArray == (struct clib_array*)0)
+size_c_array(struct cstl_array* pArray) {
+    if (pArray == (struct cstl_array*)0)
         return 0;
     return pArray->no_of_elements - 1;
 }
 
 int
-capacity_c_array(struct clib_array* pArray) {
-    if (pArray == (struct clib_array*)0)
+capacity_c_array(struct cstl_array* pArray) {
+    if (pArray == (struct cstl_array*)0)
         return 0;
     return pArray->no_max_elements;
 }
 
-clib_bool
-empty_c_array(struct clib_array* pArray) {
-    if (pArray == (struct clib_array*)0)
+cstl_bool
+empty_c_array(struct cstl_array* pArray) {
+    if (pArray == (struct cstl_array*)0)
         return 0;
-    return pArray->no_of_elements == 0 ? clib_true : clib_false;
+    return pArray->no_of_elements == 0 ? cstl_true : cstl_false;
 }
 
-clib_error
-reserve_c_array(struct clib_array* pArray, int new_size) {
-    if (pArray == (struct clib_array*)0)
-        return CLIB_ARRAY_NOT_INITIALIZED;
+cstl_error
+reserve_c_array(struct cstl_array* pArray, int new_size) {
+    if (pArray == (struct cstl_array*)0)
+        return CSTL_ARRAY_NOT_INITIALIZED;
 
     if (new_size <= pArray->no_max_elements)
-        return CLIB_ERROR_SUCCESS;
+        return CSTL_ERROR_SUCCESS;
 
     array_check_and_grow(pArray);
-    return CLIB_ERROR_SUCCESS;
+    return CSTL_ERROR_SUCCESS;
 
 }
 
-clib_error
-front_c_array(struct clib_array* pArray, void* elem) {
+cstl_error
+front_c_array(struct cstl_array* pArray, void* elem) {
     return element_at_c_array(pArray, 0, elem);
 }
 
-clib_error
-back_c_array(struct clib_array* pArray, void* elem) {
+cstl_error
+back_c_array(struct cstl_array* pArray, void* elem) {
     return element_at_c_array(pArray, pArray->no_of_elements - 1, elem);
 }
 
-clib_error
-insert_at_c_array(struct clib_array* pArray, int index, void* elem, size_t elem_size) {
-    clib_error rc = CLIB_ERROR_SUCCESS;
+cstl_error
+insert_at_c_array(struct cstl_array* pArray, int index, void* elem, size_t elem_size) {
+    cstl_error rc = CSTL_ERROR_SUCCESS;
     if (!pArray)
-        return CLIB_ARRAY_NOT_INITIALIZED;
+        return CSTL_ARRAY_NOT_INITIALIZED;
 
     if (index < 0 || index > pArray->no_max_elements)
-        return CLIB_ARRAY_INDEX_OUT_OF_BOUND;
+        return CSTL_ARRAY_INDEX_OUT_OF_BOUND;
 
     array_check_and_grow(pArray);
 
@@ -160,23 +160,23 @@ insert_at_c_array(struct clib_array* pArray, int index, void* elem, size_t elem_
     return rc;
 }
 
-clib_error
-remove_from_c_array(struct clib_array* pArray, int index) {
-    clib_error   rc = CLIB_ERROR_SUCCESS;
+cstl_error
+remove_from_c_array(struct cstl_array* pArray, int index) {
+    cstl_error   rc = CSTL_ERROR_SUCCESS;
 
     if (!pArray)
         return rc;
     if (index < 0 || index > pArray->no_max_elements)
-        return CLIB_ARRAY_INDEX_OUT_OF_BOUND;
+        return CSTL_ARRAY_INDEX_OUT_OF_BOUND;
 
     if (pArray->destruct_fn) {
         void* elem;
-        if (CLIB_ERROR_SUCCESS == element_at_c_array(pArray, index, &elem)) {
+        if (CSTL_ERROR_SUCCESS == element_at_c_array(pArray, index, &elem)) {
             pArray->destruct_fn(elem);
             free(elem);
         }
     }
-    delete_clib_object(pArray->pElements[index]);
+    delete_cstl_object(pArray->pElements[index]);
 
     memmove(&(pArray->pElements[index]),
         &pArray->pElements[index + 1],
@@ -186,18 +186,18 @@ remove_from_c_array(struct clib_array* pArray, int index) {
     return rc;
 }
 
-clib_error
-delete_c_array(struct clib_array* pArray) {
-    clib_error rc = CLIB_ERROR_SUCCESS;
+cstl_error
+delete_c_array(struct cstl_array* pArray) {
+    cstl_error rc = CSTL_ERROR_SUCCESS;
     int i = 0;
 
-    if (pArray == (struct clib_array*)0)
+    if (pArray == (struct cstl_array*)0)
         return rc;
 
     if (pArray->destruct_fn) {
         for (i = 0; i < pArray->no_of_elements; i++) {
             void* elem;
-            if (CLIB_ERROR_SUCCESS == element_at_c_array(pArray, i, &elem)) {
+            if (CSTL_ERROR_SUCCESS == element_at_c_array(pArray, i, &elem)) {
                 pArray->destruct_fn(elem);
                 free(elem);
             }
@@ -205,7 +205,7 @@ delete_c_array(struct clib_array* pArray) {
     }
 
     for (i = 0; i < pArray->no_of_elements; i++)
-        delete_clib_object(pArray->pElements[i]);
+        delete_cstl_object(pArray->pElements[i]);
 
     free(pArray->pElements);
     free(pArray);
@@ -215,7 +215,7 @@ delete_c_array(struct clib_array* pArray) {
 static struct cstl_object*
 get_next_c_array(struct cstl_iterator* pIterator) {
 
-    struct clib_array *pArray = (struct clib_array*)pIterator->pContainer;
+    struct cstl_array *pArray = (struct cstl_array*)pIterator->pContainer;
 
     if (pIterator->pCurrent > size_c_array(pArray))
         return (struct cstl_object*)0;
@@ -227,26 +227,26 @@ get_next_c_array(struct cstl_iterator* pIterator) {
 static void*
 get_value_c_array(void* pObject) {
     void* elem;
-    get_raw_clib_object(pObject, &elem);
+    get_raw_cstl_object(pObject, &elem);
     return elem;
 }
 
 static void
 replace_value_c_array(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
-    struct clib_array*  pArray = (struct clib_array*)pIterator->pContainer;
+    struct cstl_array*  pArray = (struct cstl_array*)pIterator->pContainer;
 
     if (pArray->destruct_fn) {
         void* old_element;
-        if (CLIB_ERROR_SUCCESS == get_raw_clib_object(pIterator->pCurrentElement, &old_element)) {
+        if (CSTL_ERROR_SUCCESS == get_raw_cstl_object(pIterator->pCurrentElement, &old_element)) {
             pArray->destruct_fn(old_element);
             free(old_element);
         }
     }
-    replace_raw_clib_object(pIterator->pCurrentElement, elem, elem_size);
+    replace_raw_cstl_object(pIterator->pCurrentElement, elem, elem_size);
 }
 
 struct cstl_iterator*
-    new_iterator_c_array(struct clib_array* pArray) {
+new_iterator_c_array(struct cstl_array* pArray) {
     struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
     itr->get_next = get_next_c_array;
     itr->get_value = get_value_c_array;

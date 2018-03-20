@@ -1,5 +1,5 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-*  This file is part of clib library
+*  This file is part of cstl library
 *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
 *
 *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,22 +24,22 @@
 #include "c_lib.h"
 #include <string.h>
 
-#define CLIB_DEQUE_INDEX(x)  ((char *)(pDeq)->pElements + (sizeof(struct cstl_object) * (x)))
+#define cstl_deque_INDEX(x)  ((char *)(pDeq)->pElements + (sizeof(struct cstl_object) * (x)))
 
-static clib_error
-insert_c_deque(struct clib_deque* pDeq, int index, void* elem, size_t elem_size) {
-    clib_error rc = CLIB_ERROR_SUCCESS;
-    struct cstl_object* pObject = new_clib_object(elem, elem_size);
+static cstl_error
+insert_c_deque(struct cstl_deque* pDeq, int index, void* elem, size_t elem_size) {
+    cstl_error rc = CSTL_ERROR_SUCCESS;
+    struct cstl_object* pObject = new_cstl_object(elem, elem_size);
     if (!pObject)
-        return CLIB_ARRAY_INSERT_FAILED;
+        return CSTL_ARRAY_INSERT_FAILED;
 
     pDeq->pElements[index] = pObject;
     pDeq->no_of_elements++;
     return rc;
 }
 
-static struct clib_deque*
-grow_deque(struct clib_deque* pDeq) {
+static struct cstl_deque*
+grow_deque(struct cstl_deque* pDeq) {
 
     pDeq->no_max_elements = pDeq->no_max_elements * 2;
     pDeq->pElements = (struct cstl_object**) realloc(pDeq->pElements,
@@ -47,18 +47,18 @@ grow_deque(struct clib_deque* pDeq) {
     return pDeq;
 }
 
-struct clib_deque*
-    new_c_deque(int deq_size, clib_compare fn_c, clib_destroy fn_d) {
+struct cstl_deque*
+new_c_deque(int deq_size, cstl_compare fn_c, cstl_destroy fn_d) {
 
-    struct clib_deque* pDeq = (struct clib_deque*)malloc(sizeof(struct clib_deque));
-    if (pDeq == (struct clib_deque*)0)
-        return (struct clib_deque*)0;
+    struct cstl_deque* pDeq = (struct cstl_deque*)malloc(sizeof(struct cstl_deque));
+    if (pDeq == (struct cstl_deque*)0)
+        return (struct cstl_deque*)0;
 
     pDeq->no_max_elements = deq_size < 8 ? 8 : deq_size;
     pDeq->pElements = (struct cstl_object**) malloc(pDeq->no_max_elements * sizeof(struct cstl_object*));
 
-    if (pDeq == (struct clib_deque*)0)
-        return (struct clib_deque*)0;
+    if (pDeq == (struct cstl_deque*)0)
+        return (struct cstl_deque*)0;
 
     pDeq->compare_fn = fn_c;
     pDeq->destruct_fn = fn_d;
@@ -69,10 +69,10 @@ struct clib_deque*
     return pDeq;
 }
 
-clib_error
-push_back_c_deque(struct clib_deque* pDeq, void* elem, size_t elem_size) {
-    if (pDeq == (struct clib_deque*)0)
-        return CLIB_DEQUE_NOT_INITIALIZED;
+cstl_error
+push_back_c_deque(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
+    if (pDeq == (struct cstl_deque*)0)
+        return CSTL_DEQUE_NOT_INITIALIZED;
 
     if (pDeq->tail == pDeq->no_max_elements)
         pDeq = grow_deque(pDeq);
@@ -80,12 +80,12 @@ push_back_c_deque(struct clib_deque* pDeq, void* elem, size_t elem_size) {
     insert_c_deque(pDeq, pDeq->tail, elem, elem_size);
     pDeq->tail++;
 
-    return CLIB_ERROR_SUCCESS;
+    return CSTL_ERROR_SUCCESS;
 }
 
-clib_error
-push_front_c_deque(struct clib_deque* pDeq, void* elem, size_t elem_size) {
-    clib_error rc = CLIB_ERROR_SUCCESS;
+cstl_error
+push_front_c_deque(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
+    cstl_error rc = CSTL_ERROR_SUCCESS;
     int to = 0;
     int from = 0;
     int count = 0;
@@ -104,118 +104,118 @@ push_front_c_deque(struct clib_deque* pDeq, void* elem, size_t elem_size) {
     return rc;
 }
 
-clib_error
-front_c_deque(struct clib_deque* pDeq, void* elem) {
-    if (pDeq == (struct clib_deque*)0)
-        return CLIB_DEQUE_NOT_INITIALIZED;
+cstl_error
+front_c_deque(struct cstl_deque* pDeq, void* elem) {
+    if (pDeq == (struct cstl_deque*)0)
+        return CSTL_DEQUE_NOT_INITIALIZED;
     element_at_c_deque(pDeq, pDeq->head + 1, elem);
-    return CLIB_ERROR_SUCCESS;
+    return CSTL_ERROR_SUCCESS;
 }
 
-clib_error
-back_c_deque(struct clib_deque* pDeq, void* elem) {
-    if (pDeq == (struct clib_deque*)0)
-        return CLIB_DEQUE_NOT_INITIALIZED;
+cstl_error
+back_c_deque(struct cstl_deque* pDeq, void* elem) {
+    if (pDeq == (struct cstl_deque*)0)
+        return CSTL_DEQUE_NOT_INITIALIZED;
     element_at_c_deque(pDeq, pDeq->tail - 1, elem);
-    return CLIB_ERROR_SUCCESS;
+    return CSTL_ERROR_SUCCESS;
 }
 
-clib_error
-pop_back_c_deque(struct clib_deque* pDeq) {
-    if (pDeq == (struct clib_deque*)0)
-        return CLIB_DEQUE_NOT_INITIALIZED;
+cstl_error
+pop_back_c_deque(struct cstl_deque* pDeq) {
+    if (pDeq == (struct cstl_deque*)0)
+        return CSTL_DEQUE_NOT_INITIALIZED;
 
     if (pDeq->destruct_fn) {
         void* elem;
-        if (element_at_c_deque(pDeq, pDeq->tail - 1, &elem) == CLIB_ERROR_SUCCESS) {
+        if (element_at_c_deque(pDeq, pDeq->tail - 1, &elem) == CSTL_ERROR_SUCCESS) {
             pDeq->destruct_fn(elem);
             free(elem);
         }
     }
-    delete_clib_object(pDeq->pElements[pDeq->tail - 1]);
+    delete_cstl_object(pDeq->pElements[pDeq->tail - 1]);
     pDeq->tail--;
     pDeq->no_of_elements--;
 
-    return CLIB_ERROR_SUCCESS;
+    return CSTL_ERROR_SUCCESS;
 }
 
-clib_error
-pop_front_c_deque(struct clib_deque* pDeq) {
+cstl_error
+pop_front_c_deque(struct cstl_deque* pDeq) {
 
-    if (pDeq == (struct clib_deque*)0)
-        return CLIB_DEQUE_NOT_INITIALIZED;
+    if (pDeq == (struct cstl_deque*)0)
+        return CSTL_DEQUE_NOT_INITIALIZED;
 
     if (pDeq->destruct_fn) {
         void* elem;
-        if (element_at_c_deque(pDeq, pDeq->head + 1, &elem) == CLIB_ERROR_SUCCESS) {
+        if (element_at_c_deque(pDeq, pDeq->head + 1, &elem) == CSTL_ERROR_SUCCESS) {
             pDeq->destruct_fn(elem);
             free(elem);
         }
     }
-    delete_clib_object(pDeq->pElements[pDeq->head + 1]);
+    delete_cstl_object(pDeq->pElements[pDeq->head + 1]);
 
     pDeq->head++;
     pDeq->no_of_elements--;
 
-    return CLIB_ERROR_SUCCESS;
+    return CSTL_ERROR_SUCCESS;
 }
 
-clib_bool
-empty_c_deque(struct clib_deque* pDeq) {
-    if (pDeq == (struct clib_deque*)0)
-        return clib_true;
+cstl_bool
+empty_c_deque(struct cstl_deque* pDeq) {
+    if (pDeq == (struct cstl_deque*)0)
+        return cstl_true;
 
-    return pDeq->no_of_elements == 0 ? clib_true : clib_false;
+    return pDeq->no_of_elements == 0 ? cstl_true : cstl_false;
 }
 
 int
-size_c_deque(struct clib_deque* pDeq) {
-    if (pDeq == (struct clib_deque*)0)
-        return clib_true;
+size_c_deque(struct cstl_deque* pDeq) {
+    if (pDeq == (struct cstl_deque*)0)
+        return cstl_true;
 
     return pDeq->no_of_elements - 1;
 }
 
-clib_error
-element_at_c_deque(struct clib_deque* pDeq, int index, void**elem) {
+cstl_error
+element_at_c_deque(struct cstl_deque* pDeq, int index, void**elem) {
 
-    clib_error rc = CLIB_ERROR_SUCCESS;
+    cstl_error rc = CSTL_ERROR_SUCCESS;
 
     if (!pDeq)
-        return CLIB_DEQUE_NOT_INITIALIZED;
+        return CSTL_DEQUE_NOT_INITIALIZED;
 
-    get_raw_clib_object(pDeq->pElements[index], elem);
+    get_raw_cstl_object(pDeq->pElements[index], elem);
     return rc;
 }
 
-clib_error
-delete_c_deque(struct clib_deque* pDeq) {
+cstl_error
+delete_c_deque(struct cstl_deque* pDeq) {
     int i = 0;
 
-    if (pDeq == (struct clib_deque*)0)
-        return CLIB_ERROR_SUCCESS;
+    if (pDeq == (struct cstl_deque*)0)
+        return CSTL_ERROR_SUCCESS;
 
     if (pDeq->destruct_fn) {
         for (i = pDeq->head + 1; i < pDeq->tail; i++) {
             void* elem;
-            if (element_at_c_deque(pDeq, i, &elem) == CLIB_ERROR_SUCCESS) {
+            if (element_at_c_deque(pDeq, i, &elem) == CSTL_ERROR_SUCCESS) {
                 pDeq->destruct_fn(elem);
                 free(elem);
             }
         }
     }
     for (i = pDeq->head + 1; i < pDeq->tail; i++) {
-        delete_clib_object(pDeq->pElements[i]);
+        delete_cstl_object(pDeq->pElements[i]);
     }
     free(pDeq->pElements);
     free(pDeq);
 
-    return CLIB_ERROR_SUCCESS;
+    return CSTL_ERROR_SUCCESS;
 }
 
 static struct cstl_object*
 get_next_c_deque(struct cstl_iterator* pIterator) {
-    struct clib_deque *pDeq = (struct clib_deque*)pIterator->pContainer;
+    struct cstl_deque *pDeq = (struct cstl_deque*)pIterator->pContainer;
     int index = ((struct cstl_iterator*)pIterator)->pCurrent;
 
     if (index < 0 || index >= pDeq->tail) {
@@ -228,25 +228,25 @@ get_next_c_deque(struct cstl_iterator* pIterator) {
 static void*
 get_value_c_deque(void* pObject) {
     void* elem;
-    get_raw_clib_object(pObject, &elem);
+    get_raw_cstl_object(pObject, &elem);
     return elem;
 }
 
 static void
 replace_value_c_deque(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
-    struct clib_deque*  pDeq = (struct clib_deque*)pIterator->pContainer;
+    struct cstl_deque*  pDeq = (struct cstl_deque*)pIterator->pContainer;
     if (pDeq->destruct_fn) {
         void* old_element;
-        if (get_raw_clib_object(pIterator->pCurrentElement, &old_element) == CLIB_ERROR_SUCCESS) {
+        if (get_raw_cstl_object(pIterator->pCurrentElement, &old_element) == CSTL_ERROR_SUCCESS) {
             pDeq->destruct_fn(old_element);
             free(old_element);
         }
     }
-    replace_raw_clib_object(pIterator->pCurrentElement, elem, elem_size);
+    replace_raw_cstl_object(pIterator->pCurrentElement, elem, elem_size);
 }
 
 struct cstl_iterator*
-    new_iterator_c_deque(struct clib_deque* pDeq) {
+    new_iterator_c_deque(struct cstl_deque* pDeq) {
     struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
     itr->get_next = get_next_c_deque;
     itr->get_value = get_value_c_deque;

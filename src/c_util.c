@@ -1,5 +1,5 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
-*  This file is part of clib library
+*  This file is part of cstl library
 *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
 *
 *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -26,17 +26,17 @@
 #include <stdlib.h>
 
 void
-clib_copy(void* destination, void* source, size_t size) {
+cstl_copy(void* destination, void* source, size_t size) {
     memcpy((char*)destination, source, size);
 }
 
 void
-clib_get(void* destination, void* source, size_t size) {
+cstl_get(void* destination, void* source, size_t size) {
     memcpy(destination, (char*)source, size);
 }
 
 struct cstl_object*
-new_clib_object(void* inObject, size_t obj_size) {
+new_cstl_object(void* inObject, size_t obj_size) {
     struct cstl_object* tmp = (struct cstl_object*)malloc(sizeof(struct cstl_object));
     if (!tmp)
         return (struct cstl_object*)0;
@@ -50,25 +50,25 @@ new_clib_object(void* inObject, size_t obj_size) {
     return tmp;
 }
 
-clib_error
-get_raw_clib_object(struct cstl_object *inObject, void**elem) {
+cstl_error
+get_raw_cstl_object(struct cstl_object *inObject, void**elem) {
     *elem = (void*)malloc(inObject->size);
     if (!*elem)
-        return CLIB_ELEMENT_RETURN_ERROR;
+        return CSTL_ELEMENT_RETURN_ERROR;
     memcpy(*elem, inObject->raw_data, inObject->size);
 
-    return CLIB_ERROR_SUCCESS;
+    return CSTL_ERROR_SUCCESS;
 }
 
 void
-replace_raw_clib_object(struct cstl_object* current_object, void* elem, size_t elem_size) {
+replace_raw_cstl_object(struct cstl_object* current_object, void* elem, size_t elem_size) {
     free(current_object->raw_data);
     current_object->raw_data = (void*)malloc(elem_size);
     memcpy(current_object->raw_data, elem, elem_size);
 }
 
 void
-delete_clib_object(struct cstl_object* inObject) {
+delete_cstl_object(struct cstl_object* inObject) {
     if (inObject) {
         free(inObject->raw_data);
         free(inObject);
@@ -76,7 +76,7 @@ delete_clib_object(struct cstl_object* inObject) {
 }
 
 char*
-clib_strdup(char *ptr) {
+cstl_strdup(char *ptr) {
 #ifdef WIN32
     return _strdup(ptr);
 #else

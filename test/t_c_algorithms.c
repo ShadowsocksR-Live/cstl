@@ -49,7 +49,7 @@ compare_integers_ptr ( void* left, void* right ) {
 }
 
 
-static struct clib_array*
+static struct cstl_array*
 create_c_array() {
     int size = 10;
     int i = 0;
@@ -57,13 +57,13 @@ create_c_array() {
     void* p_rv = (void* )0;
     int rv = 0;
 
-    struct clib_array* myArray  = new_c_array (8,compare_integers,NULL);
-    assert ( clib_true == empty_c_array( myArray ));
+    struct cstl_array* myArray  = new_c_array (8,compare_integers,NULL);
+    assert ( cstl_true == empty_c_array( myArray ));
 
     for ( i = 0; i <= size; i++) {
         push_back_c_array ( myArray, &i ,sizeof(int));
     }
-    assert ( clib_false == empty_c_array( myArray ));
+    assert ( cstl_false == empty_c_array( myArray ));
     assert ( size == size_c_array( myArray ));
 	for ( i = 0; i <= size; i++) {	    
         rc = element_at_c_array ( myArray, i , &p_rv );
@@ -74,13 +74,13 @@ create_c_array() {
 	return myArray;
 }
 
-static struct clib_deque* 
+static struct cstl_deque* 
 create_deque() {
     int flip = 1;
     int i = 0;
     int limit = 20;
-    struct clib_deque* myDeq = new_c_deque ( 10, compare_integers, NULL);
-    assert ( (struct clib_deque*)0 != myDeq );
+    struct cstl_deque* myDeq = new_c_deque ( 10, compare_integers, NULL);
+    assert ( (struct cstl_deque*)0 != myDeq );
 
     for ( i = 0; i <= limit; i++ ) { 
         if ( flip ) {
@@ -93,12 +93,12 @@ create_deque() {
 	}
 	return myDeq;
 }
-static struct clib_set* 
+static struct cstl_set* 
 create_set() {
 	int test[] = {13,8,17,1,11,15,25,6,22,27};
 	int	index  = 0;
 	int size   = sizeof (test) /sizeof(test[0]);
-	struct clib_set* pSet = new_c_set ( compare_integers, NULL);
+	struct cstl_set* pSet = new_c_set ( compare_integers, NULL);
 
 	for ( index = 0; index < size; index++ ) {
 		int v = test[index];
@@ -107,7 +107,7 @@ create_set() {
 	return pSet;
 }
 
-static struct clib_map* 
+static struct cstl_map* 
 create_map () {
 	char *char_value[] = {  "A","B","C","D","E","F","G","H","I","J","K","L","M",
                         "N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
@@ -116,9 +116,9 @@ create_map () {
                       21,22,23,24,25,26};
     int size = sizeof(char_value)/sizeof(char_value[0]);
     int i = 0;
-	struct clib_map *pMap = new_c_map ( compare_strings, NULL, NULL);
+	struct cstl_map *pMap = new_c_map ( compare_strings, NULL, NULL);
     for ( i = 0; i < size; i++ ) {
-        char *key = clib_strdup( char_value[i]);
+        char *key = cstl_strdup( char_value[i]);
         int key_length = (int)strlen ( key ) + 1;
         int value = int_value[i];
         insert_c_map ( pMap, key, key_length, &value, sizeof(int)); 
@@ -126,9 +126,9 @@ create_map () {
     }	
 	return pMap;
 }
-static struct clib_slist*
+static struct cstl_slist*
 create_slist() {
-	struct clib_slist* pList = new_c_slist(free_element, compare_integers_ptr);
+	struct cstl_slist* pList = new_c_slist(free_element, compare_integers_ptr);
     int i = 0;
     for ( i = 0; i <= 10; i++ ) { 
         int *v = ( int *) malloc ( sizeof ( int ));
@@ -139,12 +139,12 @@ create_slist() {
 }
 
 static void 
-t_clib_for_each() {
-	struct clib_array *pArray;
-	struct clib_deque *pDeq;
-	struct clib_set   *pSet;
-	struct clib_map   *pMap;
-	struct clib_slist *pSlist;
+t_cstl_for_each(void) {
+	struct cstl_array *pArray;
+	struct cstl_deque *pDeq;
+	struct cstl_set   *pSet;
+	struct cstl_map   *pMap;
+	struct cstl_slist *pSlist;
 	struct cstl_iterator *pArrayIterator;
 	struct cstl_iterator *pDequeIterator;
 	struct cstl_iterator *pSetIterator;
@@ -189,5 +189,5 @@ t_clib_for_each() {
 
 void 
 test_c_algorithms(){
-	t_clib_for_each();
+    t_cstl_for_each();
 }

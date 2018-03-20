@@ -1,5 +1,5 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
- *  This file is part of clib library
+ *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -53,7 +53,7 @@ free_e ( void* ptr ) {
 }
 
 static void 
-replace_values_using_iterators(struct clib_deque* myDeq) {
+replace_values_using_iterators(struct cstl_deque* myDeq) {
 	struct cstl_iterator *myItr;
 	struct cstl_object *pElement;
 
@@ -69,13 +69,13 @@ replace_values_using_iterators(struct clib_deque* myDeq) {
 	}
 	delete_iterator_c_deque( myItr );
 }
-static struct clib_deque* 
+static struct cstl_deque* 
 create_deque() {
     int flip = 1;
     int i = 0;
     int limit = 20;
-    struct clib_deque* myDeq = new_c_deque ( 10, compare_e, NULL);
-    assert ( (struct clib_deque*)0 != myDeq );
+    struct cstl_deque* myDeq = new_c_deque ( 10, compare_e, NULL);
+    assert ( (struct cstl_deque*)0 != myDeq );
 
     for ( i = 0; i <= limit; i++ ) { 
         if ( flip ) {
@@ -89,7 +89,7 @@ create_deque() {
 	return myDeq;
 }
 static void
-print_using_iterator(struct clib_deque* myDeq) {
+print_using_iterator(struct cstl_deque* myDeq) {
 	struct cstl_iterator *myItr;
 	struct cstl_object *pElement;
 
@@ -107,7 +107,7 @@ print_using_iterator(struct clib_deque* myDeq) {
 
 static void
 test_with_deque_iterator() {
-	struct clib_deque* myDeq = create_deque();
+	struct cstl_deque* myDeq = create_deque();
 	print_using_iterator(myDeq);
 	replace_values_using_iterators(myDeq);
 	print_using_iterator(myDeq);
@@ -122,8 +122,8 @@ test_c_deque() {
     void*  element;
     int j = 0;
 
-    struct clib_deque* myDeq = new_c_deque ( 10, compare_e, NULL);
-    assert ( (struct clib_deque*)0 != myDeq );
+    struct cstl_deque* myDeq = new_c_deque ( 10, compare_e, NULL);
+    assert ( (struct cstl_deque*)0 != myDeq );
 
     for ( i = 0; i <= limit; i++ ) { 
         if ( flip ) {
@@ -142,7 +142,7 @@ test_c_deque() {
     assert ( *(int*)element == limit);
     free ( element );
 
-    while ( empty_c_deque(myDeq) != clib_true ) {
+    while ( empty_c_deque(myDeq) != cstl_true ) {
         pop_front_c_deque ( myDeq);
     }
     delete_c_deque(myDeq);
@@ -155,7 +155,7 @@ test_c_deque() {
     }   
     for ( i = myDeq->head + 1; i < myDeq->tail; i++ ){
         int** elem;
-        if ( element_at_c_deque( myDeq, i, (void *)&elem ) == CLIB_ERROR_SUCCESS ) {
+        if ( element_at_c_deque( myDeq, i, (void *)&elem ) == CSTL_ERROR_SUCCESS ) {
                 assert ( **elem == j++ );
                 free ( elem );
         }

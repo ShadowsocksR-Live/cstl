@@ -1,5 +1,5 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
- *  This file is part of clib library
+ *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -63,7 +63,7 @@ test_with_iterators() {
 	struct cstl_iterator *myItr;
 	struct cstl_object *pElement;
 
-	struct clib_set* pSet = new_c_set ( compare_int, NULL);
+	struct cstl_set* pSet = new_c_set ( compare_int, NULL);
 
 	for ( index = 0; index < size; index++ ) {
 		int v = test[index];
@@ -71,7 +71,7 @@ test_with_iterators() {
 	}
 	for ( index = 0; index < size; index++ ) {
 		int v = test[index];
-		assert ( clib_true == exists_c_set ( pSet, &v));
+		assert ( cstl_true == exists_c_set ( pSet, &v));
 	}
 	printf ( "------------------------------------------------\n");
 	myItr     = new_iterator_c_set (pSet);
@@ -94,7 +94,7 @@ test_c_set(){
         int size   = sizeof (test) /sizeof(test[0]);
         void* outKey;
 
-        struct clib_set* pSet = new_c_set ( compare_int, NULL);
+        struct cstl_set* pSet = new_c_set ( compare_int, NULL);
 
         for ( index = 0; index < size; index++ ) {
             int v = test[index];
@@ -102,7 +102,7 @@ test_c_set(){
         }
         for ( index = 0; index < size; index++ ) {
             int v = test[index];
-            assert ( clib_true == exists_c_set ( pSet, &v));
+            assert ( cstl_true == exists_c_set ( pSet, &v));
         }
 
         index = 9;
@@ -130,17 +130,17 @@ test_c_set(){
             {"T for TABLE"},{"U for UMBRELLA"},{"V for VIOLIN"},{"W for WAX"},
             {"X for XEROX"},{"Y for YUMMY"},{"Z for ZEBRA"}
         };
-        struct clib_set* pSet = new_c_set ( compare_e, delete_e);
+        struct cstl_set* pSet = new_c_set ( compare_e, delete_e);
         size = sizeof ( ti ) / sizeof ( ti[0]);
         
         //*
         for ( index = 0; index < size; index++ ){
-            char *temp = clib_strdup ( ti[index].string );
+            char *temp = cstl_strdup ( ti[index].string );
             insert_c_set ( pSet, &temp, sizeof(char *) );
         }
         for ( index = 0; index < size; index++ ){
             v = ti[index].string;
-            assert ( clib_true == exists_c_set ( pSet, &v));
+            assert ( cstl_true == exists_c_set ( pSet, &v));
            // remove_c_set(pSet, &v);
         }
         // */

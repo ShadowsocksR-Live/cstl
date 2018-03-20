@@ -1,5 +1,5 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
- *  This file is part of clib library
+ *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -70,13 +70,13 @@ test_with_int() {
     int rc ;
     void* p_rv = (void* )0;
     int rv = 0;
-    struct clib_array* myArray  = new_c_array (8,compare_e,NULL);
-    assert ( clib_true == empty_c_array( myArray ));
+    struct cstl_array* myArray  = new_c_array (8,compare_e,NULL);
+    assert ( cstl_true == empty_c_array( myArray ));
 
     for ( i = 0; i <= size; i++) {
         push_back_c_array ( myArray, &i ,sizeof(int));
     }
-    assert ( clib_false == empty_c_array( myArray ));
+    assert ( cstl_false == empty_c_array( myArray ));
     assert ( size == size_c_array( myArray ));
 	for ( i = 0; i <= size; i++) {	    
         rc = element_at_c_array ( myArray, i , &p_rv );
@@ -146,15 +146,15 @@ test_with_pointers() {
     int i = 0;
     int *rv, rc ;
     void* p_rv = (void* )0;
-    struct clib_array* myArray  = new_c_array (8,compare_e_ptr,free_e);
-    assert ( clib_true == empty_c_array( myArray ));
+    struct cstl_array* myArray  = new_c_array (8,compare_e_ptr,free_e);
+    assert ( cstl_true == empty_c_array( myArray ));
 
     for ( i = 0; i <= size; i++) {
         int *v = ( int*) malloc ( sizeof(int));
         memcpy ( v, &i, sizeof(int));
         push_back_c_array ( myArray, &v ,sizeof(int*));
     }
-    assert ( clib_false == empty_c_array( myArray ));
+    assert ( cstl_false == empty_c_array( myArray ));
     assert ( size == size_c_array( myArray ));
 	for ( i = 0; i <= size; i++) {	    
         rc = element_at_c_array ( myArray, i , &p_rv );
@@ -209,8 +209,8 @@ test_with_strings() {
     int i = 0;
     char *rv, rc ;
     void* p_rv = (void* )0;
-    struct clib_array* myArray  = new_c_array (8,compare_e_str,free_e);
-    assert ( clib_true == empty_c_array( myArray ));
+    struct cstl_array* myArray  = new_c_array (8,compare_e_str,free_e);
+    assert ( cstl_true == empty_c_array( myArray ));
 
     input_array[0] = "STRING_0";
     input_array[1] = "STRING_1";
@@ -226,10 +226,10 @@ test_with_strings() {
 
 
     for ( i = 0; i <= size; i++) {
-        char *v  = clib_strdup ( input_array[i]);
+        char *v  = cstl_strdup ( input_array[i]);
         push_back_c_array ( myArray , &v, sizeof(char *) );
     }
-    assert ( clib_false == empty_c_array( myArray ));
+    assert ( cstl_false == empty_c_array( myArray ));
     assert ( size == size_c_array( myArray ));
 	for ( i = 0; i <= size; i++) {	  
         rc = element_at_c_array ( myArray, i , &p_rv );
@@ -277,7 +277,7 @@ test_with_strings() {
 }
 
 static void 
-print_using_iterators(struct clib_array* myArray) {
+print_using_iterators(struct cstl_array* myArray) {
 	struct cstl_iterator *myItr;
 	struct cstl_object *pElement;
 	printf ( "------------------------------------------------\n");
@@ -293,7 +293,7 @@ print_using_iterators(struct clib_array* myArray) {
 }
 
 static void 
-replace_values_using_iterators(struct clib_array* myArray) {
+replace_values_using_iterators(struct cstl_array* myArray) {
 	struct cstl_iterator *myItr;
 	struct cstl_object *pElement;
 	printf ( "------------------------------------------------\n");
@@ -310,7 +310,7 @@ replace_values_using_iterators(struct clib_array* myArray) {
 	}
 	delete_iterator_c_array( myItr );
 }
-static struct clib_array*
+static struct cstl_array*
 create_array() {
     int size = 10;
     int i = 0;
@@ -318,13 +318,13 @@ create_array() {
     void* p_rv = (void* )0;
     int rv = 0;
 
-    struct clib_array* myArray  = new_c_array (8,compare_e,NULL);
-    assert ( clib_true == empty_c_array( myArray ));
+    struct cstl_array* myArray  = new_c_array (8,compare_e,NULL);
+    assert ( cstl_true == empty_c_array( myArray ));
 
     for ( i = 0; i <= size; i++) {
         push_back_c_array ( myArray, &i ,sizeof(int));
     }
-    assert ( clib_false == empty_c_array( myArray ));
+    assert ( cstl_false == empty_c_array( myArray ));
     assert ( size == size_c_array( myArray ));
 	for ( i = 0; i <= size; i++) {	    
         rc = element_at_c_array ( myArray, i , &p_rv );
@@ -335,7 +335,7 @@ create_array() {
 	return myArray;
 }
 void test_with_iterator_function() {
-	struct clib_array* myArray = create_array();
+	struct cstl_array* myArray = create_array();
 	print_using_iterators(myArray);
 	replace_values_using_iterators(myArray);
 	print_using_iterators(myArray);

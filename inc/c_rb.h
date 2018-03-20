@@ -1,5 +1,5 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
- *  This file is part of clib library
+ *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,31 +24,31 @@
 #ifndef _C_RB_H_
 #define _C_RB_H_
 
-struct clib_rb_node {
-    struct clib_rb_node *left;
-    struct clib_rb_node *right;
-    struct clib_rb_node *parent;
+struct cstl_rb_node {
+    struct cstl_rb_node *left;
+    struct cstl_rb_node *right;
+    struct cstl_rb_node *parent;
     int color; 
     struct cstl_object* key;
     struct cstl_object* value;
 };
 
-struct clib_rb {
-    struct clib_rb_node* root;
-    struct clib_rb_node sentinel;
-    clib_destroy destruct_k_fn;
-	clib_destroy destruct_v_fn;
-    clib_compare compare_fn;
+struct cstl_rb {
+    struct cstl_rb_node* root;
+    struct cstl_rb_node sentinel;
+    cstl_destroy destruct_k_fn;
+	cstl_destroy destruct_v_fn;
+    cstl_compare compare_fn;
 };
 
-extern struct clib_rb* new_c_rb(clib_compare fn_c,clib_destroy fn_ed, clib_destroy fn_vd );
-extern clib_error  insert_c_rb(struct clib_rb* pTree, void* key, size_t key_size, void* value, size_t value_size);
-extern struct clib_rb_node*   find_c_rb (struct clib_rb* pTree, void* key);
-extern struct clib_rb_node* remove_c_rb (struct clib_rb* pTree, void* key);
-extern clib_error  delete_c_rb (struct clib_rb* pTree);
-extern clib_bool   empty_c_rb  (struct clib_rb* pTree);
+extern struct cstl_rb* new_cstl_rb(cstl_compare fn_c,cstl_destroy fn_ed, cstl_destroy fn_vd );
+extern cstl_error  insert_cstl_rb(struct cstl_rb* pTree, void* key, size_t key_size, void* value, size_t value_size);
+extern struct cstl_rb_node*   find_cstl_rb (struct cstl_rb* pTree, void* key);
+extern struct cstl_rb_node* remove_cstl_rb (struct cstl_rb* pTree, void* key);
+extern cstl_error  delete_cstl_rb (struct cstl_rb* pTree);
+extern cstl_bool   empty_cstl_rb  (struct cstl_rb* pTree);
 
-extern struct clib_rb_node *minimum_c_rb( struct clib_rb* pTree, struct clib_rb_node* x );
-extern struct clib_rb_node* tree_successor(struct clib_rb* pTree, struct clib_rb_node* x);
+extern struct cstl_rb_node *minimum_cstl_rb( struct cstl_rb* pTree, struct cstl_rb_node* x );
+extern struct cstl_rb_node* cstl_rb_tree_successor(struct cstl_rb* pTree, struct cstl_rb_node* x);
 
 #endif

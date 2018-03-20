@@ -1,5 +1,5 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
- *  This file is part of clib library
+ *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,18 +24,18 @@
 #ifndef _C_SET_H_
 #define _C_SET_H_
 
-struct clib_set {
-    struct clib_rb* root;
+struct cstl_set {
+    struct cstl_rb* root;
 };
 
-extern struct clib_set* new_c_set( clib_compare fn_c, clib_destroy fn_d);
-extern clib_error   insert_c_set ( struct clib_set* pSet, void* key, size_t key_size);
-extern clib_bool    exists_c_set ( struct clib_set* pSet, void* key);
-extern clib_error   remove_c_set ( struct clib_set* pSet, void* key);
-extern clib_bool    find_c_set   ( struct clib_set* pSet, void* key, void* outKey);
-extern clib_error   delete_c_set ( struct clib_set* pSet);
+extern struct cstl_set* new_c_set( cstl_compare fn_c, cstl_destroy fn_d);
+extern cstl_error   insert_c_set ( struct cstl_set* pSet, void* key, size_t key_size);
+extern cstl_bool    exists_c_set ( struct cstl_set* pSet, void* key);
+extern cstl_error   remove_c_set ( struct cstl_set* pSet, void* key);
+extern cstl_bool    find_c_set   ( struct cstl_set* pSet, void* key, void* outKey);
+extern cstl_error   delete_c_set ( struct cstl_set* pSet);
 
-extern struct cstl_iterator* new_iterator_c_set(struct clib_set* pSet);
+extern struct cstl_iterator* new_iterator_c_set(struct cstl_set* pSet);
 extern void delete_iterator_c_set ( struct cstl_iterator* pItr);
 
 #endif

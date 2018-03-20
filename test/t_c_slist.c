@@ -1,5 +1,5 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
- *  This file is part of clib library
+ *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -39,7 +39,7 @@ free_element ( void* ptr ) {
 }
 
 void
-add_elements_to_list( struct clib_slist* ll, int x, int y ) {
+add_elements_to_list( struct cstl_slist* ll, int x, int y ) {
     int i = 0;
     for ( i = x; i <= y; i++ ) { 
         int *v = ( int *) malloc ( sizeof ( int ));
@@ -60,7 +60,7 @@ compare_element ( void* left, void* right ) {
     return *l == *r ;
 }
 static void 
-print_using_iterators(struct clib_slist* pList) {
+print_using_iterators(struct cstl_slist* pList) {
 	struct cstl_iterator *myItr;
 	struct cstl_object *pElement;
 	printf ( "------------------------------------------------\n");
@@ -76,7 +76,7 @@ print_using_iterators(struct clib_slist* pList) {
 }
 
 static void 
-replace_values_using_iterators(struct clib_slist* pList) {
+replace_values_using_iterators(struct cstl_slist* pList) {
 	struct cstl_iterator *myItr;
 	struct cstl_object *pElement;
 	printf ( "------------------------------------------------\n");
@@ -99,7 +99,7 @@ replace_values_using_iterators(struct clib_slist* pList) {
 
 static void
 test_with_iterators() {
-	struct clib_slist* pList = new_c_slist(free_element,compare_element);
+	struct cstl_slist* pList = new_c_slist(free_element,compare_element);
 	add_elements_to_list(pList,1, 10 );
 	print_using_iterators(pList);
 	replace_values_using_iterators(pList);
@@ -112,7 +112,7 @@ test_c_slist() {
     int i = 0;
     int *v;
     void* outValue;
-    struct clib_slist* list = new_c_slist(free_element,compare_element);
+    struct cstl_slist* list = new_c_slist(free_element,compare_element);
 
     add_elements_to_list(list,1, 10 );
     for_each_c_slist(list, print_e);
@@ -155,13 +155,13 @@ test_c_slist() {
 
     int *tmp = (int *)malloc(sizeof(int));
     *tmp = 10;
-    if ( clib_true == find_c_slist ( list, &tmp, &outValue)) {
+    if ( cstl_true == find_c_slist ( list, &tmp, &outValue)) {
         assert ( *tmp == **((int**)outValue) );
         free ( outValue );
     }
 
     *tmp = 100;
-    assert ( clib_false == find_c_slist ( list, &tmp, &outValue));
+    assert ( cstl_false == find_c_slist ( list, &tmp, &outValue));
     free(tmp);
 
     delete_c_slist ( list );

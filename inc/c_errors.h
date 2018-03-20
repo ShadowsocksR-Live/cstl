@@ -1,5 +1,5 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
- *  This file is part of clib library
+ *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -27,31 +27,31 @@
 /* ------------------------------------------------------------------------*/
 /*                 C O M M O N    E R R O R    C O D E                     */
 /* ------------------------------------------------------------------------*/
-#define CLIB_ERROR_SUCCESS  0
-#define CLIB_ERROR_ERROR    1
-#define CLIB_ERROR_MEMORY   2
-#define CLIB_ELEMENT_RETURN_ERROR 3
+#define CSTL_ERROR_SUCCESS  0
+#define CSTL_ERROR_ERROR    1
+#define CSTL_ERROR_MEMORY   2
+#define CSTL_ELEMENT_RETURN_ERROR 3
 /* ------------------------------------------------------------------------*/
 /*         D Y N A M I C    A R R A Y   E R R O R    C O D E S             */
 /* ------------------------------------------------------------------------*/
-#define CLIB_ARRAY_NOT_INITIALIZED    101
-#define CLIB_ARRAY_INDEX_OUT_OF_BOUND 102
-#define CLIB_ARRAY_INSERT_FAILED      103
+#define CSTL_ARRAY_NOT_INITIALIZED    101
+#define CSTL_ARRAY_INDEX_OUT_OF_BOUND 102
+#define CSTL_ARRAY_INSERT_FAILED      103
 
-#define CLIB_DEQUE_NOT_INITIALIZED    201
-#define CLIB_DEQUE_INDEX_OUT_OF_BOUND 202
+#define CSTL_DEQUE_NOT_INITIALIZED    201
+#define CSTL_DEQUE_INDEX_OUT_OF_BOUND 202
 
-#define CLIB_RBTREE_NOT_INITIALIZED   401
-#define CLIB_RBTREE_KEY_DUPLICATE     401
-#define CLIB_RBTREE_KEY_NOT_FOUND     402
+#define CSTL_RBTREE_NOT_INITIALIZED   401
+#define CSTL_RBTREE_KEY_DUPLICATE     402
+#define CSTL_RBTREE_KEY_NOT_FOUND     403
 
-#define CLIB_SET_NOT_INITIALIZED      501
-#define CLIB_SET_INVALID_INPUT        502
+#define CSTL_SET_NOT_INITIALIZED      501
+#define CSTL_SET_INVALID_INPUT        502
 
-#define CLIB_MAP_NOT_INITIALIZED      501
-#define CLIB_MAP_INVALID_INPUT        502
+#define CSTL_MAP_NOT_INITIALIZED      501
+#define CSTL_MAP_INVALID_INPUT        502
 
-#define CLIB_SLIST_INSERT_FAILED      601
+#define CSTL_SLIST_INSERT_FAILED      601
 
 
 

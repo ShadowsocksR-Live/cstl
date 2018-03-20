@@ -1,5 +1,5 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
- *  This file is part of clib library
+ *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,30 +24,30 @@
 #ifndef _C_SLIST_H_
 #define _C_SLIST_H_
 
-struct clib_slist_node {
+struct cstl_slist_node {
     struct cstl_object* elem;
-    struct clib_slist_node *next;
+    struct cstl_slist_node *next;
 };
 
 
-struct clib_slist {
-    struct clib_slist_node* head;
-    clib_destroy destruct_fn;
-    clib_compare compare_key_fn;
+struct cstl_slist {
+    struct cstl_slist_node* head;
+    cstl_destroy destruct_fn;
+    cstl_compare compare_key_fn;
     int size;
 };
 
 
-extern struct clib_slist* new_c_slist(clib_destroy fn_d, clib_compare fn_c);
-extern void           delete_c_slist   (struct clib_slist* pSlist);
-extern clib_error     insert_c_slist   (struct clib_slist* pSlist, int pos, void* elem, size_t elem_size);
-extern clib_error     push_back_c_slist(struct clib_slist* pSlist, void* elem, size_t elem_size);
-extern void           remove_c_slist   (struct clib_slist* pSlist, int pos);
-extern void           for_each_c_slist (struct clib_slist* pSlist, void (*fn)(void* ));
-extern clib_bool      find_c_slist     (struct clib_slist* pSlist, void* find_value, void**out_value);
+extern struct cstl_slist* new_c_slist(cstl_destroy fn_d, cstl_compare fn_c);
+extern void           delete_c_slist   (struct cstl_slist* pSlist);
+extern cstl_error     insert_c_slist   (struct cstl_slist* pSlist, int pos, void* elem, size_t elem_size);
+extern cstl_error     push_back_c_slist(struct cstl_slist* pSlist, void* elem, size_t elem_size);
+extern void           remove_c_slist   (struct cstl_slist* pSlist, int pos);
+extern void           for_each_c_slist (struct cstl_slist* pSlist, void (*fn)(void* ));
+extern cstl_bool      find_c_slist     (struct cstl_slist* pSlist, void* find_value, void**out_value);
 
 
-extern struct cstl_iterator* new_iterator_c_slist(struct clib_slist* pSlit);
+extern struct cstl_iterator* new_iterator_c_slist(struct cstl_slist* pSlit);
 extern void delete_iterator_c_slist ( struct cstl_iterator* pItr);
 
 

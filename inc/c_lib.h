@@ -1,5 +1,5 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
- *  This file is part of clib library
+ *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -31,17 +31,17 @@
 /*       C O M M O N       D E F I N I T O N S                             */
 /* ------------------------------------------------------------------------*/
 
-typedef void (*clib_destroy)(void*);
-typedef int  (*clib_compare)(void*,void*);
-typedef void (*clib_traversal)( void*);
+typedef void (*cstl_destroy)(void*);
+typedef int  (*cstl_compare)(void*,void*);
+typedef void (*cstl_traversal)( void*);
 
-typedef int  clib_error;
-typedef int  clib_bool;
+typedef int  cstl_error;
+typedef int  cstl_bool;
 
-#define clib_black           0
-#define clib_red             1
-#define clib_true            1
-#define clib_false           0
+#define cstl_black           0
+#define cstl_red             1
+#define cstl_true            1
+#define cstl_false           0
 
 /* ------------------------------------------------------------------------*/
 /*                            P  A  I   R                                  */
@@ -75,13 +75,13 @@ struct cstl_iterator {
 /*            H E L P E R       F U N C T I O N S                          */
 /* ------------------------------------------------------------------------*/
 
-extern void  clib_copy ( void* destination, void* source, size_t size );
-extern void  clib_get  ( void* destination, void* source, size_t size);
-extern char* clib_strdup ( char *ptr );
+extern void  cstl_copy ( void* destination, void* source, size_t size );
+extern void  cstl_get  ( void* destination, void* source, size_t size);
+extern char* cstl_strdup ( char *ptr );
 
-extern struct cstl_object* new_clib_object (void* inObject, size_t obj_size);
-extern clib_error get_raw_clib_object (struct cstl_object *inObject, void**elem);
-extern void  delete_clib_object  (struct cstl_object* inObject );
-extern void replace_raw_clib_object(struct cstl_object* current_object,void* elem, size_t elem_size);
+extern struct cstl_object* new_cstl_object (void* inObject, size_t obj_size);
+extern cstl_error get_raw_cstl_object (struct cstl_object *inObject, void**elem);
+extern void  delete_cstl_object  (struct cstl_object* inObject );
+extern void replace_raw_cstl_object(struct cstl_object* current_object,void* elem, size_t elem_size);
 
 #endif

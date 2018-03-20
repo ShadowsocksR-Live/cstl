@@ -1,5 +1,5 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
- *  This file is part of clib library
+ *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
  *
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -24,19 +24,19 @@
 #ifndef _C_MAP_H_
 #define _C_MAP_H_
 
-struct clib_map {
-    struct clib_rb* root;
+struct cstl_map {
+    struct cstl_rb* root;
 };
 
 
-extern struct clib_map* new_c_map    ( clib_compare fn_c_k, clib_destroy fn_k_d, clib_destroy fn_v_d);
-extern clib_error   insert_c_map ( struct clib_map* pMap, void* key, size_t key_size, void* value,  size_t value_size);
-extern clib_bool    exists_c_map ( struct clib_map* pMap, void* key);
-extern clib_error   remove_c_map ( struct clib_map* pMap, void* key);
-extern clib_bool    find_c_map   ( struct clib_map* pMap, void* key, void**value);
-extern clib_error   delete_c_map ( struct clib_map* pMap);
+extern struct cstl_map* new_c_map( cstl_compare fn_c_k, cstl_destroy fn_k_d, cstl_destroy fn_v_d);
+extern cstl_error   insert_c_map ( struct cstl_map* pMap, void* key, size_t key_size, void* value,  size_t value_size);
+extern cstl_bool    exists_c_map ( struct cstl_map* pMap, void* key);
+extern cstl_error   remove_c_map ( struct cstl_map* pMap, void* key);
+extern cstl_bool    find_c_map   ( struct cstl_map* pMap, void* key, void**value);
+extern cstl_error   delete_c_map ( struct cstl_map* pMap);
 
-extern struct cstl_iterator* new_iterator_c_map(struct clib_map* pMap);
+extern struct cstl_iterator* new_iterator_c_map(struct cstl_map* pMap);
 extern void delete_iterator_c_map ( struct cstl_iterator* pItr);
 
 
