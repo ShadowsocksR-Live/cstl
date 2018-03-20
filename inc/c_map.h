@@ -29,15 +29,15 @@ struct cstl_map {
 };
 
 
-extern struct cstl_map* new_c_map( cstl_compare fn_c_k, cstl_destroy fn_k_d, cstl_destroy fn_v_d);
-extern cstl_error   insert_c_map ( struct cstl_map* pMap, void* key, size_t key_size, void* value,  size_t value_size);
-extern cstl_bool    exists_c_map ( struct cstl_map* pMap, void* key);
-extern cstl_error   remove_c_map ( struct cstl_map* pMap, void* key);
-extern cstl_bool    find_c_map   ( struct cstl_map* pMap, void* key, void**value);
-extern cstl_error   delete_c_map ( struct cstl_map* pMap);
+extern struct cstl_map* new_cstl_map( cstl_compare fn_c_k, cstl_destroy fn_k_d, cstl_destroy fn_v_d);
+extern cstl_error   insert_cstl_map ( struct cstl_map* pMap, void* key, size_t key_size, void* value,  size_t value_size);
+extern cstl_bool    exists_cstl_map ( struct cstl_map* pMap, void* key);
+extern cstl_error   remove_cstl_map ( struct cstl_map* pMap, void* key);
+extern cstl_bool    find_cstl_map   ( struct cstl_map* pMap, void* key, void**value);
+extern cstl_error   delete_cstl_map ( struct cstl_map* pMap);
 
-extern struct cstl_iterator* new_iterator_c_map(struct cstl_map* pMap);
-extern void delete_iterator_c_map ( struct cstl_iterator* pItr);
+extern struct cstl_iterator* new_iterator_cstl_map(struct cstl_map* pMap);
+extern void delete_iterator_cstl_map ( struct cstl_iterator* pItr);
 
 
 #endif

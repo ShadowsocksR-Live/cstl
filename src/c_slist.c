@@ -24,7 +24,7 @@
 #include "c_lib.h"
 
 struct cstl_slist*
-new_c_slist(cstl_destroy fn_d, cstl_compare fn_c) {
+new_cstl_slist(cstl_destroy fn_d, cstl_compare fn_c) {
     struct cstl_slist* pSlist = (struct cstl_slist*)malloc(sizeof(struct cstl_slist));
     pSlist->head = (struct cstl_slist_node*)0;
     pSlist->destruct_fn = fn_d;
@@ -34,15 +34,15 @@ new_c_slist(cstl_destroy fn_d, cstl_compare fn_c) {
 }
 
 void
-delete_c_slist(struct cstl_slist* pSlist) {
+delete_cstl_slist(struct cstl_slist* pSlist) {
     while (pSlist->size != 0) {
-        remove_c_slist(pSlist, 0);
+        remove_cstl_slist(pSlist, 0);
     }
     free(pSlist);
 }
 
 cstl_error
-push_back_c_slist(struct cstl_slist* pSlist, void* elem, size_t elem_size) {
+push_back_cstl_slist(struct cstl_slist* pSlist, void* elem, size_t elem_size) {
 
     struct cstl_slist_node* current = (struct cstl_slist_node*)0;
     struct cstl_slist_node* new_node = (struct cstl_slist_node*)0;
@@ -83,7 +83,7 @@ __remove_c_list(struct cstl_slist* pSlist, struct cstl_slist_node* pSlistNode) {
 }
 
 void
-remove_c_slist(struct cstl_slist* pSlist, int pos) {
+remove_cstl_slist(struct cstl_slist* pSlist, int pos) {
     int i = 0;
 
     struct cstl_slist_node* current = pSlist->head;
@@ -108,7 +108,7 @@ remove_c_slist(struct cstl_slist* pSlist, int pos) {
 }
 
 cstl_error
-insert_c_slist(struct cstl_slist* pSlist, int pos, void* elem, size_t elem_size) {
+insert_cstl_slist(struct cstl_slist* pSlist, int pos, void* elem, size_t elem_size) {
     int i = 0;
     struct cstl_slist_node* current = pSlist->head;
     struct cstl_slist_node* new_node = (struct cstl_slist_node*)0;
@@ -127,7 +127,7 @@ insert_c_slist(struct cstl_slist* pSlist, int pos, void* elem, size_t elem_size)
     }
 
     if (pos >= pSlist->size + 1) {
-        return push_back_c_slist(pSlist, elem, elem_size);
+        return push_back_cstl_slist(pSlist, elem, elem_size);
     }
 
     for (i = 1; i < pos - 1; i++) {
@@ -148,7 +148,7 @@ insert_c_slist(struct cstl_slist* pSlist, int pos, void* elem, size_t elem_size)
 }
 
 void
-for_each_c_slist(struct cstl_slist* pSlist, void(*fn)(void*)) {
+for_each_cstl_slist(struct cstl_slist* pSlist, void(*fn)(void*)) {
     void* elem;
     struct cstl_slist_node* current = pSlist->head;
     while (current != (struct cstl_slist_node*)0) {
@@ -160,7 +160,7 @@ for_each_c_slist(struct cstl_slist* pSlist, void(*fn)(void*)) {
 }
 
 cstl_bool
-find_c_slist(struct cstl_slist* pSlist, void* find_value, void**out_value) {
+find_cstl_slist(struct cstl_slist* pSlist, void* find_value, void**out_value) {
     struct cstl_slist_node* current = pSlist->head;
     while (current != (struct cstl_slist_node*)0) {
         get_raw_cstl_object(current->elem, out_value);
@@ -214,7 +214,7 @@ replace_value_c_slist(struct cstl_iterator *pIterator, void* elem, size_t elem_s
 }
 
 struct cstl_iterator*
-new_iterator_c_slist(struct cstl_slist* pSlist) {
+new_iterator_cstl_slist(struct cstl_slist* pSlist) {
     struct cstl_iterator *itr = (struct cstl_iterator*) malloc(sizeof(struct cstl_iterator));
     itr->get_next = get_next_c_slist;
     itr->get_value = get_value_c_slist;
@@ -226,6 +226,6 @@ new_iterator_c_slist(struct cstl_slist* pSlist) {
 }
 
 void
-delete_iterator_c_slist(struct cstl_iterator* pItr) {
+delete_iterator_cstl_slist(struct cstl_iterator* pItr) {
     free(pItr);
 }

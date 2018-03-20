@@ -25,7 +25,7 @@
 #include <stdio.h>
 
 struct cstl_map*
-new_c_map(cstl_compare fn_c_k, cstl_destroy fn_k_d, cstl_destroy fn_v_d) {
+new_cstl_map(cstl_compare fn_c_k, cstl_destroy fn_k_d, cstl_destroy fn_v_d) {
     struct cstl_map* pMap = (struct cstl_map*)malloc(sizeof(struct cstl_map));
     if (pMap == (struct cstl_map*)0)
         return (struct cstl_map*)0;
@@ -38,7 +38,7 @@ new_c_map(cstl_compare fn_c_k, cstl_destroy fn_k_d, cstl_destroy fn_v_d) {
 }
 
 cstl_error
-insert_c_map(struct cstl_map* pMap, void* key, size_t key_size, void* value, size_t value_size) {
+insert_cstl_map(struct cstl_map* pMap, void* key, size_t key_size, void* value, size_t value_size) {
     if (pMap == (struct cstl_map*)0)
         return CSTL_MAP_NOT_INITIALIZED;
 
@@ -46,7 +46,7 @@ insert_c_map(struct cstl_map* pMap, void* key, size_t key_size, void* value, siz
 }
 
 cstl_bool
-exists_c_map(struct cstl_map* pMap, void* key) {
+exists_cstl_map(struct cstl_map* pMap, void* key) {
     cstl_bool found = cstl_false;
     struct cstl_rb_node* node;
 
@@ -61,7 +61,7 @@ exists_c_map(struct cstl_map* pMap, void* key) {
 }
 
 cstl_error
-remove_c_map(struct cstl_map* pMap, void* key) {
+remove_cstl_map(struct cstl_map* pMap, void* key) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     struct cstl_rb_node* node;
     if (pMap == (struct cstl_map*)0)
@@ -92,7 +92,7 @@ remove_c_map(struct cstl_map* pMap, void* key) {
 }
 
 cstl_bool
-find_c_map(struct cstl_map* pMap, void* key, void**value) {
+find_cstl_map(struct cstl_map* pMap, void* key, void**value) {
     struct cstl_rb_node* node;
 
     if (pMap == (struct cstl_map*)0)
@@ -108,7 +108,7 @@ find_c_map(struct cstl_map* pMap, void* key, void**value) {
 }
 
 cstl_error
-delete_c_map(struct cstl_map* x) {
+delete_cstl_map(struct cstl_map* x) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     if (x != (struct cstl_map*)0) {
         rc = delete_cstl_rb(x->root);
@@ -158,7 +158,7 @@ replace_value_c_map(struct cstl_iterator *pIterator, void* elem, size_t elem_siz
 }
 
 struct cstl_iterator*
-    new_iterator_c_map(struct cstl_map* pMap) {
+new_iterator_cstl_map(struct cstl_map* pMap) {
     struct cstl_iterator *itr = (struct cstl_iterator*) malloc(sizeof(struct cstl_iterator));
     itr->get_next = get_next_c_map;
     itr->get_value = get_value_c_map;
@@ -170,6 +170,6 @@ struct cstl_iterator*
 }
 
 void
-delete_iterator_c_map(struct cstl_iterator* pItr) {
+delete_iterator_cstl_map(struct cstl_iterator* pItr) {
     free(pItr);
 }

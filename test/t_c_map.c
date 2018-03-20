@@ -1,7 +1,7 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
  *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
- *
+ * 
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
@@ -27,134 +27,137 @@
 #include <stdio.h>
 
 static int
-compare_e ( void* left, void* right ) {
-    return strcmp ( (const char *)left, (const char *) right );
+compare_e(void* left, void* right) {
+    return strcmp((const char *)left, (const char *)right);
 }
-char *char_value[] = {  "A","B","C","D","E","F","G","H","I","J","K","L","M",
-                        "N","O","P","Q","R","S","T","U","V","W","X","Y","Z"};
-int int_value[] = { 1,2,3,4,5,6,7,8,9,10,
-                      11,12,13,14,15,16,17,18,19,20,
-                      21,22,23,24,25,26};
 
-static void 
-insert_all ( struct cstl_map* myMap) {
-    int size = sizeof(char_value)/sizeof(char_value[0]);
+char *char_value[] = { "A","B","C","D","E","F","G","H","I","J","K","L","M",
+                       "N","O","P","Q","R","S","T","U","V","W","X","Y","Z" };
+int int_value[] = {  1, 2, 3, 4, 5, 6, 7, 8, 9,10,
+                    11,12,13,14,15,16,17,18,19,20,
+                    21,22,23,24,25,26 };
+
+static void
+insert_all(struct cstl_map* myMap) {
+    int size = sizeof(char_value) / sizeof(char_value[0]);
     int i = 0;
-    for ( i = 0; i < size; i++ ) {
-        char *key = cstl_strdup( char_value[i]);
-        int key_length = (int)strlen ( key ) + 1;
+    for (i = 0; i < size; i++) {
+        char *key = cstl_strdup(char_value[i]);
+        int key_length = (int)strlen(key) + 1;
         int value = int_value[i];
-		printf ( "Inserting [%s -> %d]\n", key, value );
-        insert_c_map ( myMap, key, key_length, &value, sizeof(int)); 
-        free ( key );
+        printf("Inserting [%s -> %d]\n", key, value);
+        insert_cstl_map(myMap, key, key_length, &value, sizeof(int));
+        free(key);
     }
 }
-static void 
-check_exists_all( struct cstl_map* myMap) {
-    int size = sizeof(char_value)/sizeof(char_value[0]);
+
+static void
+check_exists_all(struct cstl_map* myMap) {
+    int size = sizeof(char_value) / sizeof(char_value[0]);
     int i = 0;
-    for ( i = 0; i < size; i++ ) {
-        void* value ;
-        assert ( cstl_true == exists_c_map ( myMap, char_value[i]));
-        assert ( cstl_true == find_c_map( myMap, char_value[i], &value));
-		printf ( "-----> [%s == %d]\n", char_value[i], *(int*)value);
-        assert ( *(int*)value == int_value[i]);
-        free ( value );
+    for (i = 0; i < size; i++) {
+        void* value;
+        assert(cstl_true == exists_cstl_map(myMap, char_value[i]));
+        assert(cstl_true == find_cstl_map(myMap, char_value[i], &value));
+        printf("-----> [%s == %d]\n", char_value[i], *(int*)value);
+        assert(*(int*)value == int_value[i]);
+        free(value);
     }
 }
 
-static void 
+static void
 remove_some_exist(struct cstl_map* myMap) {
-    assert ( CSTL_ERROR_SUCCESS == remove_c_map ( myMap, "A"));
-    assert ( cstl_false == exists_c_map ( myMap, "A"));
+    assert(CSTL_ERROR_SUCCESS == remove_cstl_map(myMap, "A"));
+    assert(cstl_false == exists_cstl_map(myMap, "A"));
 
-    assert ( CSTL_ERROR_SUCCESS == remove_c_map ( myMap, "X"));
-    assert ( cstl_false == exists_c_map ( myMap, "X"));
+    assert(CSTL_ERROR_SUCCESS == remove_cstl_map(myMap, "X"));
+    assert(cstl_false == exists_cstl_map(myMap, "X"));
 
-    assert ( CSTL_ERROR_SUCCESS == remove_c_map ( myMap, "Z"));
-    assert ( cstl_false == exists_c_map ( myMap, "Z"));
+    assert(CSTL_ERROR_SUCCESS == remove_cstl_map(myMap, "Z"));
+    assert(cstl_false == exists_cstl_map(myMap, "Z"));
 
-    assert ( CSTL_ERROR_SUCCESS == remove_c_map ( myMap, "H"));
-    assert ( cstl_false == exists_c_map ( myMap, "H"));
+    assert(CSTL_ERROR_SUCCESS == remove_cstl_map(myMap, "H"));
+    assert(cstl_false == exists_cstl_map(myMap, "H"));
 }
+
 static void
 add_removed_check_all(struct cstl_map* myMap) {
 
-    char *key       = cstl_strdup ("A");
-    int  key_length = (int)strlen ( key ) + 1;
-    insert_c_map ( myMap, key, key_length , &int_value[0], sizeof(int)); 
-    free ( key );
+    char *key = cstl_strdup("A");
+    int  key_length = (int)strlen(key) + 1;
+    insert_cstl_map(myMap, key, key_length, &int_value[0], sizeof(int));
+    free(key);
 
-    key        = cstl_strdup ("X");
-    key_length = (int)strlen ( key ) + 1;
-    insert_c_map ( myMap, key, key_length, &int_value[23], sizeof(int)); 
-    free ( key );
+    key = cstl_strdup("X");
+    key_length = (int)strlen(key) + 1;
+    insert_cstl_map(myMap, key, key_length, &int_value[23], sizeof(int));
+    free(key);
 
-    key        = cstl_strdup ("Z");
-    key_length = (int)strlen ( key ) + 1;
-    insert_c_map ( myMap, key, key_length, &int_value[25], sizeof(int)); 
-    free ( key );
+    key = cstl_strdup("Z");
+    key_length = (int)strlen(key) + 1;
+    insert_cstl_map(myMap, key, key_length, &int_value[25], sizeof(int));
+    free(key);
 
-    key        = cstl_strdup ("H");
-    key_length = (int)strlen ( key ) + 1;
-    insert_c_map ( myMap, key, key_length, &int_value[7 ], sizeof(int)); 
-    free ( key );
+    key = cstl_strdup("H");
+    key_length = (int)strlen(key) + 1;
+    insert_cstl_map(myMap, key, key_length, &int_value[7], sizeof(int));
+    free(key);
 
     check_exists_all(myMap);
 }
+
 static void
-print_using_iterator( struct cstl_map *myMap) {
-	struct cstl_iterator *myItr;
-	struct cstl_object *pElement;
-	printf ( "------------------------------------------------\n");
-	myItr     = new_iterator_c_map (myMap);
-	pElement  = myItr->get_next(myItr);
-	while ( pElement ) {
-		void* value = myItr->get_value(pElement);
-		printf ( "%d\n", *(int*)value);
-		free ( value );
-		pElement = myItr->get_next(myItr);
-	}
-	delete_iterator_c_map( myItr );
+print_using_iterator(struct cstl_map *myMap) {
+    struct cstl_iterator *myItr;
+    struct cstl_object *pElement;
+    printf("------------------------------------------------\n");
+    myItr = new_iterator_cstl_map(myMap);
+    pElement = myItr->get_next(myItr);
+    while (pElement) {
+        void* value = myItr->get_value(pElement);
+        printf("%d\n", *(int*)value);
+        free(value);
+        pElement = myItr->get_next(myItr);
+    }
+    delete_iterator_cstl_map(myItr);
 }
 
-static void 
+static void
 replace_values_using_iterators(struct cstl_map* myMap) {
-	struct cstl_iterator *myItr;
-	struct cstl_object *pElement;
-	printf ( "------------------------------------------------\n");
-	myItr     = new_iterator_c_map (myMap);
-	pElement  = myItr->get_next(myItr);
-	while ( pElement ) {
-		void* old_value = myItr->get_value(pElement);
-		int new_value = *(int*)old_value;
-		new_value = new_value * 2;
-		myItr->replace_value( myItr, &new_value, sizeof(new_value));
-		free ( old_value );
+    struct cstl_iterator *myItr;
+    struct cstl_object *pElement;
+    printf("------------------------------------------------\n");
+    myItr = new_iterator_cstl_map(myMap);
+    pElement = myItr->get_next(myItr);
+    while (pElement) {
+        void* old_value = myItr->get_value(pElement);
+        int new_value = *(int*)old_value;
+        new_value = new_value * 2;
+        myItr->replace_value(myItr, &new_value, sizeof(new_value));
+        free(old_value);
 
-		pElement = myItr->get_next(myItr);
-	}
-	delete_iterator_c_map( myItr );
+        pElement = myItr->get_next(myItr);
+    }
+    delete_iterator_cstl_map(myItr);
 }
 
 static void
 test_with_iterators() {
-	struct cstl_map* myMap = new_c_map ( compare_e, NULL, NULL);
-	insert_all(myMap);
-	print_using_iterator(myMap);
-	replace_values_using_iterators(myMap);
-	print_using_iterator(myMap);
-	delete_c_map(myMap);
+    struct cstl_map* myMap = new_cstl_map(compare_e, NULL, NULL);
+    insert_all(myMap);
+    print_using_iterator(myMap);
+    replace_values_using_iterators(myMap);
+    print_using_iterator(myMap);
+    delete_cstl_map(myMap);
 }
 
-
-void 
+void
 test_c_map() {
-    struct cstl_map* myMap = new_c_map ( compare_e, NULL, NULL);
+    struct cstl_map* myMap = new_cstl_map(compare_e, NULL, NULL);
     insert_all(myMap);
-    check_exists_all(myMap);   
+    check_exists_all(myMap);
     remove_some_exist(myMap);
     add_removed_check_all(myMap);
-    delete_c_map(myMap);
-	test_with_iterators();
+    delete_cstl_map(myMap);
+    test_with_iterators();
 }

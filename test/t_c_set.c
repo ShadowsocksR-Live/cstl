@@ -1,7 +1,7 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
  *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
- *
+ * 
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
@@ -28,8 +28,8 @@
 #include <stdio.h>
 #include <assert.h>
 
-static void 
-delete_e ( void* ptr ) {
+static void
+delete_e(void* ptr) {
     if (ptr) {
         char *str = *((char **)ptr);
         if (str) {
@@ -38,78 +38,78 @@ delete_e ( void* ptr ) {
     }
 }
 static int
-compare_e ( void* left, void* right ) {
+compare_e(void* left, void* right) {
     char *l = *((char**)left);
     char *r = *((char**)right);
-    return strcmp ( (const char *)l, (const char *) r );
+    return strcmp((const char *)l, (const char *)r);
 }
-static int 
-compare_int ( void* left, void* right ) {
+static int
+compare_int(void* left, void* right) {
     int *l = (int*)left;
     int *r = (int*)right;
 
-    if ( *l < *r ) 
+    if (*l < *r)
         return -1;
-    else if ( *l > *r ) 
+    else if (*l > *r)
         return 1;
     return 0;
 }
 
 static void
 test_with_iterators() {
-	int test[] = {13,8,17,1,11,15,25,6,22,27};
-	int	index  = 0;
-	int size   = sizeof (test) /sizeof(test[0]);
-	struct cstl_iterator *myItr;
-	struct cstl_object *pElement;
+    int test[] = { 13,8,17,1,11,15,25,6,22,27 };
+    int	index = 0;
+    int size = sizeof(test) / sizeof(test[0]);
+    struct cstl_iterator *myItr;
+    struct cstl_object *pElement;
 
-	struct cstl_set* pSet = new_c_set ( compare_int, NULL);
+    struct cstl_set* pSet = new_cstl_set(compare_int, NULL);
 
-	for ( index = 0; index < size; index++ ) {
-		int v = test[index];
-		insert_c_set ( pSet, &v, sizeof(int));
-	}
-	for ( index = 0; index < size; index++ ) {
-		int v = test[index];
-		assert ( cstl_true == exists_c_set ( pSet, &v));
-	}
-	printf ( "------------------------------------------------\n");
-	myItr     = new_iterator_c_set (pSet);
-	pElement  = myItr->get_next(myItr);
-	while ( pElement ) {
-		void* value = myItr->get_value(pElement);
-		printf ( "%d\n", *(int*)value);
-		free ( value );
-		pElement = myItr->get_next(myItr);
-	}
-	delete_iterator_c_set( myItr );
-	delete_c_set( pSet);
+    for (index = 0; index < size; index++) {
+        int v = test[index];
+        insert_cstl_set(pSet, &v, sizeof(int));
+    }
+    for (index = 0; index < size; index++) {
+        int v = test[index];
+        assert(cstl_true == exists_cstl_set(pSet, &v));
+    }
+    printf("------------------------------------------------\n");
+    myItr = new_iterator_cstl_set(pSet);
+    pElement = myItr->get_next(myItr);
+    while (pElement) {
+        void* value = myItr->get_value(pElement);
+        printf("%d\n", *(int*)value);
+        free(value);
+        pElement = myItr->get_next(myItr);
+    }
+    delete_iterator_cstl_set(myItr);
+    delete_cstl_set(pSet);
 }
 
-void 
-test_c_set(){
+void
+test_c_set() {
     {
         int test[] = { 0,1,2,3,4,5,6,7,8,9 };
-        int index  = 0;
-        int size   = sizeof (test) /sizeof(test[0]);
+        int index = 0;
+        int size = sizeof(test) / sizeof(test[0]);
         void* outKey;
 
-        struct cstl_set* pSet = new_c_set ( compare_int, NULL);
+        struct cstl_set* pSet = new_cstl_set(compare_int, NULL);
 
-        for ( index = 0; index < size; index++ ) {
+        for (index = 0; index < size; index++) {
             int v = test[index];
-            insert_c_set ( pSet, &v, sizeof(int));
+            insert_cstl_set(pSet, &v, sizeof(int));
         }
-        for ( index = 0; index < size; index++ ) {
+        for (index = 0; index < size; index++) {
             int v = test[index];
-            assert ( cstl_true == exists_c_set ( pSet, &v));
+            assert(cstl_true == exists_cstl_set(pSet, &v));
         }
 
         index = 9;
-        find_c_set ( pSet, &index, &outKey);
-        assert ( 9 == *(int*)outKey);
-        free ( outKey );
-        delete_c_set(pSet);
+        find_cstl_set(pSet, &index, &outKey);
+        assert(9 == *(int*)outKey);
+        free(outKey);
+        delete_cstl_set(pSet);
     }
     {
         typedef struct test {
@@ -120,41 +120,41 @@ test_c_set(){
         int size = 0;
         char *v;
 
-        TEST_INPUT ti[] ={
-            {"A for APPLE"},{"B for BALL"},{"C for CAT"}, {"D for DOG"},
-            {"E for ELEPHANT"},{"F for FISH"},{"G for GOAT"},
-            {"H for HORSE"},{"I for ICECREAM"},{"J for JOKER"},
-            {"K for KITE"},{"L for LAMB"},{"M for MONKEY"},
-            {"N for NEST"},{"O for ORANGE"},{"P for POT"},
-            {"Q for QUEEN"},{"R for RAT"},{"S for SHEEP"},
-            {"T for TABLE"},{"U for UMBRELLA"},{"V for VIOLIN"},{"W for WAX"},
-            {"X for XEROX"},{"Y for YUMMY"},{"Z for ZEBRA"}
+        TEST_INPUT ti[] = {
+            { "A for APPLE" },{ "B for BALL" },{ "C for CAT" },{ "D for DOG" },
+            { "E for ELEPHANT" },{ "F for FISH" },{ "G for GOAT" },
+            { "H for HORSE" },{ "I for ICECREAM" },{ "J for JOKER" },
+            { "K for KITE" },{ "L for LAMB" },{ "M for MONKEY" },
+            { "N for NEST" },{ "O for ORANGE" },{ "P for POT" },
+            { "Q for QUEEN" },{ "R for RAT" },{ "S for SHEEP" },
+            { "T for TABLE" },{ "U for UMBRELLA" },{ "V for VIOLIN" },{ "W for WAX" },
+            { "X for XEROX" },{ "Y for YUMMY" },{ "Z for ZEBRA" }
         };
-        struct cstl_set* pSet = new_c_set ( compare_e, delete_e);
-        size = sizeof ( ti ) / sizeof ( ti[0]);
-        
+        struct cstl_set* pSet = new_cstl_set(compare_e, delete_e);
+        size = sizeof(ti) / sizeof(ti[0]);
+
         //*
-        for ( index = 0; index < size; index++ ){
-            char *temp = cstl_strdup ( ti[index].string );
-            insert_c_set ( pSet, &temp, sizeof(char *) );
+        for (index = 0; index < size; index++) {
+            char *temp = cstl_strdup(ti[index].string);
+            insert_cstl_set(pSet, &temp, sizeof(char *));
         }
-        for ( index = 0; index < size; index++ ){
+        for (index = 0; index < size; index++) {
             v = ti[index].string;
-            assert ( cstl_true == exists_c_set ( pSet, &v));
-           // remove_c_set(pSet, &v);
+            assert(cstl_true == exists_cstl_set(pSet, &v));
+            // remove_cstl_set(pSet, &v);
         }
         // */
 
         struct cstl_object *pElement;
-        struct cstl_iterator *myItr = new_iterator_c_set(pSet);
+        struct cstl_iterator *myItr = new_iterator_cstl_set(pSet);
         while ((pElement = myItr->get_next(myItr))) {
             void* value = myItr->get_value(pElement);
             printf("%s\n", *((char **)value));
             free(value);
         }
-        delete_iterator_c_set(myItr);
+        delete_iterator_cstl_set(myItr);
 
-        delete_c_set(pSet);
+        delete_cstl_set(pSet);
     }
-	test_with_iterators();
+    test_with_iterators();
 }

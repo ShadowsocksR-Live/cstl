@@ -32,20 +32,20 @@ struct cstl_array {
     cstl_destroy destruct_fn; /* Destructor function pointer*/
 };
 
-extern struct cstl_array* new_c_array ( int init_size, cstl_compare fn_c, cstl_destroy fn_d);
-extern cstl_error push_back_c_array ( struct cstl_array* pArray, void* elem, size_t elem_size);
-extern cstl_error element_at_c_array( struct cstl_array* pArray, int pos, void**e);
-extern cstl_error insert_at_c_array ( struct cstl_array* pArray, int index, void* elem, size_t elem_size);
-extern int size_c_array( struct cstl_array* pArray);
-extern int capacity_c_array( struct cstl_array* pArray );
-extern cstl_bool  empty_c_array( struct cstl_array* pArray);
-extern cstl_error reserve_c_array( struct cstl_array* pArray, int pos);
-extern cstl_error front_c_array( struct cstl_array* pArray,void* elem);
-extern cstl_error back_c_array( struct cstl_array* pArray,void* elem);
-extern cstl_error remove_from_c_array ( struct cstl_array*, int pos);
-extern cstl_error delete_c_array( struct cstl_array* pArray);
+extern struct cstl_array* new_cstl_array ( int init_size, cstl_compare fn_c, cstl_destroy fn_d);
+extern cstl_error push_back_cstl_array ( struct cstl_array* pArray, void* elem, size_t elem_size);
+extern cstl_error element_at_cstl_array( struct cstl_array* pArray, int pos, void**e);
+extern cstl_error insert_at_cstl_array ( struct cstl_array* pArray, int index, void* elem, size_t elem_size);
+extern int size_cstl_array( struct cstl_array* pArray);
+extern int capacity_cstl_array( struct cstl_array* pArray );
+extern cstl_bool  empty_cstl_array( struct cstl_array* pArray);
+extern cstl_error reserve_cstl_array( struct cstl_array* pArray, int pos);
+extern cstl_error front_cstl_array( struct cstl_array* pArray,void* elem);
+extern cstl_error back_cstl_array( struct cstl_array* pArray,void* elem);
+extern cstl_error remove_from_cstl_array ( struct cstl_array*, int pos);
+extern cstl_error delete_cstl_array( struct cstl_array* pArray);
 
-extern struct cstl_iterator* new_iterator_c_array(struct cstl_array* pArray);
-extern void delete_iterator_c_array ( struct cstl_iterator* pItr);
+extern struct cstl_iterator* new_iterator_cstl_array(struct cstl_array* pArray);
+extern void delete_iterator_cstl_array ( struct cstl_iterator* pItr);
 
 #endif

@@ -38,17 +38,17 @@ struct cstl_slist {
 };
 
 
-extern struct cstl_slist* new_c_slist(cstl_destroy fn_d, cstl_compare fn_c);
-extern void           delete_c_slist   (struct cstl_slist* pSlist);
-extern cstl_error     insert_c_slist   (struct cstl_slist* pSlist, int pos, void* elem, size_t elem_size);
-extern cstl_error     push_back_c_slist(struct cstl_slist* pSlist, void* elem, size_t elem_size);
-extern void           remove_c_slist   (struct cstl_slist* pSlist, int pos);
-extern void           for_each_c_slist (struct cstl_slist* pSlist, void (*fn)(void* ));
-extern cstl_bool      find_c_slist     (struct cstl_slist* pSlist, void* find_value, void**out_value);
+extern struct cstl_slist * new_cstl_slist (cstl_destroy fn_d, cstl_compare fn_c);
+extern void           delete_cstl_slist   (struct cstl_slist* pSlist);
+extern cstl_error     insert_cstl_slist   (struct cstl_slist* pSlist, int pos, void* elem, size_t elem_size);
+extern cstl_error     push_back_cstl_slist(struct cstl_slist* pSlist, void* elem, size_t elem_size);
+extern void           remove_cstl_slist   (struct cstl_slist* pSlist, int pos);
+extern void           for_each_cstl_slist (struct cstl_slist* pSlist, void (*fn)(void* ));
+extern cstl_bool      find_cstl_slist     (struct cstl_slist* pSlist, void* find_value, void**out_value);
 
 
-extern struct cstl_iterator* new_iterator_c_slist(struct cstl_slist* pSlit);
-extern void delete_iterator_c_slist ( struct cstl_iterator* pItr);
+extern struct cstl_iterator* new_iterator_cstl_slist(struct cstl_slist* pSlit);
+extern void delete_iterator_cstl_slist ( struct cstl_iterator* pItr);
 
 
 #endif

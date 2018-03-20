@@ -25,7 +25,7 @@
 #include <stdio.h>
 
 struct cstl_set*
-new_c_set(cstl_compare fn_c, cstl_destroy fn_d) {
+new_cstl_set(cstl_compare fn_c, cstl_destroy fn_d) {
     struct cstl_set* pSet = (struct cstl_set*)malloc(sizeof(struct cstl_set));
     if (pSet == (struct cstl_set*)0)
         return (struct cstl_set*)0;
@@ -38,7 +38,7 @@ new_c_set(cstl_compare fn_c, cstl_destroy fn_d) {
 }
 
 cstl_error
-insert_c_set(struct cstl_set* pSet, void* key, size_t key_size) {
+insert_cstl_set(struct cstl_set* pSet, void* key, size_t key_size) {
     if (pSet == (struct cstl_set*)0)
         return CSTL_SET_NOT_INITIALIZED;
 
@@ -46,7 +46,7 @@ insert_c_set(struct cstl_set* pSet, void* key, size_t key_size) {
 }
 
 cstl_bool
-exists_c_set(struct cstl_set* pSet, void* key) {
+exists_cstl_set(struct cstl_set* pSet, void* key) {
     cstl_bool found = cstl_false;
     struct cstl_rb_node* node;
 
@@ -61,7 +61,7 @@ exists_c_set(struct cstl_set* pSet, void* key) {
 }
 
 cstl_error
-remove_c_set(struct cstl_set* pSet, void* key) {
+remove_cstl_set(struct cstl_set* pSet, void* key) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     struct cstl_rb_node* node;
     if (pSet == (struct cstl_set*)0)
@@ -84,7 +84,7 @@ remove_c_set(struct cstl_set* pSet, void* key) {
 }
 
 cstl_bool
-find_c_set(struct cstl_set* pSet, void* key, void* outKey) {
+find_cstl_set(struct cstl_set* pSet, void* key, void* outKey) {
     struct cstl_rb_node* node;
 
     if (pSet == (struct cstl_set*)0)
@@ -100,7 +100,7 @@ find_c_set(struct cstl_set* pSet, void* key, void* outKey) {
 }
 
 cstl_error
-delete_c_set(struct cstl_set* x) {
+delete_cstl_set(struct cstl_set* x) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     if (x != (struct cstl_set*)0) {
         rc = delete_cstl_rb(x->root);
@@ -136,7 +136,7 @@ get_value_c_set(void* pObject) {
 }
 
 struct cstl_iterator*
-    new_iterator_c_set(struct cstl_set* pSet) {
+new_iterator_cstl_set(struct cstl_set* pSet) {
     struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
     itr->get_next = get_next_c_set;
     itr->get_value = get_value_c_set;
@@ -147,6 +147,6 @@ struct cstl_iterator*
 }
 
 void
-delete_iterator_c_set(struct cstl_iterator* pItr) {
+delete_iterator_cstl_set(struct cstl_iterator* pItr) {
     free(pItr);
 }
