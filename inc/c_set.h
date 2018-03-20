@@ -28,14 +28,14 @@ struct cstl_set {
     struct cstl_rb* root;
 };
 
-extern struct cstl_set* new_cstl_set( cstl_compare fn_c, cstl_destroy fn_d);
-extern cstl_error   insert_cstl_set ( struct cstl_set* pSet, void* key, size_t key_size);
-extern cstl_bool    exists_cstl_set ( struct cstl_set* pSet, void* key);
-extern cstl_error   remove_cstl_set ( struct cstl_set* pSet, void* key);
-extern cstl_bool    find_cstl_set   ( struct cstl_set* pSet, void* key, void* outKey);
-extern cstl_error   delete_cstl_set ( struct cstl_set* pSet);
+extern struct cstl_set* cstl_set_new( cstl_compare fn_c, cstl_destroy fn_d);
+extern cstl_error   cstl_set_insert ( struct cstl_set* pSet, void* key, size_t key_size);
+extern cstl_bool    cstl_set_exists ( struct cstl_set* pSet, void* key);
+extern cstl_error   cstl_set_remove ( struct cstl_set* pSet, void* key);
+extern cstl_bool    cstl_set_find   ( struct cstl_set* pSet, void* key, void* outKey);
+extern cstl_error   cstl_set_delete ( struct cstl_set* pSet);
 
-extern struct cstl_iterator* new_iterator_cstl_set(struct cstl_set* pSet);
-extern void delete_iterator_cstl_set ( struct cstl_iterator* pItr);
+extern struct cstl_iterator* cstl_set_new_iterator(struct cstl_set* pSet);
+extern void cstl_set_delete_iterator ( struct cstl_iterator* pItr);
 
 #endif

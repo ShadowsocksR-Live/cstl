@@ -57,16 +57,16 @@ create_c_array() {
     void* p_rv = (void*)0;
     int rv = 0;
 
-    struct cstl_array* myArray = new_cstl_array(8, compare_integers, NULL);
-    assert(cstl_true == empty_cstl_array(myArray));
+    struct cstl_array* myArray = cstl_array_new(8, compare_integers, NULL);
+    assert(cstl_true == cstl_array_empty(myArray));
 
     for (i = 0; i <= size; i++) {
-        push_back_cstl_array(myArray, &i, sizeof(int));
+        cstl_array_push_back(myArray, &i, sizeof(int));
     }
-    assert(cstl_false == empty_cstl_array(myArray));
-    assert(size == size_cstl_array(myArray));
+    assert(cstl_false == cstl_array_empty(myArray));
+    assert(size == cstl_array_size(myArray));
     for (i = 0; i <= size; i++) {
-        rc = element_at_cstl_array(myArray, i, &p_rv);
+        rc = cstl_array_element_at(myArray, i, &p_rv);
         rv = *(int*)p_rv;
         assert(rv == i);
         free(p_rv);
@@ -79,15 +79,15 @@ create_deque() {
     int flip = 1;
     int i = 0;
     int limit = 20;
-    struct cstl_deque* myDeq = new_cstl_deque(10, compare_integers, NULL);
+    struct cstl_deque* myDeq = cstl_deque_new(10, compare_integers, NULL);
     assert((struct cstl_deque*)0 != myDeq);
 
     for (i = 0; i <= limit; i++) {
         if (flip) {
-            push_back_cstl_deque(myDeq, &i, sizeof(int));
+            cstl_deque_push_back(myDeq, &i, sizeof(int));
             flip = 0;
         } else {
-            push_front_cstl_deque(myDeq, &i, sizeof(int));
+            cstl_deque_push_front(myDeq, &i, sizeof(int));
             flip = 1;
         }
     }
@@ -98,11 +98,11 @@ create_set() {
     int test[] = { 13,8,17,1,11,15,25,6,22,27 };
     int	index = 0;
     int size = sizeof(test) / sizeof(test[0]);
-    struct cstl_set* pSet = new_cstl_set(compare_integers, NULL);
+    struct cstl_set* pSet = cstl_set_new(compare_integers, NULL);
 
     for (index = 0; index < size; index++) {
         int v = test[index];
-        insert_cstl_set(pSet, &v, sizeof(int));
+        cstl_set_insert(pSet, &v, sizeof(int));
     }
     return pSet;
 }
@@ -116,24 +116,24 @@ create_map() {
                        21,22,23,24,25,26 };
     int size = sizeof(char_value) / sizeof(char_value[0]);
     int i = 0;
-    struct cstl_map *pMap = new_cstl_map(compare_strings, NULL, NULL);
+    struct cstl_map *pMap = cstl_map_new(compare_strings, NULL, NULL);
     for (i = 0; i < size; i++) {
         char *key = cstl_strdup(char_value[i]);
         int key_length = (int)strlen(key) + 1;
         int value = int_value[i];
-        insert_cstl_map(pMap, key, key_length, &value, sizeof(int));
+        cstl_map_insert(pMap, key, key_length, &value, sizeof(int));
         free(key);
     }
     return pMap;
 }
 static struct cstl_slist*
 create_slist() {
-    struct cstl_slist* pList = new_cstl_slist(free_element, compare_integers_ptr);
+    struct cstl_slist* pList = cstl_slist_new(free_element, compare_integers_ptr);
     int i = 0;
     for (i = 0; i <= 10; i++) {
         int *v = (int *)calloc(1, sizeof(int));
         *v = i; // memcpy ( v, &i, sizeof ( int ));
-        push_back_cstl_slist(pList, &v, sizeof(int *));
+        cstl_slist_push_back(pList, &v, sizeof(int *));
     }
     return pList;
 }
@@ -153,38 +153,38 @@ t_cstl_for_each(void) {
 
     printf("Performing for_each for array\n");
     pArray = create_c_array();
-    pArrayIterator = new_iterator_cstl_array(pArray);
+    pArrayIterator = cstl_array_new_iterator(pArray);
     cstl_for_each(pArrayIterator, print_integers);
-    delete_cstl_array(pArray);
-    delete_iterator_cstl_array(pArrayIterator);
+    cstl_array_delete(pArray);
+    cstl_array_delete_iterator(pArrayIterator);
 
     printf("Performing for_each for deque\n");
     pDeq = create_deque();
-    pDequeIterator = new_iterator_cstl_deque(pDeq);
+    pDequeIterator = cstl_deque_new_iterator(pDeq);
     cstl_for_each(pDequeIterator, print_integers);
-    delete_cstl_deque(pDeq);
-    delete_iterator_cstl_deque(pDequeIterator);
+    cstl_deque_delete(pDeq);
+    cstl_deque_delete_iterator(pDequeIterator);
 
     printf("Performing for_each for set\n");
     pSet = create_set();
-    pSetIterator = new_iterator_cstl_set(pSet);
+    pSetIterator = cstl_set_new_iterator(pSet);
     cstl_for_each(pSetIterator, print_integers);
-    delete_cstl_set(pSet);
-    delete_iterator_cstl_set(pSetIterator);
+    cstl_set_delete(pSet);
+    cstl_set_delete_iterator(pSetIterator);
 
     printf("Performing for_each for map\n");
     pMap = create_map();
-    pMapIterator = new_iterator_cstl_map(pMap);
+    pMapIterator = cstl_map_new_iterator(pMap);
     cstl_for_each(pMapIterator, print_integers);
-    delete_cstl_map(pMap);
-    delete_iterator_cstl_map(pMapIterator);
+    cstl_map_delete(pMap);
+    cstl_map_delete_iterator(pMapIterator);
 
     printf("Performing for_each for slist\n");
     pSlist = create_slist();
-    pSlistIterator = new_iterator_cstl_slist(pSlist);
+    pSlistIterator = cstl_slist_new_iterator(pSlist);
     cstl_for_each(pSlistIterator, print_integers_ptr);
-    delete_cstl_slist(pSlist);
-    delete_iterator_cstl_slist(pSlistIterator);
+    cstl_slist_delete(pSlist);
+    cstl_slist_delete_iterator(pSlistIterator);
 }
 
 void

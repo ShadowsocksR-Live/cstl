@@ -25,12 +25,12 @@
 #include <stdio.h>
 
 struct cstl_set*
-new_cstl_set(cstl_compare fn_c, cstl_destroy fn_d) {
+cstl_set_new(cstl_compare fn_c, cstl_destroy fn_d) {
     struct cstl_set* pSet = (struct cstl_set*)calloc(1, sizeof(struct cstl_set));
     if (pSet == (struct cstl_set*)0) {
         return (struct cstl_set*)0;
     }
-    pSet->root = new_cstl_rb(fn_c, fn_d, (void*)0);
+    pSet->root = cstl_rb_new(fn_c, fn_d, (void*)0);
     if (pSet->root == (struct cstl_rb*)0) {
         return (struct cstl_set*)0;
     }
@@ -38,22 +38,22 @@ new_cstl_set(cstl_compare fn_c, cstl_destroy fn_d) {
 }
 
 cstl_error
-insert_cstl_set(struct cstl_set* pSet, void* key, size_t key_size) {
+cstl_set_insert(struct cstl_set* pSet, void* key, size_t key_size) {
     if (pSet == (struct cstl_set*)0) {
         return CSTL_SET_NOT_INITIALIZED;
     }
-    return insert_cstl_rb(pSet->root, key, key_size, (void*)0, 0);
+    return cstl_rb_insert(pSet->root, key, key_size, (void*)0, 0);
 }
 
 cstl_bool
-exists_cstl_set(struct cstl_set* pSet, void* key) {
+cstl_set_exists(struct cstl_set* pSet, void* key) {
     cstl_bool found = cstl_false;
     struct cstl_rb_node* node;
 
     if (pSet == (struct cstl_set*)0) {
         return cstl_false;
     }
-    node = find_cstl_rb(pSet->root, key);
+    node = cstl_rb_find(pSet->root, key);
     if (node != (struct cstl_rb_node*)0) {
         return cstl_true;
     }
@@ -61,22 +61,22 @@ exists_cstl_set(struct cstl_set* pSet, void* key) {
 }
 
 cstl_error
-remove_cstl_set(struct cstl_set* pSet, void* key) {
+cstl_set_remove(struct cstl_set* pSet, void* key) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     struct cstl_rb_node* node;
     if (pSet == (struct cstl_set*)0) {
         return CSTL_SET_NOT_INITIALIZED;
     }
-    node = remove_cstl_rb(pSet->root, key);
+    node = cstl_rb_remove(pSet->root, key);
     if (node != (struct cstl_rb_node*)0) {
         if (pSet->root->destruct_k_fn) {
             void* key = (void*)0;
-            if (CSTL_ERROR_SUCCESS == get_raw_cstl_object(node->key, &key)) {
+            if (CSTL_ERROR_SUCCESS == cstl_object_get_raw(node->key, &key)) {
                 pSet->root->destruct_k_fn(key);
                 free(key);
             }
         }
-        delete_cstl_object(node->key);
+        cstl_object_delete(node->key);
 
         free(node);
     }
@@ -84,26 +84,26 @@ remove_cstl_set(struct cstl_set* pSet, void* key) {
 }
 
 cstl_bool
-find_cstl_set(struct cstl_set* pSet, void* key, void* outKey) {
+cstl_set_find(struct cstl_set* pSet, void* key, void* outKey) {
     struct cstl_rb_node* node;
 
     if (pSet == (struct cstl_set*)0) {
         return cstl_false;
     }
-    node = find_cstl_rb(pSet->root, key);
+    node = cstl_rb_find(pSet->root, key);
     if (node == (struct cstl_rb_node*)0) {
         return cstl_false;
     }
-    get_raw_cstl_object(node->key, outKey);
+    cstl_object_get_raw(node->key, outKey);
 
     return cstl_true;
 }
 
 cstl_error
-delete_cstl_set(struct cstl_set* x) {
+cstl_set_delete(struct cstl_set* x) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     if (x != (struct cstl_set*)0) {
-        rc = delete_cstl_rb(x->root);
+        rc = cstl_rb_delete(x->root);
         free(x);
     }
     return rc;
@@ -111,7 +111,7 @@ delete_cstl_set(struct cstl_set* x) {
 
 static struct cstl_rb_node *
 minimum_c_set(struct cstl_set *x) {
-    return minimum_cstl_rb(x->root, x->root->root);
+    return cstl_rb_minimum(x->root, x->root->root);
 }
 
 static struct cstl_object*
@@ -131,12 +131,12 @@ get_next_c_set(struct cstl_iterator* pIterator) {
 static void*
 get_value_c_set(void* pObject) {
     void* elem = (void *)0;
-    get_raw_cstl_object(pObject, &elem);
+    cstl_object_get_raw(pObject, &elem);
     return elem;
 }
 
 struct cstl_iterator*
-new_iterator_cstl_set(struct cstl_set* pSet) {
+cstl_set_new_iterator(struct cstl_set* pSet) {
     struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
     itr->get_next = get_next_c_set;
     itr->get_value = get_value_c_set;
@@ -147,6 +147,6 @@ new_iterator_cstl_set(struct cstl_set* pSet) {
 }
 
 void
-delete_iterator_cstl_set(struct cstl_iterator* pItr) {
+cstl_set_delete_iterator(struct cstl_iterator* pItr) {
     free(pItr);
 }

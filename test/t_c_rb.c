@@ -163,9 +163,9 @@ test_all_elements(struct cstl_rb* tree, TS ts[], int size) {
 static struct cstl_rb* 
 create_tree(TS ts[], int size) {
     int i = 0;
-    struct cstl_rb* tree = new_cstl_rb( compare_rb_e,free_rb_e, (void*)0, sizeof(int),0);
+    struct cstl_rb* tree = cstl_rb_new( compare_rb_e,free_rb_e, (void*)0, sizeof(int),0);
     for ( i = 0; i < size; i++) {
-        insert_cstl_rb( tree, &(ts[i].element) ,(void*)0);
+        cstl_rb_insert( tree, &(ts[i].element) ,(void*)0);
     }
     return tree;
 }
@@ -216,7 +216,7 @@ test_c_rb() {
         i = 13;	
         size = (sizeof(ts)/sizeof(TS));
         size_after_delete = (sizeof(ts_delete_leaf_13)/sizeof(TS));
-        node = remove_cstl_rb( tree, &i);
+        node = cstl_rb_remove( tree, &i);
         if ( node != (struct cstl_rb_node*)0  ) {
             free ( node->raw_data.key);
             free ( node);
@@ -226,7 +226,7 @@ test_c_rb() {
     {
         i = 9;	
         size_after_delete = (sizeof(ts_delete_9)/sizeof(TS));
-        node = remove_cstl_rb( tree, &i);
+        node = cstl_rb_remove( tree, &i);
         if ( node != (struct cstl_rb_node*)0  ) {
             free ( node->raw_data.key);
             free ( node);
@@ -236,7 +236,7 @@ test_c_rb() {
     {
         i = 15;	
         size_after_delete = (sizeof(ts_delete_15)/sizeof(TS));
-        node = remove_cstl_rb( tree, &i);
+        node = cstl_rb_remove( tree, &i);
         if ( node != (struct cstl_rb_node*)0  ) {
             free ( node->raw_data.key);
             free ( node);
@@ -245,11 +245,11 @@ test_c_rb() {
     }
     {
         int i = 1;
-        insert_cstl_rb( tree, &i, (void*)0);
+        cstl_rb_insert( tree, &i, (void*)0);
         size_after_delete = (sizeof(ts_insert_1)/sizeof(TS));
         test_all_elements(tree, ts_insert_1, size_after_delete);
     }
     {
-      delete_cstl_rb(tree);
+      cstl_rb_delete(tree);
     }
 }*/

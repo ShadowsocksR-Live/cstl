@@ -33,7 +33,9 @@ extern void test_c_map();
 extern void test_c_algorithms();
 
 int main( int argc, char**argv ) {
-    for (size_t i = 0; i < 10000; i++) {
+    size_t i = 0;
+    for (i = 0; i < 10000; i++)
+    {
         printf("Performing test for dynamic array\n");
         test_c_array();
         printf("Performing test for deque\n");

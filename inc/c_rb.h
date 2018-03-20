@@ -41,14 +41,14 @@ struct cstl_rb {
     cstl_compare compare_fn;
 };
 
-extern struct cstl_rb* new_cstl_rb(cstl_compare fn_c,cstl_destroy fn_ed, cstl_destroy fn_vd );
-extern cstl_error  insert_cstl_rb(struct cstl_rb* pTree, void* key, size_t key_size, void* value, size_t value_size);
-extern struct cstl_rb_node*   find_cstl_rb (struct cstl_rb* pTree, void* key);
-extern struct cstl_rb_node* remove_cstl_rb (struct cstl_rb* pTree, void* key);
-extern cstl_error  delete_cstl_rb (struct cstl_rb* pTree);
-extern cstl_bool   empty_cstl_rb  (struct cstl_rb* pTree);
+extern struct cstl_rb* cstl_rb_new(cstl_compare fn_c,cstl_destroy fn_ed, cstl_destroy fn_vd );
+extern cstl_error  cstl_rb_insert(struct cstl_rb* pTree, void* key, size_t key_size, void* value, size_t value_size);
+extern struct cstl_rb_node*   cstl_rb_find (struct cstl_rb* pTree, void* key);
+extern struct cstl_rb_node* cstl_rb_remove (struct cstl_rb* pTree, void* key);
+extern cstl_error  cstl_rb_delete (struct cstl_rb* pTree);
+extern cstl_bool   cstl_rb_empty  (struct cstl_rb* pTree);
 
-extern struct cstl_rb_node *minimum_cstl_rb( struct cstl_rb* pTree, struct cstl_rb_node* x );
+extern struct cstl_rb_node *cstl_rb_minimum( struct cstl_rb* pTree, struct cstl_rb_node* x );
 extern struct cstl_rb_node* cstl_rb_tree_successor(struct cstl_rb* pTree, struct cstl_rb_node* x);
 
 #endif

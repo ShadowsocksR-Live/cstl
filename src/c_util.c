@@ -36,7 +36,7 @@ cstl_get(void* destination, void* source, size_t size) {
 }
 
 struct cstl_object*
-new_cstl_object(void* inObject, size_t obj_size) {
+cstl_object_new(void* inObject, size_t obj_size) {
     struct cstl_object* tmp = (struct cstl_object*)calloc(1, sizeof(struct cstl_object));
     if (!tmp) {
         return (struct cstl_object*)0;
@@ -52,7 +52,7 @@ new_cstl_object(void* inObject, size_t obj_size) {
 }
 
 cstl_error
-get_raw_cstl_object(struct cstl_object *inObject, void**elem) {
+cstl_object_get_raw(struct cstl_object *inObject, void**elem) {
     *elem = (void*)calloc(inObject->size, sizeof(char));
     if (!*elem) {
         return CSTL_ELEMENT_RETURN_ERROR;
@@ -63,14 +63,14 @@ get_raw_cstl_object(struct cstl_object *inObject, void**elem) {
 }
 
 void
-replace_raw_cstl_object(struct cstl_object* current_object, void* elem, size_t elem_size) {
+cstl_object_replace_raw(struct cstl_object* current_object, void* elem, size_t elem_size) {
     free(current_object->raw_data);
     current_object->raw_data = (void*)calloc(elem_size, sizeof(char));
     memcpy(current_object->raw_data, elem, elem_size);
 }
 
 void
-delete_cstl_object(struct cstl_object* inObject) {
+cstl_object_delete(struct cstl_object* inObject) {
     if (inObject) {
         free(inObject->raw_data);
         free(inObject);

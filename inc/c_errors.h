@@ -53,6 +53,4 @@
 
 #define CSTL_SLIST_INSERT_FAILED      601
 
-
-
 #endif

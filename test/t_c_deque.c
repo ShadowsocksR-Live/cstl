@@ -57,7 +57,7 @@ replace_values_using_iterators(struct cstl_deque* myDeq) {
     struct cstl_iterator *myItr;
     struct cstl_object *pElement;
 
-    myItr = new_iterator_cstl_deque(myDeq);
+    myItr = cstl_deque_new_iterator(myDeq);
     pElement = myItr->get_next(myItr);
     while (pElement) {
         void* old_value = myItr->get_value(pElement);
@@ -67,22 +67,22 @@ replace_values_using_iterators(struct cstl_deque* myDeq) {
         free(old_value);
         pElement = myItr->get_next(myItr);
     }
-    delete_iterator_cstl_deque(myItr);
+    cstl_deque_delete_iterator(myItr);
 }
 static struct cstl_deque*
 create_deque() {
     int flip = 1;
     int i = 0;
     int limit = 20;
-    struct cstl_deque* myDeq = new_cstl_deque(10, compare_e, NULL);
+    struct cstl_deque* myDeq = cstl_deque_new(10, compare_e, NULL);
     assert((struct cstl_deque*)0 != myDeq);
 
     for (i = 0; i <= limit; i++) {
         if (flip) {
-            push_back_cstl_deque(myDeq, &i, sizeof(int));
+            cstl_deque_push_back(myDeq, &i, sizeof(int));
             flip = 0;
         } else {
-            push_front_cstl_deque(myDeq, &i, sizeof(int));
+            cstl_deque_push_front(myDeq, &i, sizeof(int));
             flip = 1;
         }
     }
@@ -94,7 +94,7 @@ print_using_iterator(struct cstl_deque* myDeq) {
     struct cstl_object *pElement;
 
     printf("------------------------------------------------\n");
-    myItr = new_iterator_cstl_deque(myDeq);
+    myItr = cstl_deque_new_iterator(myDeq);
     pElement = myItr->get_next(myItr);
     while (pElement) {
         void* value = myItr->get_value(pElement);
@@ -102,7 +102,7 @@ print_using_iterator(struct cstl_deque* myDeq) {
         free(value);
         pElement = myItr->get_next(myItr);
     }
-    delete_iterator_cstl_deque(myItr);
+    cstl_deque_delete_iterator(myItr);
 }
 
 static void
@@ -111,7 +111,7 @@ test_with_deque_iterator() {
     print_using_iterator(myDeq);
     replace_values_using_iterators(myDeq);
     print_using_iterator(myDeq);
-    delete_cstl_deque(myDeq);
+    cstl_deque_delete(myDeq);
 }
 
 void
@@ -122,44 +122,44 @@ test_c_deque() {
     void*  element;
     int j = 0;
 
-    struct cstl_deque* myDeq = new_cstl_deque(10, compare_e, NULL);
+    struct cstl_deque* myDeq = cstl_deque_new(10, compare_e, NULL);
     assert((struct cstl_deque*)0 != myDeq);
 
     for (i = 0; i <= limit; i++) {
         if (flip) {
-            push_back_cstl_deque(myDeq, &i, sizeof(int));
+            cstl_deque_push_back(myDeq, &i, sizeof(int));
             flip = 0;
         } else {
-            push_front_cstl_deque(myDeq, &i, sizeof(int));
+            cstl_deque_push_front(myDeq, &i, sizeof(int));
             flip = 1;
         }
     }
-    front_cstl_deque(myDeq, &element);
+    cstl_deque_front(myDeq, &element);
     assert(*(int*)element == limit - 1);
     free(element);
 
-    back_cstl_deque(myDeq, &element);
+    cstl_deque_back(myDeq, &element);
     assert(*(int*)element == limit);
     free(element);
 
-    while (empty_cstl_deque(myDeq) != cstl_true) {
-        pop_front_cstl_deque(myDeq);
+    while (cstl_deque_empty(myDeq) != cstl_true) {
+        cstl_deque_pop_front(myDeq);
     }
-    delete_cstl_deque(myDeq);
+    cstl_deque_delete(myDeq);
 
-    myDeq = new_cstl_deque(10, compare_e_ptr, free_e);
+    myDeq = cstl_deque_new(10, compare_e_ptr, free_e);
     for (i = 0; i <= limit; i++) {
         int *v = (int*)calloc(1, sizeof(int));
         memcpy(v, &i, sizeof(int));
-        push_back_cstl_deque(myDeq, &v, sizeof(int*));
+        cstl_deque_push_back(myDeq, &v, sizeof(int*));
     }
     for (i = myDeq->head + 1; i < myDeq->tail; i++) {
         int** elem;
-        if (element_at_cstl_deque(myDeq, i, (void *)&elem) == CSTL_ERROR_SUCCESS) {
+        if (cstl_deque_element_at(myDeq, i, (void *)&elem) == CSTL_ERROR_SUCCESS) {
             assert(**elem == j++);
             free(elem);
         }
     }
-    delete_cstl_deque(myDeq);
+    cstl_deque_delete(myDeq);
     test_with_deque_iterator();
 }

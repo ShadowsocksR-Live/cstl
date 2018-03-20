@@ -29,7 +29,7 @@
 static cstl_error
 insert_c_deque(struct cstl_deque* pDeq, int index, void* elem, size_t elem_size) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
-    struct cstl_object* pObject = new_cstl_object(elem, elem_size);
+    struct cstl_object* pObject = cstl_object_new(elem, elem_size);
     if (!pObject) {
         return CSTL_ARRAY_INSERT_FAILED;
     }
@@ -47,7 +47,7 @@ grow_deque(struct cstl_deque* pDeq) {
 }
 
 struct cstl_deque*
-new_cstl_deque(int deq_size, cstl_compare fn_c, cstl_destroy fn_d) {
+cstl_deque_new(int deq_size, cstl_compare fn_c, cstl_destroy fn_d) {
     struct cstl_deque* pDeq = (struct cstl_deque*)calloc(1, sizeof(struct cstl_deque));
     if (pDeq == (struct cstl_deque*)0) {
         return (struct cstl_deque*)0;
@@ -68,7 +68,7 @@ new_cstl_deque(int deq_size, cstl_compare fn_c, cstl_destroy fn_d) {
 }
 
 cstl_error
-push_back_cstl_deque(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
+cstl_deque_push_back(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
     if (pDeq == (struct cstl_deque*)0) {
         return CSTL_DEQUE_NOT_INITIALIZED;
     }
@@ -82,7 +82,7 @@ push_back_cstl_deque(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
 }
 
 cstl_error
-push_front_cstl_deque(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
+cstl_deque_push_front(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     int to = 0;
     int from = 0;
@@ -103,36 +103,36 @@ push_front_cstl_deque(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
 }
 
 cstl_error
-front_cstl_deque(struct cstl_deque* pDeq, void* elem) {
+cstl_deque_front(struct cstl_deque* pDeq, void* elem) {
     if (pDeq == (struct cstl_deque*)0) {
         return CSTL_DEQUE_NOT_INITIALIZED;
     }
-    element_at_cstl_deque(pDeq, pDeq->head + 1, elem);
+    cstl_deque_element_at(pDeq, pDeq->head + 1, elem);
     return CSTL_ERROR_SUCCESS;
 }
 
 cstl_error
-back_cstl_deque(struct cstl_deque* pDeq, void* elem) {
+cstl_deque_back(struct cstl_deque* pDeq, void* elem) {
     if (pDeq == (struct cstl_deque*)0) {
         return CSTL_DEQUE_NOT_INITIALIZED;
     }
-    element_at_cstl_deque(pDeq, pDeq->tail - 1, elem);
+    cstl_deque_element_at(pDeq, pDeq->tail - 1, elem);
     return CSTL_ERROR_SUCCESS;
 }
 
 cstl_error
-pop_back_cstl_deque(struct cstl_deque* pDeq) {
+cstl_deque_pop_back(struct cstl_deque* pDeq) {
     if (pDeq == (struct cstl_deque*)0) {
         return CSTL_DEQUE_NOT_INITIALIZED;
     }
     if (pDeq->destruct_fn) {
         void* elem;
-        if (element_at_cstl_deque(pDeq, pDeq->tail - 1, &elem) == CSTL_ERROR_SUCCESS) {
+        if (cstl_deque_element_at(pDeq, pDeq->tail - 1, &elem) == CSTL_ERROR_SUCCESS) {
             pDeq->destruct_fn(elem);
             free(elem);
         }
     }
-    delete_cstl_object(pDeq->pElements[pDeq->tail - 1]);
+    cstl_object_delete(pDeq->pElements[pDeq->tail - 1]);
     pDeq->tail--;
     pDeq->no_of_elements--;
 
@@ -140,18 +140,18 @@ pop_back_cstl_deque(struct cstl_deque* pDeq) {
 }
 
 cstl_error
-pop_front_cstl_deque(struct cstl_deque* pDeq) {
+cstl_deque_pop_front(struct cstl_deque* pDeq) {
     if (pDeq == (struct cstl_deque*)0) {
         return CSTL_DEQUE_NOT_INITIALIZED;
     }
     if (pDeq->destruct_fn) {
         void* elem;
-        if (element_at_cstl_deque(pDeq, pDeq->head + 1, &elem) == CSTL_ERROR_SUCCESS) {
+        if (cstl_deque_element_at(pDeq, pDeq->head + 1, &elem) == CSTL_ERROR_SUCCESS) {
             pDeq->destruct_fn(elem);
             free(elem);
         }
     }
-    delete_cstl_object(pDeq->pElements[pDeq->head + 1]);
+    cstl_object_delete(pDeq->pElements[pDeq->head + 1]);
 
     pDeq->head++;
     pDeq->no_of_elements--;
@@ -160,7 +160,7 @@ pop_front_cstl_deque(struct cstl_deque* pDeq) {
 }
 
 cstl_bool
-empty_cstl_deque(struct cstl_deque* pDeq) {
+cstl_deque_empty(struct cstl_deque* pDeq) {
     if (pDeq == (struct cstl_deque*)0) {
         return cstl_true;
     }
@@ -168,7 +168,7 @@ empty_cstl_deque(struct cstl_deque* pDeq) {
 }
 
 int
-size_cstl_deque(struct cstl_deque* pDeq) {
+cstl_deque_size(struct cstl_deque* pDeq) {
     if (pDeq == (struct cstl_deque*)0) {
         return cstl_true;
     }
@@ -176,17 +176,17 @@ size_cstl_deque(struct cstl_deque* pDeq) {
 }
 
 cstl_error
-element_at_cstl_deque(struct cstl_deque* pDeq, int index, void**elem) {
+cstl_deque_element_at(struct cstl_deque* pDeq, int index, void**elem) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     if (!pDeq) {
         return CSTL_DEQUE_NOT_INITIALIZED;
     }
-    get_raw_cstl_object(pDeq->pElements[index], elem);
+    cstl_object_get_raw(pDeq->pElements[index], elem);
     return rc;
 }
 
 cstl_error
-delete_cstl_deque(struct cstl_deque* pDeq) {
+cstl_deque_delete(struct cstl_deque* pDeq) {
     int i = 0;
 
     if (pDeq == (struct cstl_deque*)0) {
@@ -195,14 +195,14 @@ delete_cstl_deque(struct cstl_deque* pDeq) {
     if (pDeq->destruct_fn) {
         for (i = pDeq->head + 1; i < pDeq->tail; i++) {
             void* elem;
-            if (element_at_cstl_deque(pDeq, i, &elem) == CSTL_ERROR_SUCCESS) {
+            if (cstl_deque_element_at(pDeq, i, &elem) == CSTL_ERROR_SUCCESS) {
                 pDeq->destruct_fn(elem);
                 free(elem);
             }
         }
     }
     for (i = pDeq->head + 1; i < pDeq->tail; i++) {
-        delete_cstl_object(pDeq->pElements[i]);
+        cstl_object_delete(pDeq->pElements[i]);
     }
     free(pDeq->pElements);
     free(pDeq);
@@ -225,7 +225,7 @@ get_next_c_deque(struct cstl_iterator* pIterator) {
 static void*
 get_value_c_deque(void* pObject) {
     void* elem = (void *)0;
-    get_raw_cstl_object(pObject, &elem);
+    cstl_object_get_raw(pObject, &elem);
     return elem;
 }
 
@@ -234,16 +234,16 @@ replace_value_c_deque(struct cstl_iterator *pIterator, void* elem, size_t elem_s
     struct cstl_deque*  pDeq = (struct cstl_deque*)pIterator->pContainer;
     if (pDeq->destruct_fn) {
         void* old_element;
-        if (get_raw_cstl_object(pIterator->pCurrentElement, &old_element) == CSTL_ERROR_SUCCESS) {
+        if (cstl_object_get_raw(pIterator->pCurrentElement, &old_element) == CSTL_ERROR_SUCCESS) {
             pDeq->destruct_fn(old_element);
             free(old_element);
         }
     }
-    replace_raw_cstl_object(pIterator->pCurrentElement, elem, elem_size);
+    cstl_object_replace_raw(pIterator->pCurrentElement, elem, elem_size);
 }
 
 struct cstl_iterator*
-new_iterator_cstl_deque(struct cstl_deque* pDeq) {
+cstl_deque_new_iterator(struct cstl_deque* pDeq) {
     struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
     itr->get_next = get_next_c_deque;
     itr->get_value = get_value_c_deque;
@@ -254,6 +254,6 @@ new_iterator_cstl_deque(struct cstl_deque* pDeq) {
 }
 
 void
-delete_iterator_cstl_deque(struct cstl_iterator* pItr) {
+cstl_deque_delete_iterator(struct cstl_iterator* pItr) {
     free(pItr);
 }

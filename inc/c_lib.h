@@ -24,8 +24,9 @@
 #ifndef _C_LIB_H_
 #define _C_LIB_H_
 
-#include "c_errors.h"
 #include <stdlib.h>
+
+#include "c_errors.h"
 
 /* ------------------------------------------------------------------------*/
 /*       C O M M O N       D E F I N I T O N S                             */
@@ -51,7 +52,6 @@ struct cstl_object {
     void* raw_data;
     size_t size;
 };
-
 
 struct cstl_iterator {
 	struct cstl_object* (*get_next)(struct cstl_iterator*);
@@ -79,9 +79,9 @@ extern void  cstl_copy ( void* destination, void* source, size_t size );
 extern void  cstl_get  ( void* destination, void* source, size_t size);
 extern char* cstl_strdup ( char *ptr );
 
-extern struct cstl_object* new_cstl_object (void* inObject, size_t obj_size);
-extern cstl_error get_raw_cstl_object (struct cstl_object *inObject, void**elem);
-extern void  delete_cstl_object  (struct cstl_object* inObject );
-extern void replace_raw_cstl_object(struct cstl_object* current_object,void* elem, size_t elem_size);
+extern struct cstl_object* cstl_object_new (void* inObject, size_t obj_size);
+extern cstl_error cstl_object_get_raw (struct cstl_object *inObject, void**elem);
+extern void  cstl_object_delete  (struct cstl_object* inObject );
+extern void cstl_object_replace_raw(struct cstl_object* current_object,void* elem, size_t elem_size);
 
 #endif

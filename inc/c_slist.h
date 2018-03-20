@@ -29,7 +29,6 @@ struct cstl_slist_node {
     struct cstl_slist_node *next;
 };
 
-
 struct cstl_slist {
     struct cstl_slist_node* head;
     cstl_destroy destruct_fn;
@@ -37,18 +36,15 @@ struct cstl_slist {
     int size;
 };
 
+extern struct cstl_slist * cstl_slist_new (cstl_destroy fn_d, cstl_compare fn_c);
+extern void           cstl_slist_delete   (struct cstl_slist* pSlist);
+extern cstl_error     cstl_slist_insert   (struct cstl_slist* pSlist, int pos, void* elem, size_t elem_size);
+extern cstl_error     cstl_slist_push_back(struct cstl_slist* pSlist, void* elem, size_t elem_size);
+extern void           cstl_slist_remove   (struct cstl_slist* pSlist, int pos);
+extern void           cstl_slist_for_each (struct cstl_slist* pSlist, void (*fn)(void* ));
+extern cstl_bool      cstl_slist_find     (struct cstl_slist* pSlist, void* find_value, void**out_value);
 
-extern struct cstl_slist * new_cstl_slist (cstl_destroy fn_d, cstl_compare fn_c);
-extern void           delete_cstl_slist   (struct cstl_slist* pSlist);
-extern cstl_error     insert_cstl_slist   (struct cstl_slist* pSlist, int pos, void* elem, size_t elem_size);
-extern cstl_error     push_back_cstl_slist(struct cstl_slist* pSlist, void* elem, size_t elem_size);
-extern void           remove_cstl_slist   (struct cstl_slist* pSlist, int pos);
-extern void           for_each_cstl_slist (struct cstl_slist* pSlist, void (*fn)(void* ));
-extern cstl_bool      find_cstl_slist     (struct cstl_slist* pSlist, void* find_value, void**out_value);
-
-
-extern struct cstl_iterator* new_iterator_cstl_slist(struct cstl_slist* pSlit);
-extern void delete_iterator_cstl_slist ( struct cstl_iterator* pItr);
-
+extern struct cstl_iterator* cstl_slist_new_iterator(struct cstl_slist* pSlit);
+extern void cstl_slist_delete_iterator ( struct cstl_iterator* pItr);
 
 #endif
