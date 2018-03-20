@@ -61,7 +61,7 @@ compare_element ( void* left, void* right ) {
 }
 static void 
 print_using_iterators(struct clib_slist* pList) {
-	struct clib_iterator *myItr;
+	struct cstl_iterator *myItr;
 	struct clib_object *pElement;
 	printf ( "------------------------------------------------\n");
 	myItr     = new_iterator_c_slist (pList);
@@ -77,7 +77,7 @@ print_using_iterators(struct clib_slist* pList) {
 
 static void 
 replace_values_using_iterators(struct clib_slist* pList) {
-	struct clib_iterator *myItr;
+	struct cstl_iterator *myItr;
 	struct clib_object *pElement;
 	printf ( "------------------------------------------------\n");
 	myItr     = new_iterator_c_slist (pList);

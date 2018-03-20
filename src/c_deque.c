@@ -22,7 +22,6 @@
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include "c_lib.h"
-
 #include <string.h>
 
 #define CLIB_DEQUE_INDEX(x)  ((char *)(pDeq)->pElements + (sizeof(struct clib_object) * (x)))
@@ -215,9 +214,9 @@ delete_c_deque(struct clib_deque* pDeq) {
 }
 
 static struct clib_object*
-get_next_c_deque(struct clib_iterator* pIterator) {
+get_next_c_deque(struct cstl_iterator* pIterator) {
     struct clib_deque *pDeq = (struct clib_deque*)pIterator->pContainer;
-    int index = ((struct clib_iterator*)pIterator)->pCurrent;
+    int index = ((struct cstl_iterator*)pIterator)->pCurrent;
 
     if (index < 0 || index >= pDeq->tail) {
         return (struct clib_object*)0;
@@ -234,7 +233,7 @@ get_value_c_deque(void* pObject) {
 }
 
 static void
-replace_value_c_deque(struct clib_iterator *pIterator, void* elem, size_t elem_size) {
+replace_value_c_deque(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
     struct clib_deque*  pDeq = (struct clib_deque*)pIterator->pContainer;
     if (pDeq->destruct_fn) {
         void* old_element;
@@ -246,9 +245,9 @@ replace_value_c_deque(struct clib_iterator *pIterator, void* elem, size_t elem_s
     replace_raw_clib_object(pIterator->pCurrentElement, elem, elem_size);
 }
 
-struct clib_iterator*
+struct cstl_iterator*
     new_iterator_c_deque(struct clib_deque* pDeq) {
-    struct clib_iterator *itr = (struct clib_iterator*) calloc(1, sizeof(struct clib_iterator));
+    struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
     itr->get_next = get_next_c_deque;
     itr->get_value = get_value_c_deque;
     itr->replace_value = replace_value_c_deque;
@@ -258,6 +257,6 @@ struct clib_iterator*
 }
 
 void
-delete_iterator_c_deque(struct clib_iterator* pItr) {
+delete_iterator_c_deque(struct cstl_iterator* pItr) {
     free(pItr);
 }

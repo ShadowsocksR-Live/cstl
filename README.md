@@ -23,8 +23,8 @@ clib_error back_c_array( struct clib_array* pArray,void* elem);
 clib_error remove_from_c_array ( struct clib_array*, int pos);
 clib_error delete_c_array( struct clib_array* pArray);
 
-struct clib_iterator* new_iterator_c_array(struct clib_array* pArray);
-void delete_iterator_c_array ( struct clib_iterator* pItr);
+struct cstl_iterator* new_iterator_c_array(struct clib_array* pArray);
+void delete_iterator_c_array ( struct cstl_iterator* pItr);
 ```
 
 ## deque
@@ -52,8 +52,8 @@ int            size_c_deque ( struct clib_deque* pDeq);
 clib_error     delete_c_deque ( struct clib_deque* pDeq);
 clib_error     element_at_c_deque (struct clib_deque* pDeq, int index, void**elem);
 
-struct clib_iterator* new_iterator_c_deque(struct clib_deque* pDeq);
-void delete_iterator_c_deque ( struct clib_iterator* pItr);
+struct cstl_iterator* new_iterator_c_deque(struct clib_deque* pDeq);
+void delete_iterator_c_deque ( struct cstl_iterator* pItr);
 ```
 
 ## list
@@ -77,8 +77,8 @@ void           for_each_c_slist (struct clib_slist* pSlist, void (*fn)(void* ));
 clib_bool      find_c_slist     (struct clib_slist* pSlist, void* find_value, void**out_value);
 
 
-struct clib_iterator* new_iterator_c_slist(struct clib_slist* pSlit);
-void delete_iterator_c_slist ( struct clib_iterator* pItr);
+struct cstl_iterator* new_iterator_c_slist(struct clib_slist* pSlit);
+void delete_iterator_c_slist ( struct cstl_iterator* pItr);
 ```
 ## set
 ```cpp
@@ -92,8 +92,8 @@ clib_error   remove_c_set ( struct clib_set* pSet, void* key);
 clib_bool    find_c_set   ( struct clib_set* pSet, void* key, void* outKey);
 clib_error   delete_c_set ( struct clib_set* pSet);
 
-struct clib_iterator* new_iterator_c_set(struct clib_set* pSet);
-void delete_iterator_c_set ( struct clib_iterator* pItr);
+struct cstl_iterator* new_iterator_c_set(struct clib_set* pSet);
+void delete_iterator_c_set ( struct cstl_iterator* pItr);
 ```
 
 ## map
@@ -109,8 +109,8 @@ clib_error   remove_c_map ( struct clib_map* pMap, void* key);
 clib_bool    find_c_map   ( struct clib_map* pMap, void* key, void**value);
 clib_error   delete_c_map ( struct clib_map* pMap);
 
-struct clib_iterator* new_iterator_c_map(struct clib_map* pMap);
-void delete_iterator_c_map ( struct clib_iterator* pItr);
+struct cstl_iterator* new_iterator_c_map(struct clib_map* pMap);
+void delete_iterator_c_map ( struct cstl_iterator* pItr);
 ```
 
 

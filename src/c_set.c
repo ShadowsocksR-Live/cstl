@@ -22,7 +22,6 @@
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include "c_lib.h"
-
 #include <stdio.h>
 
 struct clib_set*
@@ -116,7 +115,7 @@ minimum_c_set(struct clib_set *x) {
 }
 
 static struct clib_object*
-get_next_c_set(struct clib_iterator* pIterator) {
+get_next_c_set(struct cstl_iterator* pIterator) {
     if (!pIterator->pCurrentElement) {
         pIterator->pCurrentElement = minimum_c_set(pIterator->pContainer);
     } else {
@@ -136,9 +135,9 @@ get_value_c_set(void* pObject) {
     return elem;
 }
 
-struct clib_iterator*
+struct cstl_iterator*
     new_iterator_c_set(struct clib_set* pSet) {
-    struct clib_iterator *itr = (struct clib_iterator*) calloc(1, sizeof(struct clib_iterator));
+    struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
     itr->get_next = get_next_c_set;
     itr->get_value = get_value_c_set;
     itr->pContainer = pSet;
@@ -148,6 +147,6 @@ struct clib_iterator*
 }
 
 void
-delete_iterator_c_set(struct clib_iterator* pItr) {
+delete_iterator_c_set(struct cstl_iterator* pItr) {
     free(pItr);
 }

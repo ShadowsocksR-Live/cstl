@@ -45,7 +45,7 @@ extern clib_error back_c_array( struct clib_array* pArray,void* elem);
 extern clib_error remove_from_c_array ( struct clib_array*, int pos);
 extern clib_error delete_c_array( struct clib_array* pArray);
 
-extern struct clib_iterator* new_iterator_c_array(struct clib_array* pArray);
-extern void delete_iterator_c_array ( struct clib_iterator* pItr);
+extern struct cstl_iterator* new_iterator_c_array(struct clib_array* pArray);
+extern void delete_iterator_c_array ( struct cstl_iterator* pItr);
 
 #endif

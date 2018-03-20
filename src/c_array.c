@@ -25,7 +25,6 @@
 #include <string.h>
 #include <stdio.h>
 
-
 static struct clib_array*
 array_check_and_grow(struct clib_array* pArray) {
     if (pArray->no_of_elements >= pArray->no_max_elements) {
@@ -214,7 +213,7 @@ delete_c_array(struct clib_array* pArray) {
 }
 
 static struct clib_object*
-get_next_c_array(struct clib_iterator* pIterator) {
+get_next_c_array(struct cstl_iterator* pIterator) {
 
     struct clib_array *pArray = (struct clib_array*)pIterator->pContainer;
 
@@ -233,7 +232,7 @@ get_value_c_array(void* pObject) {
 }
 
 static void
-replace_value_c_array(struct clib_iterator *pIterator, void* elem, size_t elem_size) {
+replace_value_c_array(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
     struct clib_array*  pArray = (struct clib_array*)pIterator->pContainer;
 
     if (pArray->destruct_fn) {
@@ -246,9 +245,9 @@ replace_value_c_array(struct clib_iterator *pIterator, void* elem, size_t elem_s
     replace_raw_clib_object(pIterator->pCurrentElement, elem, elem_size);
 }
 
-struct clib_iterator*
+struct cstl_iterator*
     new_iterator_c_array(struct clib_array* pArray) {
-    struct clib_iterator *itr = (struct clib_iterator*) calloc(1, sizeof(struct clib_iterator));
+    struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
     itr->get_next = get_next_c_array;
     itr->get_value = get_value_c_array;
     itr->replace_value = replace_value_c_array;
@@ -258,6 +257,6 @@ struct clib_iterator*
 }
 
 void
-delete_iterator_c_array(struct clib_iterator* pItr) {
+delete_iterator_c_array(struct cstl_iterator* pItr) {
     free(pItr);
 }

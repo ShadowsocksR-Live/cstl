@@ -25,7 +25,7 @@
 #include <stdlib.h>
 
 void
-clib_for_each(struct clib_iterator *pIterator, void(*fn)(void*)) {
+cstl_for_each(struct cstl_iterator *pIterator, void(*fn)(void*)) {
     struct clib_object *pElement;
 
     pElement = pIterator->get_next(pIterator);

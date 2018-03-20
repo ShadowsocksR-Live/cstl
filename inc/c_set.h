@@ -35,7 +35,7 @@ extern clib_error   remove_c_set ( struct clib_set* pSet, void* key);
 extern clib_bool    find_c_set   ( struct clib_set* pSet, void* key, void* outKey);
 extern clib_error   delete_c_set ( struct clib_set* pSet);
 
-extern struct clib_iterator* new_iterator_c_set(struct clib_set* pSet);
-extern void delete_iterator_c_set ( struct clib_iterator* pItr);
+extern struct cstl_iterator* new_iterator_c_set(struct clib_set* pSet);
+extern void delete_iterator_c_set ( struct cstl_iterator* pItr);
 
 #endif

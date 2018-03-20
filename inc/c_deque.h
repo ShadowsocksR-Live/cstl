@@ -47,7 +47,7 @@ extern int            size_c_deque ( struct clib_deque* pDeq);
 extern clib_error     delete_c_deque ( struct clib_deque* pDeq);
 extern clib_error     element_at_c_deque (struct clib_deque* pDeq, int index, void**elem);
 
-extern struct clib_iterator* new_iterator_c_deque(struct clib_deque* pDeq);
-extern void delete_iterator_c_deque ( struct clib_iterator* pItr);
+extern struct cstl_iterator* new_iterator_c_deque(struct clib_deque* pDeq);
+extern void delete_iterator_c_deque ( struct cstl_iterator* pItr);
 
 #endif

@@ -145,44 +145,44 @@ t_clib_for_each() {
 	struct clib_set   *pSet;
 	struct clib_map   *pMap;
 	struct clib_slist *pSlist;
-	struct clib_iterator *pArrayIterator;
-	struct clib_iterator *pDequeIterator;
-	struct clib_iterator *pSetIterator;
-	struct clib_iterator *pMapIterator;
-	struct clib_iterator *pSlistIterator;
+	struct cstl_iterator *pArrayIterator;
+	struct cstl_iterator *pDequeIterator;
+	struct cstl_iterator *pSetIterator;
+	struct cstl_iterator *pMapIterator;
+	struct cstl_iterator *pSlistIterator;
 	
 	printf ( "Performing for_each for array\n");
 	pArray = create_c_array();
 	pArrayIterator = new_iterator_c_array ( pArray );
-	clib_for_each ( pArrayIterator, print_integers );
+    cstl_for_each( pArrayIterator, print_integers );
 	delete_c_array( pArray );
 	delete_iterator_c_array ( pArrayIterator );
 
 	printf ( "Performing for_each for deque\n");
 	pDeq   = create_deque();
 	pDequeIterator = new_iterator_c_deque ( pDeq );
-	clib_for_each ( pDequeIterator, print_integers );
+    cstl_for_each( pDequeIterator, print_integers );
 	delete_c_deque( pDeq );
 	delete_iterator_c_deque ( pDequeIterator );
 
 	printf ( "Performing for_each for set\n");
 	pSet   = create_set();
 	pSetIterator = new_iterator_c_set ( pSet );
-	clib_for_each ( pSetIterator, print_integers );
+    cstl_for_each( pSetIterator, print_integers );
 	delete_c_set( pSet );
 	delete_iterator_c_set ( pSetIterator );
 
 	printf ( "Performing for_each for map\n");
 	pMap   = create_map();
 	pMapIterator = new_iterator_c_map ( pMap );
-	clib_for_each ( pMapIterator, print_integers );
+    cstl_for_each( pMapIterator, print_integers );
 	delete_c_map( pMap );
 	delete_iterator_c_map ( pMapIterator );
 
 	printf ( "Performing for_each for slist\n");
 	pSlist = create_slist();
 	pSlistIterator = new_iterator_c_slist ( pSlist );
-	clib_for_each ( pSlistIterator, print_integers_ptr);
+    cstl_for_each( pSlistIterator, print_integers_ptr);
 	delete_c_slist( pSlist );
 	delete_iterator_c_slist ( pSlistIterator );
 }

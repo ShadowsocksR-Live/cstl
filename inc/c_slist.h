@@ -47,8 +47,8 @@ extern void           for_each_c_slist (struct clib_slist* pSlist, void (*fn)(vo
 extern clib_bool      find_c_slist     (struct clib_slist* pSlist, void* find_value, void**out_value);
 
 
-extern struct clib_iterator* new_iterator_c_slist(struct clib_slist* pSlit);
-extern void delete_iterator_c_slist ( struct clib_iterator* pItr);
+extern struct cstl_iterator* new_iterator_c_slist(struct clib_slist* pSlit);
+extern void delete_iterator_c_slist ( struct cstl_iterator* pItr);
 
 
 #endif

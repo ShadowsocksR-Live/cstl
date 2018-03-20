@@ -53,9 +53,9 @@ struct clib_object {
 };
 
 
-struct clib_iterator {
-	struct clib_object* (*get_next)(struct clib_iterator*);
-	void (*replace_value)(struct clib_iterator*,void*,size_t);
+struct cstl_iterator {
+	struct clib_object* (*get_next)(struct cstl_iterator*);
+	void (*replace_value)(struct cstl_iterator*,void*,size_t);
 	void* (*get_value)(void*);
 	void* pContainer;
 	int   pCurrent;

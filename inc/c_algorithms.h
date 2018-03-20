@@ -23,6 +23,6 @@
 #ifndef _C_ALGORITHMS_
 #define _C_ALGORITHMS_
 
-extern void clib_for_each(struct clib_iterator* pIterator, void (*fn)(void*));
+extern void cstl_for_each(struct cstl_iterator* pIterator, void (*fn)(void*));
 
 #endif

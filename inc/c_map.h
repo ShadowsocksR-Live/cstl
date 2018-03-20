@@ -36,8 +36,8 @@ extern clib_error   remove_c_map ( struct clib_map* pMap, void* key);
 extern clib_bool    find_c_map   ( struct clib_map* pMap, void* key, void**value);
 extern clib_error   delete_c_map ( struct clib_map* pMap);
 
-extern struct clib_iterator* new_iterator_c_map(struct clib_map* pMap);
-extern void delete_iterator_c_map ( struct clib_iterator* pItr);
+extern struct cstl_iterator* new_iterator_c_map(struct clib_map* pMap);
+extern void delete_iterator_c_map ( struct cstl_iterator* pItr);
 
 
 #endif

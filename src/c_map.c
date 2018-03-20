@@ -22,9 +22,7 @@
 ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include "c_lib.h"
-
 #include <stdio.h>
-
 
 struct clib_map*
 new_c_map(clib_compare fn_c_k, clib_destroy fn_k_d, clib_destroy fn_v_d) {
@@ -125,7 +123,7 @@ minimum_c_map(struct clib_map *x) {
 }
 
 static struct clib_object*
-get_next_c_map(struct clib_iterator* pIterator) {
+get_next_c_map(struct cstl_iterator* pIterator) {
     if (!pIterator->pCurrentElement) {
         pIterator->pCurrentElement = minimum_c_map(pIterator->pContainer);
     } else {
@@ -146,7 +144,7 @@ get_value_c_map(void* pObject) {
 }
 
 static void
-replace_value_c_map(struct clib_iterator *pIterator, void* elem, size_t elem_size) {
+replace_value_c_map(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
     struct clib_map*  pMap = (struct clib_map*)pIterator->pContainer;
 
     if (pMap->root->destruct_v_fn) {
@@ -159,9 +157,9 @@ replace_value_c_map(struct clib_iterator *pIterator, void* elem, size_t elem_siz
     replace_raw_clib_object(((struct clib_rb_node*)pIterator->pCurrentElement)->value, elem, elem_size);
 }
 
-struct clib_iterator*
+struct cstl_iterator*
     new_iterator_c_map(struct clib_map* pMap) {
-    struct clib_iterator *itr = (struct clib_iterator*) malloc(sizeof(struct clib_iterator));
+    struct cstl_iterator *itr = (struct cstl_iterator*) malloc(sizeof(struct cstl_iterator));
     itr->get_next = get_next_c_map;
     itr->get_value = get_value_c_map;
     itr->replace_value = replace_value_c_map;
@@ -172,6 +170,6 @@ struct clib_iterator*
 }
 
 void
-delete_iterator_c_map(struct clib_iterator* pItr) {
+delete_iterator_c_map(struct cstl_iterator* pItr) {
     free(pItr);
 }
