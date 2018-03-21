@@ -71,7 +71,7 @@ cstl_slist_push_back(struct cstl_slist* pSlist, void* elem, size_t elem_size) {
 }
 
 static void
-__remove_c_list(struct cstl_slist* pSlist, struct cstl_slist_node* pSlistNode) {
+__cstl_slist_remove(struct cstl_slist* pSlist, struct cstl_slist_node* pSlistNode) {
     if (pSlist->destruct_fn) {
         void* elem;
         if (cstl_object_get_raw(pSlistNode->elem, &elem) == CSTL_ERROR_SUCCESS) {
@@ -95,7 +95,7 @@ cstl_slist_remove(struct cstl_slist* pSlist, int pos) {
 
     if (pos == 0) {
         pSlist->head = current->next;
-        __remove_c_list(pSlist, current);
+        __cstl_slist_remove(pSlist, current);
         pSlist->size--;
         return;
     }
@@ -104,7 +104,7 @@ cstl_slist_remove(struct cstl_slist* pSlist, int pos) {
     }
     temp = current->next;
     current->next = current->next->next;
-    __remove_c_list(pSlist, temp);
+    __cstl_slist_remove(pSlist, temp);
 
     pSlist->size--;
 }
@@ -179,7 +179,7 @@ cstl_slist_find(struct cstl_slist* pSlist, void* find_value, void**out_value) {
 }
 
 static struct cstl_object*
-get_next_c_slist(struct cstl_iterator* pIterator) {
+cstl_slist_get_next(struct cstl_iterator* pIterator) {
     struct cstl_slist *pSlist = (struct cstl_slist*)pIterator->pContainer;
     if (!pIterator->pCurrentElement) {
         pIterator->pCurrentElement = (struct cstl_slist_node*)pSlist->head;
@@ -193,14 +193,14 @@ get_next_c_slist(struct cstl_iterator* pIterator) {
 }
 
 static void*
-get_value_c_slist(void* pObject) {
+cstl_slist_get_value(void* pObject) {
     void* elem;
     cstl_object_get_raw(pObject, &elem);
     return elem;
 }
 
 static void
-replace_value_c_slist(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
+cstl_slist_replace_value(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
     struct cstl_slist*  pSlist = (struct cstl_slist*)pIterator->pContainer;
     struct cstl_object *pObj = ((struct cstl_slist_node*)pIterator->pCurrentElement)->elem;
 
@@ -217,9 +217,9 @@ replace_value_c_slist(struct cstl_iterator *pIterator, void* elem, size_t elem_s
 struct cstl_iterator*
 cstl_slist_new_iterator(struct cstl_slist* pSlist) {
     struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
-    itr->get_next = get_next_c_slist;
-    itr->get_value = get_value_c_slist;
-    itr->replace_value = replace_value_c_slist;
+    itr->get_next = cstl_slist_get_next;
+    itr->get_value = cstl_slist_get_value;
+    itr->replace_value = cstl_slist_replace_value;
     itr->pContainer = pSlist;
     itr->pCurrentElement = (void*)0;
     itr->pCurrent = 0;

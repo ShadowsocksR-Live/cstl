@@ -27,7 +27,7 @@
 #define cstl_deque_INDEX(x)  ((char *)(pDeq)->pElements + (sizeof(struct cstl_object) * (x)))
 
 static cstl_error
-insert_c_deque(struct cstl_deque* pDeq, int index, void* elem, size_t elem_size) {
+cstl_deque_insert(struct cstl_deque* pDeq, int index, void* elem, size_t elem_size) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     struct cstl_object* pObject = cstl_object_new(elem, elem_size);
     if (!pObject) {
@@ -39,10 +39,11 @@ insert_c_deque(struct cstl_deque* pDeq, int index, void* elem, size_t elem_size)
 }
 
 static struct cstl_deque*
-grow_deque(struct cstl_deque* pDeq) {
+cstl_deque_grow(struct cstl_deque* pDeq) {
+    size_t size;
     pDeq->no_max_elements = pDeq->no_max_elements * 2;
-    pDeq->pElements = (struct cstl_object**) realloc(pDeq->pElements,
-        pDeq->no_max_elements * sizeof(struct cstl_object*));
+    size = pDeq->no_max_elements * sizeof(struct cstl_object*);
+    pDeq->pElements = (struct cstl_object**) realloc(pDeq->pElements, size);
     return pDeq;
 }
 
@@ -73,9 +74,9 @@ cstl_deque_push_back(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
         return CSTL_DEQUE_NOT_INITIALIZED;
     }
     if (pDeq->tail == pDeq->no_max_elements) {
-        pDeq = grow_deque(pDeq);
+        pDeq = cstl_deque_grow(pDeq);
     }
-    insert_c_deque(pDeq, pDeq->tail, elem, elem_size);
+    cstl_deque_insert(pDeq, pDeq->tail, elem, elem_size);
     pDeq->tail++;
 
     return CSTL_ERROR_SUCCESS;
@@ -89,7 +90,7 @@ cstl_deque_push_front(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
     int count = 0;
 
     if (pDeq->head == 0) {
-        pDeq = grow_deque(pDeq);
+        pDeq = cstl_deque_grow(pDeq);
         to = (pDeq->no_max_elements - pDeq->no_of_elements) / 2;
         from = pDeq->head + 1;
         count = pDeq->tail - from + 1;
@@ -97,7 +98,7 @@ cstl_deque_push_front(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
         pDeq->head = to - 1;
         pDeq->tail = pDeq->head + count;
     }
-    insert_c_deque(pDeq, pDeq->head, elem, elem_size);
+    cstl_deque_insert(pDeq, pDeq->head, elem, elem_size);
     pDeq->head--;
     return rc;
 }
@@ -211,7 +212,7 @@ cstl_deque_delete(struct cstl_deque* pDeq) {
 }
 
 static struct cstl_object*
-get_next_c_deque(struct cstl_iterator* pIterator) {
+cstl_deque_get_next(struct cstl_iterator* pIterator) {
     struct cstl_deque *pDeq = (struct cstl_deque*)pIterator->pContainer;
     int index = ((struct cstl_iterator*)pIterator)->pCurrent;
 
@@ -223,14 +224,14 @@ get_next_c_deque(struct cstl_iterator* pIterator) {
 }
 
 static void*
-get_value_c_deque(void* pObject) {
+cstl_deque_get_value(void* pObject) {
     void* elem = (void *)0;
     cstl_object_get_raw(pObject, &elem);
     return elem;
 }
 
 static void
-replace_value_c_deque(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
+cstl_deque_replace_value(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
     struct cstl_deque*  pDeq = (struct cstl_deque*)pIterator->pContainer;
     if (pDeq->destruct_fn) {
         void* old_element;
@@ -245,9 +246,9 @@ replace_value_c_deque(struct cstl_iterator *pIterator, void* elem, size_t elem_s
 struct cstl_iterator*
 cstl_deque_new_iterator(struct cstl_deque* pDeq) {
     struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
-    itr->get_next = get_next_c_deque;
-    itr->get_value = get_value_c_deque;
-    itr->replace_value = replace_value_c_deque;
+    itr->get_next = cstl_deque_get_next;
+    itr->get_value = cstl_deque_get_value;
+    itr->replace_value = cstl_deque_replace_value;
     itr->pCurrent = pDeq->head + 1;
     itr->pContainer = pDeq;
     return itr;

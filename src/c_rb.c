@@ -342,7 +342,7 @@ __remove_c_rb(struct cstl_rb* pTree, struct cstl_rb_node* z) {
 }
 
 struct cstl_rb_node*
-    cstl_rb_remove(struct cstl_rb* pTree, void* key) {
+cstl_rb_remove(struct cstl_rb* pTree, void* key) {
     struct cstl_rb_node* z = (struct cstl_rb_node*)0;
 
     z = pTree->root;
@@ -426,7 +426,7 @@ cstl_rb_minimum(struct cstl_rb* pTree, struct cstl_rb_node* x) {
 }
 
 struct cstl_rb_node *
-maximum_cstl_rb(struct cstl_rb* pTree, struct cstl_rb_node* x) {
+cstl_rb_maximum(struct cstl_rb* pTree, struct cstl_rb_node* x) {
     while (x->right != rb_sentinel) {
         x = x->right;
     }
@@ -447,7 +447,7 @@ cstl_rb_tree_successor(struct cstl_rb* pTree, struct cstl_rb_node* x) {
     if (x->right != rb_sentinel) {
         return cstl_rb_minimum(pTree, x->right);
     }
-    if (x == maximum_cstl_rb(pTree, pTree->root)) {
+    if (x == cstl_rb_maximum(pTree, pTree->root)) {
         return (struct cstl_rb_node*)0;
     }
     y = x->parent;
@@ -460,7 +460,7 @@ cstl_rb_tree_successor(struct cstl_rb* pTree, struct cstl_rb_node* x) {
 
 /*
 struct cstl_rb_node *
-get_next_c_rb(struct cstl_rb* pTree, struct cstl_rb_node**current, struct cstl_rb_node**pre) {
+cstl_rb_get_next(struct cstl_rb* pTree, struct cstl_rb_node**current, struct cstl_rb_node**pre) {
     struct cstl_rb_node* prev_current;
     while ((*current) != rb_sentinel) {
         if ((*current)->left == rb_sentinel) {

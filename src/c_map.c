@@ -118,14 +118,14 @@ cstl_map_delete(struct cstl_map* x) {
 }
 
 static struct cstl_rb_node *
-minimum_c_map(struct cstl_map *x) {
+cstl_map_minimum(struct cstl_map *x) {
     return cstl_rb_minimum(x->root, x->root->root);
 }
 
 static struct cstl_object*
-get_next_c_map(struct cstl_iterator* pIterator) {
+cstl_map_get_next(struct cstl_iterator* pIterator) {
     if (!pIterator->pCurrentElement) {
-        pIterator->pCurrentElement = minimum_c_map(pIterator->pContainer);
+        pIterator->pCurrentElement = cstl_map_minimum(pIterator->pContainer);
     } else {
         struct cstl_map *x = (struct cstl_map*)pIterator->pContainer;
         pIterator->pCurrentElement = cstl_rb_tree_successor(x->root, pIterator->pCurrentElement);
@@ -137,14 +137,14 @@ get_next_c_map(struct cstl_iterator* pIterator) {
 }
 
 static void*
-get_value_c_map(void* pObject) {
+cstl_map_get_value(void* pObject) {
     void* elem = (void *)0;
     cstl_object_get_raw(pObject, &elem);
     return elem;
 }
 
 static void
-replace_value_c_map(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
+cstl_map_replace_value(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
     struct cstl_map *pMap = (struct cstl_map*)pIterator->pContainer;
 
     if (pMap->root->destruct_v_fn) {
@@ -160,9 +160,9 @@ replace_value_c_map(struct cstl_iterator *pIterator, void* elem, size_t elem_siz
 struct cstl_iterator*
 cstl_map_new_iterator(struct cstl_map* pMap) {
     struct cstl_iterator *itr = (struct cstl_iterator*)calloc(1, sizeof(struct cstl_iterator));
-    itr->get_next = get_next_c_map;
-    itr->get_value = get_value_c_map;
-    itr->replace_value = replace_value_c_map;
+    itr->get_next = cstl_map_get_next;
+    itr->get_value = cstl_map_get_value;
+    itr->replace_value = cstl_map_replace_value;
     itr->pContainer = pMap;
     itr->pCurrent = 0;
     itr->pCurrentElement = (void*)0;

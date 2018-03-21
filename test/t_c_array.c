@@ -1,7 +1,7 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
  *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
- *
+ * 
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
@@ -58,11 +58,13 @@ free_e(void* ptr) {
         }
     }
 }
+
 static void
 print_e(void* ptr) {
     if (ptr)
         printf("%d\n", *(int*)ptr);
 }
+
 static void
 test_with_int() {
     int size = 10;
@@ -134,7 +136,6 @@ test_with_int() {
         rc = cstl_array_element_at(myArray, i, &p_rv);
         print_e(p_rv);
         free(p_rv);
-
     }
 
     cstl_array_delete(myArray);
@@ -224,7 +225,6 @@ test_with_strings() {
     input_array[9] = "STRING_9";
     input_array[10] = "STRING_10";
 
-
     for (i = 0; i <= size; i++) {
         char *v = cstl_strdup(input_array[i]);
         cstl_array_push_back(myArray, &v, sizeof(char *));
@@ -310,6 +310,7 @@ replace_values_using_iterators(struct cstl_array* myArray) {
     }
     cstl_array_delete_iterator(myItr);
 }
+
 static struct cstl_array*
 create_array() {
     int size = 10;
@@ -334,6 +335,7 @@ create_array() {
     }
     return myArray;
 }
+
 void test_with_iterator_function() {
     struct cstl_array* myArray = create_array();
     print_using_iterators(myArray);
@@ -341,6 +343,7 @@ void test_with_iterator_function() {
     print_using_iterators(myArray);
     cstl_array_delete(myArray);
 }
+
 void
 test_c_array() {
     test_with_int();

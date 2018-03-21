@@ -26,11 +26,12 @@
 #include <stdio.h>
 
 static struct cstl_array*
-array_check_and_grow(struct cstl_array* pArray) {
+cstl_array_check_and_grow(struct cstl_array* pArray) {
     if (pArray->no_of_elements >= pArray->no_max_elements) {
+        size_t size;
         pArray->no_max_elements = 2 * pArray->no_max_elements;
-        pArray->pElements = (struct cstl_object**) realloc(pArray->pElements,
-            pArray->no_max_elements * sizeof(struct cstl_object*));
+        size = pArray->no_max_elements * sizeof(struct cstl_object*);
+        pArray->pElements = (struct cstl_object**) realloc(pArray->pElements, size);
     }
     return pArray;
 }
@@ -55,7 +56,7 @@ cstl_array_new(int array_size, cstl_compare fn_c, cstl_destroy fn_d) {
 }
 
 static cstl_error
-insert_c_array(struct cstl_array* pArray, int index, void* elem, size_t elem_size) {
+cstl_array_insert(struct cstl_array* pArray, int index, void* elem, size_t elem_size) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     struct cstl_object* pObject = cstl_object_new(elem, elem_size);
     if (!pObject) {
@@ -73,9 +74,9 @@ cstl_array_push_back(struct cstl_array* pArray, void* elem, size_t elem_size) {
     if (!pArray) {
         return CSTL_ARRAY_NOT_INITIALIZED;
     }
-    array_check_and_grow(pArray);
+    cstl_array_check_and_grow(pArray);
 
-    rc = insert_c_array(pArray, pArray->no_of_elements, elem, elem_size);
+    rc = cstl_array_insert(pArray, pArray->no_of_elements, elem, elem_size);
 
     return rc;
 }
@@ -126,7 +127,7 @@ cstl_array_reserve(struct cstl_array* pArray, int new_size) {
     if (new_size <= pArray->no_max_elements) {
         return CSTL_ERROR_SUCCESS;
     }
-    array_check_and_grow(pArray);
+    cstl_array_check_and_grow(pArray);
     return CSTL_ERROR_SUCCESS;
 }
 
@@ -149,13 +150,13 @@ cstl_array_insert_at(struct cstl_array* pArray, int index, void* elem, size_t el
     if (index < 0 || index > pArray->no_max_elements) {
         return CSTL_ARRAY_INDEX_OUT_OF_BOUND;
     }
-    array_check_and_grow(pArray);
+    cstl_array_check_and_grow(pArray);
 
     memmove(&(pArray->pElements[index + 1]),
         &pArray->pElements[index],
         (pArray->no_of_elements - index) * sizeof(struct cstl_object*));
 
-    rc = insert_c_array(pArray, index, elem, elem_size);
+    rc = cstl_array_insert(pArray, index, elem, elem_size);
 
     return rc;
 }
@@ -214,7 +215,7 @@ cstl_array_delete(struct cstl_array* pArray) {
 }
 
 static struct cstl_object*
-get_next_c_array(struct cstl_iterator* pIterator) {
+cstl_array_get_next(struct cstl_iterator* pIterator) {
     struct cstl_array *pArray = (struct cstl_array*)pIterator->pContainer;
     if (pIterator->pCurrent > cstl_array_size(pArray)) {
         return (struct cstl_object*)0;
@@ -224,16 +225,15 @@ get_next_c_array(struct cstl_iterator* pIterator) {
 }
 
 static void*
-get_value_c_array(void* pObject) {
-    void* elem;
+cstl_array_get_value(void* pObject) {
+    void* elem = (void *)0;
     cstl_object_get_raw(pObject, &elem);
     return elem;
 }
 
 static void
-replace_value_c_array(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
+cstl_array_replace_value(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
     struct cstl_array*  pArray = (struct cstl_array*)pIterator->pContainer;
-
     if (pArray->destruct_fn) {
         void* old_element;
         if (CSTL_ERROR_SUCCESS == cstl_object_get_raw(pIterator->pCurrentElement, &old_element)) {
@@ -247,9 +247,9 @@ replace_value_c_array(struct cstl_iterator *pIterator, void* elem, size_t elem_s
 struct cstl_iterator*
 cstl_array_new_iterator(struct cstl_array* pArray) {
     struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
-    itr->get_next = get_next_c_array;
-    itr->get_value = get_value_c_array;
-    itr->replace_value = replace_value_c_array;
+    itr->get_next = cstl_array_get_next;
+    itr->get_value = cstl_array_get_value;
+    itr->replace_value = cstl_array_replace_value;
     itr->pContainer = pArray;
     itr->pCurrent = 0;
     return itr;

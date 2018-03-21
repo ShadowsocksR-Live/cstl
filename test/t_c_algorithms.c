@@ -41,13 +41,13 @@ compare_integers(void* left, void* right) {
         return 1;
     return 0;
 }
+
 static int
 compare_integers_ptr(void* left, void* right) {
     int *l = *((int**)left);
     int *r = *((int**)right);
     return *l == *r;
 }
-
 
 static struct cstl_array*
 create_c_array() {
@@ -93,6 +93,7 @@ create_deque() {
     }
     return myDeq;
 }
+
 static struct cstl_set*
 create_set() {
     int test[] = { 13,8,17,1,11,15,25,6,22,27 };
@@ -126,6 +127,7 @@ create_map() {
     }
     return pMap;
 }
+
 static struct cstl_slist*
 create_slist() {
     struct cstl_slist* pList = cstl_slist_new(free_element, compare_integers_ptr);

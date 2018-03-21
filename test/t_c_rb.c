@@ -1,7 +1,7 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
  *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
- *
+ * 
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
@@ -131,8 +131,7 @@ static void update_values ( void* v, int *l, int *r, int *p , int *e, struct cst
 }
 
 static void 
-test_each_elements(int l,int r, int p, int e,void* v, TS ts[], int i, 
-        struct cstl_rb* tree) {
+test_each_elements(int l,int r, int p, int e,void* v, TS ts[], int i, struct cstl_rb* tree) {
     assert ( ts[i].element == e);
     if (ts[i].left != 0 ) 
         assert ( ts[i].left == l);
@@ -190,30 +189,29 @@ test_c_rb() {
         {3,2,4,6,BLACK},{7,0,0,9,RED},{17,0,0,18,RED},
         {20,0,0,18,RED},{2,0,0,3,RED},{4,0,0,3,RED},
         {9,7,0,6,BLACK}
-    };	
+    };
     TS ts_delete_9[] = {
         {15,6,18,0,BLACK},{6,3,7,15,RED},{18,17,20,15,BLACK},
         {3,2,4,6,RED},{7,0,0,6,RED},{17,0,0,18,RED},
         {20,0,0,18,RED},{2,0,0,3,RED},{4,0,0,3,RED}
-    };	
+    };
     TS ts_delete_15[] = {
         {6,3,7,17,RED},{18,0,20,17,BLACK},
         {3,2,4,6,RED},{7,0,0,6,RED},{17,6,18,0,RED},
         {20,0,0,18,RED},{2,0,0,3,RED},{4,0,0,3,RED}
-    };			
+    };
     TS ts_insert_1[] = {
         {6,3,17,0,BLACK},{18,0,20,17,BLACK},
         {3,2,4,6,RED},{7,0,0,17,RED},{17,7,18,6,RED},
         {20,0,0,18,RED},{2,1,0,3,BLACK},{4,0,0,3,BLACK},
         {1,0,0,2,RED}
-    };			
-
+    };
 
     size = (sizeof(ts)/sizeof(TS));
     tree = create_tree(ts,size);
-    test_all_elements(tree, ts, size); 
-    {   
-        i = 13;	
+    test_all_elements(tree, ts, size);
+    {
+        i = 13;
         size = (sizeof(ts)/sizeof(TS));
         size_after_delete = (sizeof(ts_delete_leaf_13)/sizeof(TS));
         node = cstl_rb_remove( tree, &i);
@@ -224,7 +222,7 @@ test_c_rb() {
         test_all_elements(tree, ts_delete_leaf_13, size_after_delete);
     }
     {
-        i = 9;	
+        i = 9;
         size_after_delete = (sizeof(ts_delete_9)/sizeof(TS));
         node = cstl_rb_remove( tree, &i);
         if ( node != (struct cstl_rb_node*)0  ) {
@@ -234,7 +232,7 @@ test_c_rb() {
         test_all_elements(tree, ts_delete_9, size_after_delete);
     }
     {
-        i = 15;	
+        i = 15;
         size_after_delete = (sizeof(ts_delete_15)/sizeof(TS));
         node = cstl_rb_remove( tree, &i);
         if ( node != (struct cstl_rb_node*)0  ) {

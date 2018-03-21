@@ -1,7 +1,7 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
  *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
- *
+ * 
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
@@ -54,12 +54,12 @@ struct cstl_object {
 };
 
 struct cstl_iterator {
-	struct cstl_object* (*get_next)(struct cstl_iterator*);
-	void (*replace_value)(struct cstl_iterator*,void*,size_t);
-	void* (*get_value)(void*);
-	void* pContainer;
-	int   pCurrent;
-	void* pCurrentElement;
+    struct cstl_object* (*get_next)(struct cstl_iterator*);
+    void (*replace_value)(struct cstl_iterator*,void*,size_t);
+    void* (*get_value)(void*);
+    void* pContainer;
+    int   pCurrent;
+    void* pCurrentElement;
 };
 
 #include "c_array.h"

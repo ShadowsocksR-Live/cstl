@@ -1,7 +1,7 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
- *  This file is part of clib library
+ *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
- *
+ * 
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
  *  in the Software without restriction, including without limitation the rights
@@ -26,4 +26,3 @@
 
 
 #endif  /* _C_ITERATOR_H_ */
-

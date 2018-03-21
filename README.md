@@ -112,5 +112,3 @@ cstl_error   cstl_map_delete ( struct cstl_map* pMap);
 struct cstl_iterator* cstl_map_new_iterator(struct cstl_map* pMap);
 void cstl_map_delete_iterator ( struct cstl_iterator* pItr);
 ```
-
-
