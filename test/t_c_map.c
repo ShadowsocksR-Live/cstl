@@ -112,12 +112,27 @@ print_using_iterator(struct cstl_map *myMap) {
     struct cstl_object *pElement;
     printf("------------------------------------------------\n");
     myItr = cstl_map_new_iterator(myMap);
-    pElement = myItr->get_next(myItr);
-    while (pElement) {
-        void* value = myItr->get_value(pElement);
-        printf("%d\n", *(int*)value);
+
+    while (pElement = myItr->get_next(myItr)) {
+        struct cstl_rb_node *current = ((struct cstl_rb_node*)(myItr->pCurrentElement));
+        struct cstl_object* key0 = current->key;
+        struct cstl_object* value0 = current->value;
+        int *value = (int *)0;
+        char *key = (char *)0;
+
+        assert(value0 == pElement);
+
+#if 1
+        key = (char *) cstl_object_get_data(key0);
+        value = (int *) cstl_object_get_data(value0);
+        printf("%s : %d\n", key, *value);
+#else
+        key = myItr->get_value(key0);
+        value = myItr->get_value(pElement);
+        printf("%s : %d\n", key, *value);
         free(value);
-        pElement = myItr->get_next(myItr);
+        free(key);
+#endif
     }
     cstl_map_delete_iterator(myItr);
 }

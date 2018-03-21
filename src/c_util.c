@@ -62,6 +62,10 @@ cstl_object_get_raw(struct cstl_object *inObject, void**elem) {
     return CSTL_ERROR_SUCCESS;
 }
 
+const void * cstl_object_get_data(struct cstl_object *inObject) {
+    return inObject->raw_data;
+}
+
 void
 cstl_object_replace_raw(struct cstl_object* current_object, void* elem, size_t elem_size) {
     free(current_object->raw_data);

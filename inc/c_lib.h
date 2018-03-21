@@ -81,6 +81,7 @@ extern char* cstl_strdup ( char *ptr );
 
 extern struct cstl_object* cstl_object_new (void* inObject, size_t obj_size);
 extern cstl_error cstl_object_get_raw (struct cstl_object *inObject, void**elem);
+extern const void * cstl_object_get_data(struct cstl_object *inObject);
 extern void  cstl_object_delete  (struct cstl_object* inObject );
 extern void cstl_object_replace_raw(struct cstl_object* current_object,void* elem, size_t elem_size);
 
