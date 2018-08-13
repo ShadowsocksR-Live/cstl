@@ -12,14 +12,14 @@ struct cstl_array {
 
 struct cstl_array* cstl_array_new ( int init_size, cstl_compare fn_c, cstl_destroy fn_d);
 cstl_error cstl_array_push_back ( struct cstl_array* pArray, void* elem, size_t elem_size);
-cstl_error cstl_array_element_at( struct cstl_array* pArray, int pos, void**e);
+const void * cstl_array_element_at(struct cstl_array* pArray, int index);
 cstl_error cstl_array_insert_at ( struct cstl_array* pArray, int index, void* elem, size_t elem_size);
 int cstl_array_size( struct cstl_array* pArray);
 int cstl_array_capacity( struct cstl_array* pArray );
 cstl_bool  cstl_array_empty( struct cstl_array* pArray);
 cstl_error cstl_array_reserve( struct cstl_array* pArray, int pos);
-cstl_error cstl_array_front( struct cstl_array* pArray,void* elem);
-cstl_error cstl_array_back( struct cstl_array* pArray,void* elem);
+const void * cstl_array_front(struct cstl_array* pArray);
+const void * cstl_array_back(struct cstl_array* pArray);
 cstl_error cstl_array_remove_from ( struct cstl_array*, int pos);
 cstl_error cstl_array_delete( struct cstl_array* pArray);
 
@@ -43,14 +43,14 @@ struct cstl_deque* cstl_deque_new( int deq_size , cstl_compare fn_c, cstl_destro
 cstl_error     cstl_deque_push_back (struct cstl_deque* pDeq, void* elem, size_t elem_size);
 cstl_error     cstl_deque_push_front(struct cstl_deque* pDeq, void* elem,size_t elem_size);
 
-cstl_error     cstl_deque_front     (struct cstl_deque* pDeq,void*);
-cstl_error     cstl_deque_back      (struct cstl_deque* pDeq,void*);
+cstl_error     cstl_deque_front(struct cstl_deque* pDeq, const void **elem);
+cstl_error     cstl_deque_back(struct cstl_deque* pDeq, const void **elem);
 cstl_error     cstl_deque_pop_back  (struct cstl_deque* pDeq);
 cstl_error     cstl_deque_pop_front (struct cstl_deque* pDeq);
 cstl_bool      cstl_deque_empty     (struct cstl_deque* pDeq);
 int            cstl_deque_size ( struct cstl_deque* pDeq);
 cstl_error     cstl_deque_delete ( struct cstl_deque* pDeq);
-cstl_error     cstl_deque_element_at (struct cstl_deque* pDeq, int index, void**elem);
+const void *   cstl_deque_element_at(struct cstl_deque* pDeq, int index);
 
 struct cstl_iterator* cstl_deque_new_iterator(struct cstl_deque* pDeq);
 void cstl_deque_delete_iterator ( struct cstl_iterator* pItr);
@@ -89,7 +89,7 @@ struct cstl_set* cstl_set_new( cstl_compare fn_c, cstl_destroy fn_d);
 cstl_error   cstl_set_insert ( struct cstl_set* pSet, void* key, size_t key_size);
 cstl_bool    cstl_set_exists ( struct cstl_set* pSet, void* key);
 cstl_error   cstl_set_remove ( struct cstl_set* pSet, void* key);
-cstl_bool    cstl_set_find   ( struct cstl_set* pSet, void* key, void* outKey);
+cstl_bool    cstl_set_find   ( struct cstl_set* pSet, void* key, const void **outKey);
 cstl_error   cstl_set_delete ( struct cstl_set* pSet);
 
 struct cstl_iterator* cstl_set_new_iterator(struct cstl_set* pSet);

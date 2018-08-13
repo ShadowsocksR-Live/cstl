@@ -81,18 +81,15 @@ cstl_array_push_back(struct cstl_array* pArray, void* elem, size_t elem_size) {
     return rc;
 }
 
-cstl_error
-cstl_array_element_at(struct cstl_array* pArray, int index, void** elem) {
-    cstl_error rc = CSTL_ERROR_SUCCESS;
-
+const void *
+cstl_array_element_at(struct cstl_array* pArray, int index) {
     if (!pArray) {
-        return CSTL_ARRAY_NOT_INITIALIZED;
+        return NULL;
     }
     if (index < 0 || index > pArray->no_max_elements) {
-        return CSTL_ARRAY_INDEX_OUT_OF_BOUND;
+        return NULL;
     }
-    cstl_object_get_raw(pArray->pElements[index], elem);
-    return rc;
+    return cstl_object_get_data(pArray->pElements[index]);
 }
 
 int
@@ -131,14 +128,14 @@ cstl_array_reserve(struct cstl_array* pArray, int new_size) {
     return CSTL_ERROR_SUCCESS;
 }
 
-cstl_error
-cstl_array_front(struct cstl_array* pArray, void* elem) {
-    return cstl_array_element_at(pArray, 0, elem);
+const void *
+cstl_array_front(struct cstl_array* pArray) {
+    return cstl_array_element_at(pArray, 0);
 }
 
-cstl_error
-cstl_array_back(struct cstl_array* pArray, void* elem) {
-    return cstl_array_element_at(pArray, pArray->no_of_elements - 1, elem);
+const void *
+cstl_array_back(struct cstl_array* pArray) {
+    return cstl_array_element_at(pArray, pArray->no_of_elements - 1);
 }
 
 cstl_error
@@ -172,10 +169,9 @@ cstl_array_remove_from(struct cstl_array* pArray, int index) {
         return CSTL_ARRAY_INDEX_OUT_OF_BOUND;
     }
     if (pArray->destruct_fn) {
-        void* elem;
-        if (CSTL_ERROR_SUCCESS == cstl_array_element_at(pArray, index, &elem)) {
+        void *elem = (void *) cstl_array_element_at(pArray, index);
+        if (elem) {
             pArray->destruct_fn(elem);
-            free(elem);
         }
     }
     cstl_object_delete(pArray->pElements[index]);
@@ -198,10 +194,9 @@ cstl_array_delete(struct cstl_array* pArray) {
     }
     if (pArray->destruct_fn) {
         for (i = 0; i < pArray->no_of_elements; i++) {
-            void* elem;
-            if (CSTL_ERROR_SUCCESS == cstl_array_element_at(pArray, i, &elem)) {
+            void *elem = (void *) cstl_array_element_at(pArray, i);
+            if ( elem ) {
                 pArray->destruct_fn(elem);
-                free(elem);
             }
         }
     }
@@ -235,10 +230,9 @@ static void
 cstl_array_replace_value(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
     struct cstl_array*  pArray = (struct cstl_array*)pIterator->pContainer;
     if (pArray->destruct_fn) {
-        void* old_element;
-        if (CSTL_ERROR_SUCCESS == cstl_object_get_raw(pIterator->pCurrentElement, &old_element)) {
+        void *old_element = (void *) cstl_object_get_data(pIterator->pCurrentElement);
+        if (old_element) {
             pArray->destruct_fn(old_element);
-            free(old_element);
         }
     }
     cstl_object_replace_raw(pIterator->pCurrentElement, elem, elem_size);

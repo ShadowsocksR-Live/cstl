@@ -70,10 +70,9 @@ cstl_set_remove(struct cstl_set* pSet, void* key) {
     node = cstl_rb_remove(pSet->root, key);
     if (node != (struct cstl_rb_node*)0) {
         if (pSet->root->destruct_k_fn) {
-            void* key = (void*)0;
-            if (CSTL_ERROR_SUCCESS == cstl_object_get_raw(node->key, &key)) {
+            void *key = (void *) cstl_object_get_data(node->key);
+            if (key) {
                 pSet->root->destruct_k_fn(key);
-                free(key);
             }
         }
         cstl_object_delete(node->key);
@@ -84,7 +83,7 @@ cstl_set_remove(struct cstl_set* pSet, void* key) {
 }
 
 cstl_bool
-cstl_set_find(struct cstl_set* pSet, void* key, void* outKey) {
+cstl_set_find(struct cstl_set* pSet, void* key, const void** outKey) {
     struct cstl_rb_node* node;
 
     if (pSet == (struct cstl_set*)0) {
@@ -94,8 +93,9 @@ cstl_set_find(struct cstl_set* pSet, void* key, void* outKey) {
     if (node == (struct cstl_rb_node*)0) {
         return cstl_false;
     }
-    cstl_object_get_raw(node->key, outKey);
-
+    if (outKey) {
+        *outKey = cstl_object_get_data(node->key);
+    }
     return cstl_true;
 }
 

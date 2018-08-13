@@ -119,7 +119,7 @@ test_c_deque() {
     int flip = 1;
     int i = 0;
     int limit = 20;
-    void*  element;
+    const void*  element = NULL;
     int j = 0;
 
     struct cstl_deque* myDeq = cstl_deque_new(10, compare_e, NULL);
@@ -136,11 +136,9 @@ test_c_deque() {
     }
     cstl_deque_front(myDeq, &element);
     assert(*(int*)element == limit - 1);
-    free(element);
 
     cstl_deque_back(myDeq, &element);
     assert(*(int*)element == limit);
-    free(element);
 
     while (cstl_deque_empty(myDeq) != cstl_true) {
         cstl_deque_pop_front(myDeq);
@@ -154,10 +152,9 @@ test_c_deque() {
         cstl_deque_push_back(myDeq, &v, sizeof(int*));
     }
     for (i = myDeq->head + 1; i < myDeq->tail; i++) {
-        int** elem;
-        if (cstl_deque_element_at(myDeq, i, (void *)&elem) == CSTL_ERROR_SUCCESS) {
+        int **elem = (int **) cstl_deque_element_at(myDeq, i);
+        if ( elem ) {
             assert(**elem == j++);
-            free(elem);
         }
     }
     cstl_deque_delete(myDeq);

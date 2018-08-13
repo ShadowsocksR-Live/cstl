@@ -53,7 +53,6 @@ static struct cstl_array*
 create_c_array() {
     int size = 10;
     int i = 0;
-    int rc;
     void* p_rv = (void*)0;
     int rv = 0;
 
@@ -66,10 +65,9 @@ create_c_array() {
     assert(cstl_false == cstl_array_empty(myArray));
     assert(size == cstl_array_size(myArray));
     for (i = 0; i <= size; i++) {
-        rc = cstl_array_element_at(myArray, i, &p_rv);
+        p_rv = (void*) cstl_array_element_at(myArray, i);
         rv = *(int*)p_rv;
         assert(rv == i);
-        free(p_rv);
     }
     return myArray;
 }

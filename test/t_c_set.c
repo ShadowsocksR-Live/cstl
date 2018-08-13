@@ -92,7 +92,7 @@ test_c_set() {
         int test[] = { 0,1,2,3,4,5,6,7,8,9 };
         int index = 0;
         int size = sizeof(test) / sizeof(test[0]);
-        void* outKey;
+        const void* outKey = NULL;
 
         struct cstl_set* pSet = cstl_set_new(compare_int, NULL);
 
@@ -108,7 +108,6 @@ test_c_set() {
         index = 9;
         cstl_set_find(pSet, &index, &outKey);
         assert(9 == *(int*)outKey);
-        free(outKey);
         cstl_set_delete(pSet);
     }
     {

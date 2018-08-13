@@ -32,7 +32,7 @@ extern struct cstl_set* cstl_set_new( cstl_compare fn_c, cstl_destroy fn_d);
 extern cstl_error   cstl_set_insert ( struct cstl_set* pSet, void* key, size_t key_size);
 extern cstl_bool    cstl_set_exists ( struct cstl_set* pSet, void* key);
 extern cstl_error   cstl_set_remove ( struct cstl_set* pSet, void* key);
-extern cstl_bool    cstl_set_find   ( struct cstl_set* pSet, void* key, void* outKey);
+extern cstl_bool    cstl_set_find   ( struct cstl_set* pSet, void* key, const void **outKey);
 extern cstl_error   cstl_set_delete ( struct cstl_set* pSet);
 
 extern struct cstl_iterator* cstl_set_new_iterator(struct cstl_set* pSet);

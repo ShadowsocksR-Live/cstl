@@ -73,10 +73,9 @@ cstl_slist_push_back(struct cstl_slist* pSlist, void* elem, size_t elem_size) {
 static void
 __cstl_slist_remove(struct cstl_slist* pSlist, struct cstl_slist_node* pSlistNode) {
     if (pSlist->destruct_fn) {
-        void* elem;
-        if (cstl_object_get_raw(pSlistNode->elem, &elem) == CSTL_ERROR_SUCCESS) {
+        void *elem = (void *)cstl_object_get_data(pSlistNode->elem);
+        if (elem) {
             pSlist->destruct_fn(elem);
-            free(elem);
         }
     }
     cstl_object_delete(pSlistNode->elem);
@@ -151,12 +150,12 @@ cstl_slist_insert(struct cstl_slist* pSlist, int pos, void* elem, size_t elem_si
 
 void
 cstl_slist_for_each(struct cstl_slist* pSlist, void(*fn)(void*)) {
-    void* elem;
     struct cstl_slist_node* current = pSlist->head;
     while (current != (struct cstl_slist_node*)0) {
-        cstl_object_get_raw(current->elem, &elem);
-        (fn)(elem);
-        free(elem);
+        void *elem = (void *) cstl_object_get_data(current->elem);
+        if (elem && fn) {
+            fn(elem);
+        }
         current = current->next;
     }
 }
@@ -205,10 +204,9 @@ cstl_slist_replace_value(struct cstl_iterator *pIterator, void* elem, size_t ele
     struct cstl_object *pObj = ((struct cstl_slist_node*)pIterator->pCurrentElement)->elem;
 
     if (pSlist->destruct_fn) {
-        void* old_element;
-        if (cstl_object_get_raw(pObj, &old_element) == CSTL_ERROR_SUCCESS) {
+        void *old_element = (void *) cstl_object_get_data(pObj);
+        if (old_element) {
             pSlist->destruct_fn(old_element);
-            free(old_element);
         }
     }
     cstl_object_replace_raw(pObj, elem, elem_size);

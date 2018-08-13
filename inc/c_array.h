@@ -34,14 +34,14 @@ struct cstl_array {
 
 extern struct cstl_array* cstl_array_new ( int init_size, cstl_compare fn_c, cstl_destroy fn_d);
 extern cstl_error cstl_array_push_back ( struct cstl_array* pArray, void* elem, size_t elem_size);
-extern cstl_error cstl_array_element_at( struct cstl_array* pArray, int pos, void**e);
+extern const void * cstl_array_element_at(struct cstl_array* pArray, int index);
 extern cstl_error cstl_array_insert_at ( struct cstl_array* pArray, int index, void* elem, size_t elem_size);
 extern int cstl_array_size( struct cstl_array* pArray);
 extern int cstl_array_capacity( struct cstl_array* pArray );
 extern cstl_bool  cstl_array_empty( struct cstl_array* pArray);
 extern cstl_error cstl_array_reserve( struct cstl_array* pArray, int pos);
-extern cstl_error cstl_array_front( struct cstl_array* pArray,void* elem);
-extern cstl_error cstl_array_back( struct cstl_array* pArray,void* elem);
+extern const void * cstl_array_front(struct cstl_array* pArray);
+extern const void * cstl_array_back(struct cstl_array* pArray);
 extern cstl_error cstl_array_remove_from ( struct cstl_array*, int pos);
 extern cstl_error cstl_array_delete( struct cstl_array* pArray);
 
