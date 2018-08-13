@@ -56,12 +56,11 @@ check_exists_all(struct cstl_map* myMap) {
     int size = sizeof(char_value) / sizeof(char_value[0]);
     int i = 0;
     for (i = 0; i < size; i++) {
-        void* value;
+        const void* value;
         assert(cstl_true == cstl_map_exists(myMap, char_value[i]));
-        assert(cstl_true == cstl_map_find(myMap, char_value[i], &value));
+        assert((value = cstl_map_find(myMap, char_value[i])) != NULL);
         printf("-----> [%s == %d]\n", char_value[i], *(int*)value);
         assert(*(int*)value == int_value[i]);
-        free(value);
     }
 }
 

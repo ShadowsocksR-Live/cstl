@@ -153,8 +153,8 @@ cstl_array_insert_at(struct cstl_array* pArray, int index, void* elem, size_t el
     cstl_array_check_and_grow(pArray);
 
     memmove(&(pArray->pElements[index + 1]),
-        &pArray->pElements[index],
-        (pArray->no_of_elements - index) * sizeof(struct cstl_object*));
+            &pArray->pElements[index],
+            (pArray->no_of_elements - index) * sizeof(struct cstl_object*));
 
     rc = cstl_array_insert(pArray, index, elem, elem_size);
 
@@ -181,8 +181,8 @@ cstl_array_remove_from(struct cstl_array* pArray, int index) {
     cstl_object_delete(pArray->pElements[index]);
 
     memmove(&(pArray->pElements[index]),
-        &pArray->pElements[index + 1],
-        (pArray->no_of_elements - index) * sizeof(struct cstl_object*));
+            &pArray->pElements[index + 1],
+            (pArray->no_of_elements - index) * sizeof(struct cstl_object*));
     pArray->no_of_elements--;
 
     return rc;

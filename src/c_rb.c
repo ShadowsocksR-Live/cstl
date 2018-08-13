@@ -205,7 +205,9 @@ cstl_rb_insert(struct cstl_rb* pTree, void* k, size_t key_size, void* v, size_t 
         free(cur_key);
         free(new_key);
         if (c == 0) {
-            /* TODO : Delete node here */
+            cstl_object_delete(x->key);
+            cstl_object_delete(x->value);
+            free(x);
             return CSTL_RBTREE_KEY_DUPLICATE;
         }
         z = y;

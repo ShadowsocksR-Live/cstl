@@ -106,7 +106,7 @@ struct cstl_map* cstl_map_new    ( cstl_compare fn_c_k, cstl_destroy fn_k_d, cst
 cstl_error   cstl_map_insert ( struct cstl_map* pMap, void* key, size_t key_size, void* value,  size_t value_size);
 cstl_bool    cstl_map_exists ( struct cstl_map* pMap, void* key);
 cstl_error   cstl_map_remove ( struct cstl_map* pMap, void* key);
-cstl_bool    cstl_map_find   ( struct cstl_map* pMap, void* key, void**value);
+const void * cstl_map_find(struct cstl_map* pMap, const void* key);
 cstl_error   cstl_map_delete ( struct cstl_map* pMap);
 
 struct cstl_iterator* cstl_map_new_iterator(struct cstl_map* pMap);

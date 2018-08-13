@@ -31,8 +31,9 @@ struct cstl_map {
 extern struct cstl_map* cstl_map_new( cstl_compare fn_c_k, cstl_destroy fn_k_d, cstl_destroy fn_v_d);
 extern cstl_error   cstl_map_insert ( struct cstl_map* pMap, void* key, size_t key_size, void* value,  size_t value_size);
 extern cstl_bool    cstl_map_exists ( struct cstl_map* pMap, void* key);
+extern cstl_error   cstl_map_replace(struct cstl_map* pMap, void* key, void* value, size_t value_size);
 extern cstl_error   cstl_map_remove ( struct cstl_map* pMap, void* key);
-extern cstl_bool    cstl_map_find   ( struct cstl_map* pMap, void* key, void**value);
+extern const void * cstl_map_find(struct cstl_map* pMap, const void* key);
 extern cstl_error   cstl_map_delete ( struct cstl_map* pMap);
 
 extern struct cstl_iterator* cstl_map_new_iterator(struct cstl_map* pMap);

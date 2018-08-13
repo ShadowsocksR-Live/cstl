@@ -84,11 +84,12 @@ replace_values_using_iterators(struct cstl_slist* pList) {
     myItr = cstl_slist_new_iterator(pList);
     pElement = myItr->get_next(myItr);
     while (pElement) {
+        int *v;
         void* old_value = myItr->get_value(pElement);
         int new_value = **((int**)old_value);
         new_value = new_value * 2;
 
-        int *v = (int *)calloc(1, sizeof(int));
+        v = (int *)calloc(1, sizeof(int));
         *v = new_value;
         myItr->replace_value(myItr, &v, sizeof(int *));
         free(old_value);
@@ -110,6 +111,7 @@ test_with_iterators() {
 
 void
 test_c_slist() {
+    int *tmp;
     int i = 0;
     int *v;
     void* outValue;
@@ -154,7 +156,7 @@ test_c_slist() {
     cstl_slist_remove(list, list->size);
     cstl_slist_for_each(list, print_e);
 
-    int *tmp = (int *)calloc(1, sizeof(int));
+    tmp = (int *)calloc(1, sizeof(int));
     *tmp = 10;
     if (cstl_true == cstl_slist_find(list, &tmp, &outValue)) {
         assert(*tmp == **((int**)outValue));

@@ -144,7 +144,7 @@ test_c_set() {
             // cstl_set_remove(pSet, &v);
         }
         // */
-
+        {
         struct cstl_object *pElement;
         struct cstl_iterator *myItr = cstl_set_new_iterator(pSet);
         while ((pElement = myItr->get_next(myItr))) {
@@ -153,7 +153,7 @@ test_c_set() {
             free(value);
         }
         cstl_set_delete_iterator(myItr);
-
+        }
         cstl_set_delete(pSet);
     }
     test_with_iterators();
