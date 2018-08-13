@@ -56,7 +56,7 @@ struct cstl_object {
 struct cstl_iterator {
     struct cstl_object* (*get_next)(struct cstl_iterator*);
     void (*replace_value)(struct cstl_iterator*,void*,size_t);
-    void* (*get_value)(void*);
+    const void* (*get_value)(void*);
     void* pContainer;
     int   pCurrent;
     void* pCurrentElement;
@@ -80,7 +80,6 @@ extern void  cstl_get  ( void* destination, void* source, size_t size);
 extern char* cstl_strdup ( char *ptr );
 
 extern struct cstl_object* cstl_object_new (void* inObject, size_t obj_size);
-extern cstl_error cstl_object_get_raw (struct cstl_object *inObject, void**elem);
 extern const void * cstl_object_get_data(struct cstl_object *inObject);
 extern void  cstl_object_delete  (struct cstl_object* inObject );
 extern void cstl_object_replace_raw(struct cstl_object* current_object,void* elem, size_t elem_size);

@@ -42,7 +42,7 @@ extern cstl_error     cstl_slist_insert   (struct cstl_slist* pSlist, int pos, v
 extern cstl_error     cstl_slist_push_back(struct cstl_slist* pSlist, void* elem, size_t elem_size);
 extern void           cstl_slist_remove   (struct cstl_slist* pSlist, int pos);
 extern void           cstl_slist_for_each (struct cstl_slist* pSlist, void (*fn)(void* ));
-extern cstl_bool      cstl_slist_find     (struct cstl_slist* pSlist, void* find_value, void**out_value);
+extern cstl_bool      cstl_slist_find     (struct cstl_slist* pSlist, void* find_value, const void**out_value);
 
 extern struct cstl_iterator* cstl_slist_new_iterator(struct cstl_slist* pSlit);
 extern void cstl_slist_delete_iterator ( struct cstl_iterator* pItr);

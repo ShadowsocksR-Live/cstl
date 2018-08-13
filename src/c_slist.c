@@ -161,15 +161,18 @@ cstl_slist_for_each(struct cstl_slist* pSlist, void(*fn)(void*)) {
 }
 
 cstl_bool
-cstl_slist_find(struct cstl_slist* pSlist, void* find_value, void**out_value) {
+cstl_slist_find(struct cstl_slist* pSlist, void* find_value, const void**out_value) {
     struct cstl_slist_node* current = pSlist->head;
+    const void *tmp = NULL;
     while (current != (struct cstl_slist_node*)0) {
-        cstl_object_get_raw(current->elem, out_value);
-        if ((pSlist->compare_key_fn)(find_value, *out_value) != 0) {
+        tmp = cstl_object_get_data(current->elem);
+        if ((pSlist->compare_key_fn)(find_value, (void *)tmp) != 0) {
             break;
         }
-        free(*out_value);
         current = current->next;
+    }
+    if (out_value) {
+        *out_value = tmp;
     }
     if (current) {
         return cstl_true;
@@ -191,11 +194,9 @@ cstl_slist_get_next(struct cstl_iterator* pIterator) {
     return ((struct cstl_slist_node*)pIterator->pCurrentElement)->elem;
 }
 
-static void*
+static const void*
 cstl_slist_get_value(void* pObject) {
-    void* elem;
-    cstl_object_get_raw(pObject, &elem);
-    return elem;
+    return cstl_object_get_data((struct cstl_object*)pObject);
 }
 
 static void

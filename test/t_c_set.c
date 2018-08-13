@@ -77,9 +77,8 @@ test_with_iterators() {
     myItr = cstl_set_new_iterator(pSet);
     pElement = myItr->get_next(myItr);
     while (pElement) {
-        void* value = myItr->get_value(pElement);
+        const void* value = myItr->get_value(pElement);
         printf("%d\n", *(int*)value);
-        free(value);
         pElement = myItr->get_next(myItr);
     }
     cstl_set_delete_iterator(myItr);
@@ -147,9 +146,8 @@ test_c_set() {
         struct cstl_object *pElement;
         struct cstl_iterator *myItr = cstl_set_new_iterator(pSet);
         while ((pElement = myItr->get_next(myItr))) {
-            void* value = myItr->get_value(pElement);
+            const void* value = myItr->get_value(pElement);
             printf("%s\n", *((char **)value));
-            free(value);
         }
         cstl_set_delete_iterator(myItr);
         }

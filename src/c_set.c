@@ -128,11 +128,9 @@ cstl_set_get_next(struct cstl_iterator* pIterator) {
     return ((struct cstl_rb_node*)pIterator->pCurrentElement)->key;
 }
 
-static void*
+static const void*
 cstl_set_get_value(void* pObject) {
-    void* elem = (void *)0;
-    cstl_object_get_raw(pObject, &elem);
-    return elem;
+    return cstl_object_get_data((struct cstl_object*)pObject);
 }
 
 struct cstl_iterator*

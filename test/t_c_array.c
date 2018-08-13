@@ -262,9 +262,8 @@ print_using_iterators(struct cstl_array* myArray) {
     myItr = cstl_array_new_iterator(myArray);
     pElement = myItr->get_next(myItr);
     while (pElement) {
-        void* value = myItr->get_value(pElement);
+        const void* value = myItr->get_value(pElement);
         printf("%d\n", *(int*)value);
-        free(value);
         pElement = myItr->get_next(myItr);
     }
     cstl_array_delete_iterator(myItr);
@@ -278,11 +277,10 @@ replace_values_using_iterators(struct cstl_array* myArray) {
     myItr = cstl_array_new_iterator(myArray);
     pElement = myItr->get_next(myItr);
     while (pElement) {
-        void* old_value = myItr->get_value(pElement);
+        const void* old_value = myItr->get_value(pElement);
         int new_value = *(int*)old_value;
         new_value = new_value * 2;
         myItr->replace_value(myItr, &new_value, sizeof(new_value));
-        free(old_value);
 
         pElement = myItr->get_next(myItr);
     }

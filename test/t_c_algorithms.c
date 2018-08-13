@@ -3,13 +3,13 @@
 #include <assert.h>
 #include <string.h>
 
-void print_integers(void *ptr) {
+void print_integers(const void *ptr) {
     if (ptr) {
         printf("%d\n", *(int*)ptr);
     }
 }
 
-void print_integers_ptr(void *ptr) {
+void print_integers_ptr(const void *ptr) {
     if (ptr) {
         printf("%d\n", **((int**)ptr));
     }

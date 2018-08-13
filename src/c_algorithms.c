@@ -25,14 +25,13 @@
 #include <stdlib.h>
 
 void
-cstl_for_each(struct cstl_iterator *pIterator, void(*fn)(void*)) {
+cstl_for_each(struct cstl_iterator *pIterator, void(*fn)(const void*)) {
     struct cstl_object *pElement;
 
     pElement = pIterator->get_next(pIterator);
     while (pElement) {
-        void *value = pIterator->get_value(pElement);
-        (fn)(value);
-        free(value);
+        const void *value = pIterator->get_value(pElement);
+        fn(value);
         pElement = pIterator->get_next(pIterator);
     }
 }

@@ -68,9 +68,8 @@ print_using_iterators(struct cstl_slist* pList) {
     myItr = cstl_slist_new_iterator(pList);
     pElement = myItr->get_next(myItr);
     while (pElement) {
-        void* value = myItr->get_value(pElement);
+        const void* value = myItr->get_value(pElement);
         printf("%d\n", **((int**)value));
-        free(value);
         pElement = myItr->get_next(myItr);
     }
     cstl_slist_delete_iterator(myItr);
@@ -85,14 +84,13 @@ replace_values_using_iterators(struct cstl_slist* pList) {
     pElement = myItr->get_next(myItr);
     while (pElement) {
         int *v;
-        void* old_value = myItr->get_value(pElement);
+        const void* old_value = myItr->get_value(pElement);
         int new_value = **((int**)old_value);
         new_value = new_value * 2;
 
         v = (int *)calloc(1, sizeof(int));
         *v = new_value;
         myItr->replace_value(myItr, &v, sizeof(int *));
-        free(old_value);
 
         pElement = myItr->get_next(myItr);
     }
@@ -114,7 +112,7 @@ test_c_slist() {
     int *tmp;
     int i = 0;
     int *v;
-    void* outValue;
+    const void* outValue;
     struct cstl_slist* list = cstl_slist_new(free_element, compare_element);
 
     add_elements_to_list(list, 1, 10);
@@ -160,7 +158,6 @@ test_c_slist() {
     *tmp = 10;
     if (cstl_true == cstl_slist_find(list, &tmp, &outValue)) {
         assert(*tmp == **((int**)outValue));
-        free(outValue);
     }
 
     *tmp = 100;

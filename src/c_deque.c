@@ -222,11 +222,9 @@ cstl_deque_get_next(struct cstl_iterator* pIterator) {
     return pIterator->pCurrentElement;
 }
 
-static void*
+static const void*
 cstl_deque_get_value(void* pObject) {
-    void* elem = (void *)0;
-    cstl_object_get_raw(pObject, &elem);
-    return elem;
+    return cstl_object_get_data((struct cstl_object *)pObject);
 }
 
 static void

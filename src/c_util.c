@@ -51,17 +51,6 @@ cstl_object_new(void* inObject, size_t obj_size) {
     return tmp;
 }
 
-cstl_error
-cstl_object_get_raw(struct cstl_object *inObject, void**elem) {
-    *elem = (void*)calloc(inObject->size, sizeof(char));
-    if (!*elem) {
-        return CSTL_ELEMENT_RETURN_ERROR;
-    }
-    memcpy(*elem, inObject->raw_data, inObject->size);
-
-    return CSTL_ERROR_SUCCESS;
-}
-
 const void * cstl_object_get_data(struct cstl_object *inObject) {
     return inObject->raw_data;
 }
