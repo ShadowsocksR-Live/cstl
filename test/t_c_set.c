@@ -38,21 +38,24 @@ delete_e(void* ptr) {
     }
 }
 static int
-compare_e(void* left, void* right) {
+compare_e(const void* left, const void* right) {
     char *l = *((char**)left);
     char *r = *((char**)right);
     return strcmp((const char *)l, (const char *)r);
 }
 static int
-compare_int(void* left, void* right) {
+compare_int(const void* left, const void* right) {
     int *l = (int*)left;
     int *r = (int*)right;
 
+    return (*l - *r);
+    /*
     if (*l < *r)
         return -1;
     else if (*l > *r)
         return 1;
     return 0;
+    */
 }
 
 static void

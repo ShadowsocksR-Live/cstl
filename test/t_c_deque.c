@@ -29,17 +29,17 @@
 #include <assert.h>
 
 static int
-compare_e(void* left, void* right) {
+compare_e(const void* left, const void* right) {
     int *l = (int*)left;
     int *r = (int*)right;
-    return *l == *r;
+    return (*l - *r);
 }
 
 static int
-compare_e_ptr(void* left, void* right) {
+compare_e_ptr(const void* left, const void* right) {
     int *l = *((int**)left);
     int *r = *((int**)right);
-    return *l == *r;
+    return (*l - *r);
 }
 
 static void

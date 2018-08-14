@@ -27,7 +27,7 @@
 #include <stdio.h>
 
 static int
-compare_e(void* left, void* right) {
+compare_e(const void* left, const void* right) {
     return strcmp((const char *)left, (const char *)right);
 }
 

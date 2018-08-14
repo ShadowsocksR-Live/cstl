@@ -48,17 +48,17 @@ add_elements_to_list(struct cstl_slist* ll, int x, int y) {
     }
 }
 void
-print_e(void* ptr) {
+print_e(const void* ptr, void *p) {
     if (ptr) {
         printf("%d\n", **((int**)ptr));
     }
 }
 
 static int
-compare_element(void* left, void* right) {
+compare_element(const void* left, const void* right) {
     int *l = *((int**)left);
     int *r = *((int**)right);
-    return *l == *r;
+    return (*l - *r);
 }
 static void
 print_using_iterators(struct cstl_slist* pList) {
@@ -116,52 +116,52 @@ test_c_slist() {
     struct cstl_slist* list = cstl_slist_new(free_element, compare_element);
 
     add_elements_to_list(list, 1, 10);
-    cstl_slist_for_each(list, print_e);
+    cstl_slist_for_each(list, print_e, NULL);
 
     i = 55;
     v = (int *)calloc(1, sizeof(int));
     memcpy(v, &i, sizeof(int));
     cstl_slist_insert(list, 5, &v, sizeof(int *));
-    cstl_slist_for_each(list, print_e);
+    cstl_slist_for_each(list, print_e, NULL);
 
     cstl_slist_remove(list, 5);
-    cstl_slist_for_each(list, print_e);
+    cstl_slist_for_each(list, print_e, NULL);
 
     cstl_slist_remove(list, 0);
-    cstl_slist_for_each(list, print_e);
+    cstl_slist_for_each(list, print_e, NULL);
 
     cstl_slist_remove(list, 100);
-    cstl_slist_for_each(list, print_e);
+    cstl_slist_for_each(list, print_e, NULL);
 
     i = 1;
     v = (int *)calloc(1, sizeof(int));
     memcpy(v, &i, sizeof(int));
     cstl_slist_insert(list, 1, &v, sizeof(int *));
-    cstl_slist_for_each(list, print_e);
+    cstl_slist_for_each(list, print_e, NULL);
 
     i = 11;
     v = (int *)calloc(1, sizeof(int));
     memcpy(v, &i, sizeof(int));
     cstl_slist_insert(list, 11, &v, sizeof(int *));
-    cstl_slist_for_each(list, print_e);
+    cstl_slist_for_each(list, print_e, NULL);
 
     i = 12;
     v = (int *)calloc(1, sizeof(int));
     memcpy(v, &i, sizeof(int));
     cstl_slist_insert(list, 200, &v, sizeof(int *));
-    cstl_slist_for_each(list, print_e);
+    cstl_slist_for_each(list, print_e, NULL);
 
     cstl_slist_remove(list, list->size);
-    cstl_slist_for_each(list, print_e);
+    cstl_slist_for_each(list, print_e, NULL);
 
     tmp = (int *)calloc(1, sizeof(int));
     *tmp = 10;
-    if (cstl_true == cstl_slist_find(list, &tmp, &outValue)) {
+    if ((outValue = cstl_slist_find(list, &tmp))) {
         assert(*tmp == **((int**)outValue));
     }
 
     *tmp = 100;
-    assert(cstl_false == cstl_slist_find(list, &tmp, &outValue));
+    assert((outValue = cstl_slist_find(list, &tmp)) == NULL);
     free(tmp);
 
     cstl_slist_delete(list);

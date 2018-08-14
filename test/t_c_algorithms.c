@@ -26,27 +26,30 @@ free_element(void* ptr) {
 }
 
 static int
-compare_strings(void* left, void* right) {
+compare_strings(const void* left, const void* right) {
     return strcmp((const char *)left, (const char *)right);
 }
 
 static int
-compare_integers(void* left, void* right) {
+compare_integers(const void* left, const void* right) {
     int *l = (int*)left;
     int *r = (int*)right;
 
+    return (*l - *r);
+    /*
     if (*l < *r)
         return -1;
     else if (*l > *r)
         return 1;
     return 0;
+    */
 }
 
 static int
-compare_integers_ptr(void* left, void* right) {
+compare_integers_ptr(const void* left, const void* right) {
     int *l = *((int**)left);
     int *r = *((int**)right);
-    return *l == *r;
+    return (*l - *r);
 }
 
 static struct cstl_array*

@@ -33,7 +33,7 @@
 /* ------------------------------------------------------------------------*/
 
 typedef void (*cstl_destroy)(void*);
-typedef int  (*cstl_compare)(void*,void*);
+typedef int  (*cstl_compare)(const void*,const void*);
 typedef void (*cstl_traversal)( void*);
 
 typedef int  cstl_error;

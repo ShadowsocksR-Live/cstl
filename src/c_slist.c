@@ -149,35 +149,28 @@ cstl_slist_insert(struct cstl_slist* pSlist, int pos, void* elem, size_t elem_si
 }
 
 void
-cstl_slist_for_each(struct cstl_slist* pSlist, void(*fn)(void*)) {
+cstl_slist_for_each(struct cstl_slist* pSlist, void(*fn)(const void *elem, void *p), void *p) {
     struct cstl_slist_node* current = pSlist->head;
+    if (fn == NULL) {
+        return;
+    }
     while (current != (struct cstl_slist_node*)0) {
-        void *elem = (void *) cstl_object_get_data(current->elem);
-        if (elem && fn) {
-            fn(elem);
-        }
+        fn(cstl_object_get_data(current->elem), p);
         current = current->next;
     }
 }
 
-cstl_bool
-cstl_slist_find(struct cstl_slist* pSlist, void* find_value, const void**out_value) {
+const void *
+cstl_slist_find(struct cstl_slist* pSlist, void* find_value) {
     struct cstl_slist_node* current = pSlist->head;
-    const void *tmp = NULL;
     while (current != (struct cstl_slist_node*)0) {
-        tmp = cstl_object_get_data(current->elem);
-        if ((pSlist->compare_key_fn)(find_value, (void *)tmp) != 0) {
-            break;
+        const void *tmp = cstl_object_get_data(current->elem);
+        if ((pSlist->compare_key_fn)(find_value, tmp) == 0) {
+            return tmp;
         }
         current = current->next;
     }
-    if (out_value) {
-        *out_value = tmp;
-    }
-    if (current) {
-        return cstl_true;
-    }
-    return cstl_false;
+    return NULL;
 }
 
 static struct cstl_object*
