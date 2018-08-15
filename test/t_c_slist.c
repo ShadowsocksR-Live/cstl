@@ -121,10 +121,10 @@ test_c_slist() {
     i = 55;
     v = (int *)calloc(1, sizeof(int));
     memcpy(v, &i, sizeof(int));
-    cstl_slist_insert(list, 5, &v, sizeof(int *));
+    cstl_slist_insert(list, 4, &v, sizeof(int *));
     cstl_slist_for_each(list, print_e, NULL);
 
-    cstl_slist_remove(list, 5);
+    cstl_slist_remove(list, 4);
     cstl_slist_for_each(list, print_e, NULL);
 
     cstl_slist_remove(list, 0);
@@ -136,13 +136,13 @@ test_c_slist() {
     i = 1;
     v = (int *)calloc(1, sizeof(int));
     memcpy(v, &i, sizeof(int));
-    cstl_slist_insert(list, 1, &v, sizeof(int *));
+    cstl_slist_insert(list, 0, &v, sizeof(int *));
     cstl_slist_for_each(list, print_e, NULL);
 
     i = 11;
     v = (int *)calloc(1, sizeof(int));
     memcpy(v, &i, sizeof(int));
-    cstl_slist_insert(list, 11, &v, sizeof(int *));
+    cstl_slist_insert(list, 10, &v, sizeof(int *));
     cstl_slist_for_each(list, print_e, NULL);
 
     i = 12;
@@ -151,7 +151,7 @@ test_c_slist() {
     cstl_slist_insert(list, 200, &v, sizeof(int *));
     cstl_slist_for_each(list, print_e, NULL);
 
-    cstl_slist_remove(list, list->size);
+    cstl_slist_remove(list, list->size - 1);
     cstl_slist_for_each(list, print_e, NULL);
 
     tmp = (int *)calloc(1, sizeof(int));
@@ -163,6 +163,11 @@ test_c_slist() {
     *tmp = 100;
     assert((outValue = cstl_slist_find(list, &tmp)) == NULL);
     free(tmp);
+
+    outValue = cstl_slist_element_at(list, 7);
+    assert(**((int**)outValue) == 8);
+
+    assert(cstl_slist_size(list) == 11);
 
     cstl_slist_delete(list);
 

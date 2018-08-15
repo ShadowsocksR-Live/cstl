@@ -43,31 +43,7 @@ cstl_slist_delete(struct cstl_slist* pSlist) {
 
 cstl_error
 cstl_slist_push_back(struct cstl_slist* pSlist, void* elem, size_t elem_size) {
-
-    struct cstl_slist_node* current = (struct cstl_slist_node*)0;
-    struct cstl_slist_node* new_node = (struct cstl_slist_node*)0;
-
-    new_node = (struct cstl_slist_node*)calloc(1, sizeof(struct cstl_slist_node));
-
-    new_node->elem = cstl_object_new(elem, elem_size);
-    if (!new_node->elem) {
-        return CSTL_SLIST_INSERT_FAILED;
-    }
-    new_node->next = (struct cstl_slist_node*)0;
-
-    if (pSlist->head == (struct cstl_slist_node*)0) {
-        pSlist->head = new_node;
-        pSlist->size++;
-        return CSTL_ERROR_SUCCESS;
-    }
-    current = pSlist->head;
-    while (current->next != (struct cstl_slist_node*)0) {
-        current = current->next;
-    }
-    current->next = new_node;
-    pSlist->size++;
-
-    return CSTL_ERROR_SUCCESS;
+    return cstl_slist_insert(pSlist, pSlist->size, elem, elem_size);
 }
 
 static void
@@ -88,9 +64,9 @@ cstl_slist_remove(struct cstl_slist* pSlist, int pos) {
     int i = 0;
 
     struct cstl_slist_node* current = pSlist->head;
-    struct cstl_slist_node* temp = (struct cstl_slist_node*)0;
+    struct cstl_slist_node* previous = (struct cstl_slist_node*)0;
 
-    if (pos > pSlist->size) { return; }
+    if (pos > (pSlist->size - 1)) { return; }
 
     if (pos == 0) {
         pSlist->head = current->next;
@@ -98,12 +74,12 @@ cstl_slist_remove(struct cstl_slist* pSlist, int pos) {
         pSlist->size--;
         return;
     }
-    for (i = 1; i < pos - 1; i++) {
+    for (i = 0; i < pos; ++i) {
+        previous = current;
         current = current->next;
     }
-    temp = current->next;
-    current->next = current->next->next;
-    __cstl_slist_remove(pSlist, temp);
+    previous->next = current->next;
+    __cstl_slist_remove(pSlist, current);
 
     pSlist->size--;
 }
@@ -113,36 +89,34 @@ cstl_slist_insert(struct cstl_slist* pSlist, int pos, void* elem, size_t elem_si
     int i = 0;
     struct cstl_slist_node* current = pSlist->head;
     struct cstl_slist_node* new_node = (struct cstl_slist_node*)0;
+    struct cstl_slist_node* previous = (struct cstl_slist_node*)0;
 
-    if (pos == 1) {
-        new_node = (struct cstl_slist_node*)calloc(1, sizeof(struct cstl_slist_node));
-        new_node->elem = cstl_object_new(elem, elem_size);
-        if (!new_node->elem) {
-            free(new_node);
-            return CSTL_SLIST_INSERT_FAILED;
-        }
-        new_node->next = pSlist->head;
-        pSlist->head = new_node;
-        pSlist->size++;
-        return CSTL_ERROR_SUCCESS;
+    if (pos > pSlist->size) {
+        pos = pSlist->size;
     }
 
-    if (pos >= pSlist->size + 1) {
-        return cstl_slist_push_back(pSlist, elem, elem_size);
-    }
-
-    for (i = 1; i < pos - 1; i++) {
-        current = current->next;
-    }
     new_node = (struct cstl_slist_node*)calloc(1, sizeof(struct cstl_slist_node));
+    new_node->next = (struct cstl_slist_node*)0;
     new_node->elem = cstl_object_new(elem, elem_size);
     if (!new_node->elem) {
         free(new_node);
         return CSTL_SLIST_INSERT_FAILED;
     }
 
-    new_node->next = current->next;
-    current->next = new_node;
+    if (pos == 0) {
+        new_node->next = pSlist->head;
+        pSlist->head = new_node;
+        pSlist->size++;
+        return CSTL_ERROR_SUCCESS;
+    }
+
+    for (i = 0; i < pos; ++i) {
+        previous = current;
+        current = current->next;
+    }
+
+    previous->next = new_node;
+    new_node->next = current;
     pSlist->size++;
 
     return CSTL_ERROR_SUCCESS;
@@ -171,6 +145,22 @@ cstl_slist_find(struct cstl_slist* pSlist, void* find_value) {
         current = current->next;
     }
     return NULL;
+}
+
+const void * cstl_slist_element_at(struct cstl_slist* pSlist, int pos) {
+    struct cstl_slist_node* current = pSlist->head;
+    int index = 0;
+    if (pos > pSlist->size) {
+        pos = pSlist->size;
+    }
+    for (index=0; index<pos; ++index) {
+        current = current->next;
+    }
+    return current ? cstl_object_get_data(current->elem) : NULL;
+}
+
+size_t cstl_slist_size(struct cstl_slist* pSlist) {
+    return pSlist ? pSlist->size : 0;
 }
 
 static struct cstl_object*

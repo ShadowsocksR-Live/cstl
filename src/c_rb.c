@@ -152,7 +152,7 @@ cstl_rb_find(struct cstl_rb* pTree, void* key) {
 
     while (x != rb_sentinel) {
         int c = 0;
-        void *cur_key = (void *) cstl_object_get_data(x->key);
+        const void *cur_key = cstl_object_get_data(x->key);
         c = pTree->compare_fn(key, cur_key);
         if (c == 0) {
             break;
@@ -193,8 +193,8 @@ cstl_rb_insert(struct cstl_rb* pTree, void* k, size_t key_size, void* v, size_t 
 
     while (y != rb_sentinel) {
         int c = 0;
-        void *cur_key = (void *) cstl_object_get_data(y->key);
-        void *new_key = (void *) cstl_object_get_data(x->key);
+        const void *cur_key = cstl_object_get_data(y->key);
+        const void *new_key = cstl_object_get_data(x->key);
         c = pTree->compare_fn(new_key, cur_key);
         if (c == 0) {
             cstl_object_delete(x->key);
@@ -212,8 +212,8 @@ cstl_rb_insert(struct cstl_rb* pTree, void* k, size_t key_size, void* v, size_t 
     x->parent = z;
     if (z) {
         int c = 0;
-        void *cur_key = (void *) cstl_object_get_data(z->key);
-        void *new_key = (void *) cstl_object_get_data(x->key);
+        const void *cur_key = cstl_object_get_data(z->key);
+        const void *new_key = cstl_object_get_data(x->key);
         c = pTree->compare_fn(new_key, cur_key);
         if (c < 0) {
             z->left = x;
@@ -337,7 +337,7 @@ cstl_rb_remove(struct cstl_rb* pTree, void* key) {
     z = pTree->root;
     while (z != rb_sentinel) {
         int c = 0;
-        void *cur_key = (void *) cstl_object_get_data(z->key);
+        const void *cur_key = cstl_object_get_data(z->key);
         c = pTree->compare_fn(key, cur_key);
         if (c == 0) {
             break;
