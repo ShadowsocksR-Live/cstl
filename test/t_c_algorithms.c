@@ -3,13 +3,13 @@
 #include <assert.h>
 #include <string.h>
 
-void print_integers(const void *ptr) {
+void print_integers(const void *ptr, void *p) {
     if (ptr) {
         printf("%d\n", *(int*)ptr);
     }
 }
 
-void print_integers_ptr(const void *ptr) {
+void print_integers_ptr(const void *ptr, void *p) {
     if (ptr) {
         printf("%d\n", **((int**)ptr));
     }
@@ -36,13 +36,6 @@ compare_integers(const void* left, const void* right) {
     int *r = (int*)right;
 
     return (*l - *r);
-    /*
-    if (*l < *r)
-        return -1;
-    else if (*l > *r)
-        return 1;
-    return 0;
-    */
 }
 
 static int
@@ -157,35 +150,35 @@ t_cstl_for_each(void) {
     printf("Performing for_each for array\n");
     pArray = create_c_array();
     pArrayIterator = cstl_array_new_iterator(pArray);
-    cstl_for_each(pArrayIterator, print_integers);
+    cstl_for_each(pArrayIterator, print_integers, NULL);
     cstl_array_delete(pArray);
     cstl_array_delete_iterator(pArrayIterator);
 
     printf("Performing for_each for deque\n");
     pDeq = create_deque();
     pDequeIterator = cstl_deque_new_iterator(pDeq);
-    cstl_for_each(pDequeIterator, print_integers);
+    cstl_for_each(pDequeIterator, print_integers, NULL);
     cstl_deque_delete(pDeq);
     cstl_deque_delete_iterator(pDequeIterator);
 
     printf("Performing for_each for set\n");
     pSet = create_set();
     pSetIterator = cstl_set_new_iterator(pSet);
-    cstl_for_each(pSetIterator, print_integers);
+    cstl_for_each(pSetIterator, print_integers, NULL);
     cstl_set_delete(pSet);
     cstl_set_delete_iterator(pSetIterator);
 
     printf("Performing for_each for map\n");
     pMap = create_map();
     pMapIterator = cstl_map_new_iterator(pMap);
-    cstl_for_each(pMapIterator, print_integers);
+    cstl_for_each(pMapIterator, print_integers, NULL);
     cstl_map_delete(pMap);
     cstl_map_delete_iterator(pMapIterator);
 
     printf("Performing for_each for slist\n");
     pSlist = create_slist();
     pSlistIterator = cstl_slist_new_iterator(pSlist);
-    cstl_for_each(pSlistIterator, print_integers_ptr);
+    cstl_for_each(pSlistIterator, print_integers_ptr, NULL);
     cstl_slist_delete(pSlist);
     cstl_slist_delete_iterator(pSlistIterator);
 }

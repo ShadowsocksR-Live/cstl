@@ -1,6 +1,7 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
  *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
+ *  Copyright (C) 2018 ssrlive ( ssrlivebox@gmail.com )
  * 
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -66,11 +67,9 @@ print_using_iterators(struct cstl_slist* pList) {
     struct cstl_object *pElement;
     printf("------------------------------------------------\n");
     myItr = cstl_slist_new_iterator(pList);
-    pElement = myItr->get_next(myItr);
-    while (pElement) {
+    while ((pElement = myItr->get_next(myItr)) != NULL) {
         const void* value = myItr->get_value(pElement);
         printf("%d\n", **((int**)value));
-        pElement = myItr->get_next(myItr);
     }
     cstl_slist_delete_iterator(myItr);
 }
@@ -81,8 +80,7 @@ replace_values_using_iterators(struct cstl_slist* pList) {
     struct cstl_object *pElement;
     printf("------------------------------------------------\n");
     myItr = cstl_slist_new_iterator(pList);
-    pElement = myItr->get_next(myItr);
-    while (pElement) {
+    while ((pElement = myItr->get_next(myItr)) != NULL) {
         int *v;
         const void* old_value = myItr->get_value(pElement);
         int new_value = **((int**)old_value);
@@ -91,8 +89,6 @@ replace_values_using_iterators(struct cstl_slist* pList) {
         v = (int *)calloc(1, sizeof(int));
         *v = new_value;
         myItr->replace_value(myItr, &v, sizeof(int *));
-
-        pElement = myItr->get_next(myItr);
     }
     cstl_slist_delete_iterator(myItr);
 }

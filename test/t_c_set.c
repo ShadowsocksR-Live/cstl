@@ -1,6 +1,7 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
  *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
+ *  Copyright (C) 2018 ssrlive ( ssrlivebox@gmail.com )
  * 
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -49,13 +50,6 @@ compare_int(const void* left, const void* right) {
     int *r = (int*)right;
 
     return (*l - *r);
-    /*
-    if (*l < *r)
-        return -1;
-    else if (*l > *r)
-        return 1;
-    return 0;
-    */
 }
 
 static void
@@ -78,11 +72,9 @@ test_with_iterators() {
     }
     printf("------------------------------------------------\n");
     myItr = cstl_set_new_iterator(pSet);
-    pElement = myItr->get_next(myItr);
-    while (pElement) {
+    while ((pElement = myItr->get_next(myItr)) != NULL) {
         const void* value = myItr->get_value(pElement);
         printf("%d\n", *(int*)value);
-        pElement = myItr->get_next(myItr);
     }
     cstl_set_delete_iterator(myItr);
     cstl_set_delete(pSet);

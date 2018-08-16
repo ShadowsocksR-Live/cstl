@@ -1,6 +1,7 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
  *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
+ *  Copyright (C) 2018 ssrlive ( ssrlivebox@gmail.com )
  * 
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -25,13 +26,13 @@
 #include <stdlib.h>
 
 void
-cstl_for_each(struct cstl_iterator *pIterator, void(*fn)(const void*)) {
+cstl_for_each(struct cstl_iterator *pIterator, void(*fn)(const void*, void *p), void *p) {
     struct cstl_object *pElement;
-
-    pElement = pIterator->get_next(pIterator);
-    while (pElement) {
+    if (pIterator==NULL || fn==NULL) {
+        return;
+    }
+    while ((pElement = pIterator->get_next(pIterator)) != NULL) {
         const void *value = pIterator->get_value(pElement);
-        fn(value);
-        pElement = pIterator->get_next(pIterator);
+        fn(value, p);
     }
 }

@@ -1,6 +1,7 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
  *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
+ *  Copyright (C) 2018 ssrlive ( ssrlivebox@gmail.com )
  * 
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -227,13 +228,14 @@ cstl_array_get_value(void* pObject) {
 static void
 cstl_array_replace_value(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
     struct cstl_array*  pArray = (struct cstl_array*)pIterator->pContainer;
+    struct cstl_object *currentElement = (struct cstl_object *)pIterator->pCurrentElement;
     if (pArray->destruct_fn) {
-        void *old_element = (void *) cstl_object_get_data((struct cstl_object *)pIterator->pCurrentElement);
+        void *old_element = (void *) cstl_object_get_data(currentElement);
         if (old_element) {
             pArray->destruct_fn(old_element);
         }
     }
-    cstl_object_replace_raw(pIterator->pCurrentElement, elem, elem_size);
+    cstl_object_replace_raw(currentElement, elem, elem_size);
 }
 
 struct cstl_iterator*

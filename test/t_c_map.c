@@ -1,6 +1,7 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
  *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
+ *  Copyright (C) 2018 ssrlive ( ssrlivebox@gmail.com )
  * 
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -42,12 +43,11 @@ insert_all(struct cstl_map* myMap) {
     int size = sizeof(char_value) / sizeof(char_value[0]);
     int i = 0;
     for (i = 0; i < size; i++) {
-        char *key = cstl_strdup(char_value[i]);
+        char *key = char_value[i];
         int key_length = (int)strlen(key) + 1;
         int value = int_value[i];
         printf("Inserting [%s -> %d]\n", key, value);
         cstl_map_insert(myMap, key, key_length, &value, sizeof(int));
-        free(key);
     }
 }
 

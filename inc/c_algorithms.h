@@ -1,6 +1,7 @@
 /** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **
  *  This file is part of cstl library
  *  Copyright (C) 2011 Avinash Dongre ( dongre.avinash@gmail.com )
+ *  Copyright (C) 2018 ssrlive ( ssrlivebox@gmail.com )
  * 
  *  Permission is hereby granted, free of charge, to any person obtaining a copy
  *  of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +24,6 @@
 #ifndef _C_ALGORITHMS_
 #define _C_ALGORITHMS_
 
-extern void cstl_for_each(struct cstl_iterator* pIterator, void (*fn)(const void*));
+extern void cstl_for_each(struct cstl_iterator* pIterator, void (*fn)(const void*, void*p), void *p);
 
 #endif
