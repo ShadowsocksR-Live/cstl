@@ -74,12 +74,12 @@ test_with_int() {
     struct cstl_array* myArray = cstl_array_new(8, compare_e, NULL);
     assert(cstl_true == cstl_array_empty(myArray));
 
-    for (i = 0; i <= size; i++) {
+    for (i = 0; i < size; i++) {
         cstl_array_push_back(myArray, &i, sizeof(int));
     }
     assert(cstl_false == cstl_array_empty(myArray));
     assert(size == cstl_array_size(myArray));
-    for (i = 0; i <= size; i++) {
+    for (i = 0; i < size; i++) {
         p_rv = (void*) cstl_array_element_at(myArray, i);
         rv = *(int*)p_rv;
         assert(rv == i);
@@ -90,7 +90,7 @@ test_with_int() {
 
     p_rv = (void*) cstl_array_back(myArray);
     rv = *(int*)p_rv;
-    assert(rv == size);
+    assert(rv == (size - 1));
 
     cstl_array_remove_from(myArray, 0);
     assert(size - 1 == cstl_array_size(myArray));
@@ -106,12 +106,12 @@ test_with_int() {
     assert(rv == size / 2 + 2);
 
     size = cstl_array_size(myArray);
-    cstl_array_remove_from(myArray, size);
+    cstl_array_remove_from(myArray, size - 1);
     assert(size - 1 == cstl_array_size(myArray));
     size = cstl_array_size(myArray);
-    p_rv = (void*) cstl_array_element_at(myArray, size);
+    p_rv = (void*) cstl_array_element_at(myArray, size - 1);
     rv = *(int*)p_rv;
-    assert(rv == 9);
+    assert(rv == 8);
 
     i = 900;
     cstl_array_insert_at(myArray, 5, &i, sizeof(int));
@@ -140,14 +140,14 @@ test_with_pointers() {
     struct cstl_array* myArray = cstl_array_new(8, compare_e_ptr, free_e);
     assert(cstl_true == cstl_array_empty(myArray));
 
-    for (i = 0; i <= size; i++) {
+    for (i = 0; i < size; i++) {
         int *v = (int*)calloc(1, sizeof(int));
-        memcpy(v, &i, sizeof(int));
+        *v = i;
         cstl_array_push_back(myArray, &v, sizeof(int*));
     }
     assert(cstl_false == cstl_array_empty(myArray));
     assert(size == cstl_array_size(myArray));
-    for (i = 0; i <= size; i++) {
+    for (i = 0; i < size; i++) {
         p_rv = (void*) cstl_array_element_at(myArray, i);
         rv = *((int**)p_rv);
         assert(*rv == i);
@@ -158,7 +158,7 @@ test_with_pointers() {
 
     p_rv = (void *) cstl_array_back(myArray);
     rv = *((int**)p_rv);
-    assert(*rv == size);
+    assert(*rv == size - 1);
 
     cstl_array_remove_from(myArray, 0);
     assert(size - 1 == cstl_array_size(myArray));
@@ -175,14 +175,14 @@ test_with_pointers() {
     assert(*rv == size / 2 + 2);
 
     size = cstl_array_size(myArray);
-    cstl_array_remove_from(myArray, size);
+    cstl_array_remove_from(myArray, size - 1);
     assert(size - 1 == cstl_array_size(myArray));
 
     size = cstl_array_size(myArray);
 
-    p_rv = (void*) cstl_array_element_at(myArray, size);
+    p_rv = (void*) cstl_array_element_at(myArray, size - 1);
     rv = *((int**)p_rv);
-    assert(*rv == 9);
+    assert(*rv == 8);
 
     cstl_array_delete(myArray);
 }
@@ -209,13 +209,13 @@ test_with_strings() {
     input_array[9] = "STRING_9";
     input_array[10] = "STRING_10";
 
-    for (i = 0; i <= size; i++) {
+    for (i = 0; i < size; i++) {
         char *v = cstl_strdup(input_array[i]);
         cstl_array_push_back(myArray, &v, sizeof(char *));
     }
     assert(cstl_false == cstl_array_empty(myArray));
     assert(size == cstl_array_size(myArray));
-    for (i = 0; i <= size; i++) {
+    for (i = 0; i < size; i++) {
         p_rv = (void*) cstl_array_element_at(myArray, i);
         rv = *((char**)p_rv);
         assert(strcmp(rv, input_array[i]) == 0);
@@ -226,7 +226,7 @@ test_with_strings() {
 
     p_rv = (void *) cstl_array_back(myArray);
     rv = *((char**)p_rv);
-    assert(strcmp(rv, input_array[size]) == 0);
+    assert(strcmp(rv, input_array[size - 1]) == 0);
 
     cstl_array_remove_from(myArray, 0);
     assert(size - 1 == cstl_array_size(myArray));
@@ -243,13 +243,13 @@ test_with_strings() {
     assert(strcmp(rv, input_array[size / 2 + 2]) == 0);
 
     size = cstl_array_size(myArray);
-    cstl_array_remove_from(myArray, size);
+    cstl_array_remove_from(myArray, size - 1);
     assert(size - 1 == cstl_array_size(myArray));
     size = cstl_array_size(myArray);
 
-    p_rv = (void *) cstl_array_element_at(myArray, size);
+    p_rv = (void *) cstl_array_element_at(myArray, size - 1);
     rv = *((char**)p_rv);
-    assert(strcmp(rv, input_array[9]) == 0);
+    assert(strcmp(rv, input_array[8]) == 0);
 
     cstl_array_delete(myArray);
 }
@@ -260,11 +260,9 @@ print_using_iterators(struct cstl_array* myArray) {
     struct cstl_object *pElement;
     printf("------------------------------------------------\n");
     myItr = cstl_array_new_iterator(myArray);
-    pElement = myItr->get_next(myItr);
-    while (pElement) {
+    while ((pElement = myItr->get_next(myItr)) != NULL) {
         const void* value = myItr->get_value(pElement);
         printf("%d\n", *(int*)value);
-        pElement = myItr->get_next(myItr);
     }
     cstl_array_delete_iterator(myItr);
 }
@@ -275,14 +273,11 @@ replace_values_using_iterators(struct cstl_array* myArray) {
     struct cstl_object *pElement;
     printf("------------------------------------------------\n");
     myItr = cstl_array_new_iterator(myArray);
-    pElement = myItr->get_next(myItr);
-    while (pElement) {
+    while ((pElement = myItr->get_next(myItr)) != NULL) {
         const void* old_value = myItr->get_value(pElement);
         int new_value = *(int*)old_value;
         new_value = new_value * 2;
         myItr->replace_value(myItr, &new_value, sizeof(new_value));
-
-        pElement = myItr->get_next(myItr);
     }
     cstl_array_delete_iterator(myItr);
 }
@@ -297,12 +292,12 @@ create_array() {
     struct cstl_array* myArray = cstl_array_new(8, compare_e, NULL);
     assert(cstl_true == cstl_array_empty(myArray));
 
-    for (i = 0; i <= size; i++) {
+    for (i = 0; i < size; i++) {
         cstl_array_push_back(myArray, &i, sizeof(int));
     }
     assert(cstl_false == cstl_array_empty(myArray));
     assert(size == cstl_array_size(myArray));
-    for (i = 0; i <= size; i++) {
+    for (i = 0; i < size; i++) {
         p_rv = (void*) cstl_array_element_at(myArray, i);
         rv = *(int*)p_rv;
         assert(rv == i);

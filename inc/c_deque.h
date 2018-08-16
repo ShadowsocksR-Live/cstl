@@ -26,10 +26,10 @@
 
 struct cstl_deque {
     struct cstl_object**pElements;
-    int no_max_elements;
+    int capacity;
     int head;
     int tail;
-    int no_of_elements;
+    int count;
     cstl_compare compare_fn;
     cstl_destroy destruct_fn;
 };

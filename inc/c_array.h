@@ -25,8 +25,8 @@
 #define _C_ARRAY_H_
 
 struct cstl_array {
-    int no_max_elements; /* Number of maximum elements array can hold without reallocation */
-    int no_of_elements;  /* Number of current elements in the array */
+    int capacity; /* Number of maximum elements array can hold without reallocation */
+    int count;  /* Number of current elements in the array */
     struct cstl_object** pElements; /* actual storage area */
     cstl_compare compare_fn; /* Compare function pointer*/
     cstl_destroy destruct_fn; /* Destructor function pointer*/

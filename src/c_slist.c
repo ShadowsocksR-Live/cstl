@@ -139,7 +139,7 @@ cstl_slist_find(struct cstl_slist* pSlist, void* find_value) {
     struct cstl_slist_node* current = pSlist->head;
     while (current != (struct cstl_slist_node*)0) {
         const void *tmp = cstl_object_get_data(current->elem);
-        if ((pSlist->compare_key_fn)(find_value, tmp) == 0) {
+        if (pSlist->compare_key_fn(find_value, tmp) == 0) {
             return tmp;
         }
         current = current->next;

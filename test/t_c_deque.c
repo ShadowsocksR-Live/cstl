@@ -58,13 +58,11 @@ replace_values_using_iterators(struct cstl_deque* myDeq) {
     struct cstl_object *pElement;
 
     myItr = cstl_deque_new_iterator(myDeq);
-    pElement = myItr->get_next(myItr);
-    while (pElement) {
+    while ((pElement = myItr->get_next(myItr)) != NULL) {
         const void* old_value = myItr->get_value(pElement);
         int new_value = *(int*)old_value;
         new_value = new_value * 2;
         myItr->replace_value(myItr, &new_value, sizeof(new_value));
-        pElement = myItr->get_next(myItr);
     }
     cstl_deque_delete_iterator(myItr);
 }
@@ -94,11 +92,9 @@ print_using_iterator(struct cstl_deque* myDeq) {
 
     printf("------------------------------------------------\n");
     myItr = cstl_deque_new_iterator(myDeq);
-    pElement = myItr->get_next(myItr);
-    while (pElement) {
+    while ((pElement = myItr->get_next(myItr)) != NULL) {
         const void* value = myItr->get_value(pElement);
         printf("%d\n", *(int*)value);
-        pElement = myItr->get_next(myItr);
     }
     cstl_deque_delete_iterator(myItr);
 }
@@ -146,7 +142,7 @@ test_c_deque() {
     myDeq = cstl_deque_new(10, compare_e_ptr, free_e);
     for (i = 0; i <= limit; i++) {
         int *v = (int*)calloc(1, sizeof(int));
-        memcpy(v, &i, sizeof(int));
+        *v = i;
         cstl_deque_push_back(myDeq, &v, sizeof(int*));
     }
     for (i = myDeq->head + 1; i < myDeq->tail; i++) {

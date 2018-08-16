@@ -3,8 +3,8 @@
 ## Dynamic Array
 ```cpp
 struct cstl_array {
-    int no_max_elements; /* Number of maximum elements array can hold without reallocation */
-    int no_of_elements;  /* Number of current elements in the array */
+    int capacity; /* Number of maximum elements array can hold without reallocation */
+    int count;  /* Number of current elements in the array */
     struct cstl_object** pElements; /* actual storage area */
     cstl_compare compare_fn; /* Compare function pointer*/
     cstl_destroy destruct_fn; /* Destructor function pointer*/
@@ -31,10 +31,10 @@ void cstl_array_delete_iterator ( struct cstl_iterator* pItr);
 ```cpp
 struct cstl_deque {
     struct cstl_object**pElements;
-    int no_max_elements;
+    int capacity;
     int head;
     int tail;
-    int no_of_elements;
+    int count;
     cstl_compare compare_fn;
     cstl_destroy destruct_fn;
 }c_deque;

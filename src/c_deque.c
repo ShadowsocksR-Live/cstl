@@ -34,15 +34,15 @@ cstl_deque_insert(struct cstl_deque* pDeq, int index, void* elem, size_t elem_si
         return CSTL_ARRAY_INSERT_FAILED;
     }
     pDeq->pElements[index] = pObject;
-    pDeq->no_of_elements++;
+    pDeq->count++;
     return rc;
 }
 
 static struct cstl_deque*
 cstl_deque_grow(struct cstl_deque* pDeq) {
     size_t size;
-    pDeq->no_max_elements = pDeq->no_max_elements * 2;
-    size = pDeq->no_max_elements * sizeof(struct cstl_object*);
+    pDeq->capacity = pDeq->capacity * 2;
+    size = pDeq->capacity * sizeof(struct cstl_object*);
     pDeq->pElements = (struct cstl_object**) realloc(pDeq->pElements, size);
     return pDeq;
 }
@@ -53,17 +53,17 @@ cstl_deque_new(int deq_size, cstl_compare fn_c, cstl_destroy fn_d) {
     if (pDeq == (struct cstl_deque*)0) {
         return (struct cstl_deque*)0;
     }
-    pDeq->no_max_elements = deq_size < 8 ? 8 : deq_size;
-    pDeq->pElements = (struct cstl_object**) calloc(pDeq->no_max_elements, sizeof(struct cstl_object*));
+    pDeq->capacity = deq_size < 8 ? 8 : deq_size;
+    pDeq->pElements = (struct cstl_object**) calloc(pDeq->capacity, sizeof(struct cstl_object*));
 
     if (pDeq == (struct cstl_deque*)0) {
         return (struct cstl_deque*)0;
     }
     pDeq->compare_fn = fn_c;
     pDeq->destruct_fn = fn_d;
-    pDeq->head = (int)pDeq->no_max_elements / 2;
+    pDeq->head = (int)pDeq->capacity / 2;
     pDeq->tail = pDeq->head + 1;
-    pDeq->no_of_elements = 0;
+    pDeq->count = 0;
 
     return pDeq;
 }
@@ -73,7 +73,7 @@ cstl_deque_push_back(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
     if (pDeq == (struct cstl_deque*)0) {
         return CSTL_DEQUE_NOT_INITIALIZED;
     }
-    if (pDeq->tail == pDeq->no_max_elements) {
+    if (pDeq->tail == pDeq->capacity) {
         pDeq = cstl_deque_grow(pDeq);
     }
     cstl_deque_insert(pDeq, pDeq->tail, elem, elem_size);
@@ -91,12 +91,12 @@ cstl_deque_push_front(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
 
     if (pDeq->head == 0) {
         pDeq = cstl_deque_grow(pDeq);
-        to = (pDeq->no_max_elements - pDeq->no_of_elements) / 2;
+        to = (pDeq->capacity - pDeq->count) / 2;
         from = pDeq->head + 1;
-        count = pDeq->tail - from + 1;
+        count = pDeq->tail - from;
         memmove(&(pDeq->pElements[to]), &(pDeq->pElements[from]), count * sizeof(struct cstl_object*));
         pDeq->head = to - 1;
-        pDeq->tail = pDeq->head + count;
+        pDeq->tail = pDeq->head + count + 1;
     }
     cstl_deque_insert(pDeq, pDeq->head, elem, elem_size);
     pDeq->head--;
@@ -138,7 +138,7 @@ cstl_deque_pop_back(struct cstl_deque* pDeq) {
     }
     cstl_object_delete(pDeq->pElements[pDeq->tail - 1]);
     pDeq->tail--;
-    pDeq->no_of_elements--;
+    pDeq->count--;
 
     return CSTL_ERROR_SUCCESS;
 }
@@ -157,7 +157,7 @@ cstl_deque_pop_front(struct cstl_deque* pDeq) {
     cstl_object_delete(pDeq->pElements[pDeq->head + 1]);
 
     pDeq->head++;
-    pDeq->no_of_elements--;
+    pDeq->count--;
 
     return CSTL_ERROR_SUCCESS;
 }
@@ -167,7 +167,7 @@ cstl_deque_empty(struct cstl_deque* pDeq) {
     if (pDeq == (struct cstl_deque*)0) {
         return cstl_true;
     }
-    return pDeq->no_of_elements == 0 ? cstl_true : cstl_false;
+    return pDeq->count == 0 ? cstl_true : cstl_false;
 }
 
 int
@@ -175,7 +175,7 @@ cstl_deque_size(struct cstl_deque* pDeq) {
     if (pDeq == (struct cstl_deque*)0) {
         return cstl_true;
     }
-    return pDeq->no_of_elements - 1;
+    return pDeq->count;
 }
 
 const void *
@@ -213,13 +213,13 @@ cstl_deque_delete(struct cstl_deque* pDeq) {
 static struct cstl_object*
 cstl_deque_get_next(struct cstl_iterator* pIterator) {
     struct cstl_deque *pDeq = (struct cstl_deque*)pIterator->pContainer;
-    int index = ((struct cstl_iterator*)pIterator)->pCurrent;
+    int index = pIterator->pCurrent;
 
     if (index < 0 || index >= pDeq->tail) {
         return (struct cstl_object*)0;
     }
     pIterator->pCurrentElement = pDeq->pElements[pIterator->pCurrent++];
-    return pIterator->pCurrentElement;
+    return (struct cstl_object*)pIterator->pCurrentElement;
 }
 
 static const void*
@@ -230,13 +230,14 @@ cstl_deque_get_value(void* pObject) {
 static void
 cstl_deque_replace_value(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
     struct cstl_deque*  pDeq = (struct cstl_deque*)pIterator->pContainer;
+    struct cstl_object *currentElement = (struct cstl_object *)pIterator->pCurrentElement;
     if (pDeq->destruct_fn) {
-        void *old_element = (void *) cstl_object_get_data(pIterator->pCurrentElement);
+        void *old_element = (void *) cstl_object_get_data(currentElement);
         if (old_element) {
             pDeq->destruct_fn(old_element);
         }
     }
-    cstl_object_replace_raw(pIterator->pCurrentElement, elem, elem_size);
+    cstl_object_replace_raw(currentElement, elem, elem_size);
 }
 
 struct cstl_iterator*
