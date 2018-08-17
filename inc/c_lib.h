@@ -68,7 +68,7 @@ struct cstl_iterator {
 #include "c_rb.h"
 #include "c_set.h"
 #include "c_map.h"
-#include "c_slist.h"
+#include "c_list.h"
 #include "c_map.h"
 #include "c_algorithms.h"
 

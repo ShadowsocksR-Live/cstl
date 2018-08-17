@@ -33,7 +33,7 @@
     <ClCompile Include="..\src\c_set.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\c_slist.c">
+    <ClCompile Include="..\src\c_list.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\c_util.c">
@@ -65,7 +65,7 @@
     <ClInclude Include="..\inc\c_set.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\c_slist.h">
+    <ClInclude Include="..\inc\c_list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

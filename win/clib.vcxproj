@@ -200,7 +200,7 @@
     <ClCompile Include="..\src\c_map.c" />
     <ClCompile Include="..\src\c_rb.c" />
     <ClCompile Include="..\src\c_set.c" />
-    <ClCompile Include="..\src\c_slist.c" />
+    <ClCompile Include="..\src\c_list.c" />
     <ClCompile Include="..\src\c_util.c" />
   </ItemGroup>
   <ItemGroup>
@@ -212,7 +212,7 @@
     <ClInclude Include="..\inc\c_map.h" />
     <ClInclude Include="..\inc\c_rb.h" />
     <ClInclude Include="..\inc\c_set.h" />
-    <ClInclude Include="..\inc\c_slist.h" />
+    <ClInclude Include="..\inc\c_list.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
