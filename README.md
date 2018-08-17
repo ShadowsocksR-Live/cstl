@@ -58,27 +58,27 @@ void cstl_deque_delete_iterator ( struct cstl_iterator* pItr);
 
 ## list
 ```cpp
-struct cstl_slist_node {
+struct cstl_list_node {
     struct cstl_object* elem;
-    struct cstl_slist_node *next;
+    struct cstl_list_node *next;
 };
-struct cstl_slist {
-    struct cstl_slist_node* head;
+struct cstl_list {
+    struct cstl_list_node* head;
     cstl_destroy destruct_fn;
     cstl_compare compare_key_fn;
     int size;
 };
-struct cstl_slist* cstl_slist_new(cstl_destroy fn_d, cstl_compare fn_c);
-void           cstl_slist_delete   (struct cstl_slist* pSlist);
-cstl_error     cstl_slist_insert   (struct cstl_slist* pSlist, int pos, void* elem, size_t elem_size);
-cstl_error     cstl_slist_push_back(struct cstl_slist* pSlist, void* elem, size_t elem_size);
-void           cstl_slist_remove   (struct cstl_slist* pSlist, int pos);
-void cstl_slist_for_each(struct cstl_slist* pSlist, void(*fn)(const void *elem, void *p), void *p);
-const void *   cstl_slist_find(struct cstl_slist* pSlist, void* find_value);
+struct cstl_list* cstl_list_new(cstl_destroy fn_d, cstl_compare fn_c);
+void           cstl_list_delete   (struct cstl_list* pList);
+cstl_error     cstl_list_insert   (struct cstl_list* pList, int pos, void* elem, size_t elem_size);
+cstl_error     cstl_list_push_back(struct cstl_list* pList, void* elem, size_t elem_size);
+void           cstl_list_remove   (struct cstl_list* pList, int pos);
+void cstl_list_for_each(struct cstl_list* pList, void(*fn)(const void *elem, void *p), void *p);
+const void *   cstl_list_find(struct cstl_list* pList, void* find_value);
 
 
-struct cstl_iterator* cstl_slist_new_iterator(struct cstl_slist* pSlit);
-void cstl_slist_delete_iterator ( struct cstl_iterator* pItr);
+struct cstl_iterator* cstl_list_new_iterator(struct cstl_list* pSlit);
+void cstl_list_delete_iterator ( struct cstl_iterator* pItr);
 ```
 ## set
 ```cpp

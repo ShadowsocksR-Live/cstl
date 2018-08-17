@@ -113,23 +113,22 @@ create_map() {
     int i = 0;
     struct cstl_map *pMap = cstl_map_new(compare_strings, NULL, NULL);
     for (i = 0; i < size; i++) {
-        char *key = cstl_strdup(char_value[i]);
+        char *key = char_value[i];
         int key_length = (int)strlen(key) + 1;
         int value = int_value[i];
         cstl_map_insert(pMap, key, key_length, &value, sizeof(int));
-        free(key);
     }
     return pMap;
 }
 
-static struct cstl_slist*
+static struct cstl_list*
 create_slist() {
-    struct cstl_slist* pList = cstl_slist_new(free_element, compare_integers_ptr);
+    struct cstl_list* pList = cstl_list_new(free_element, compare_integers_ptr);
     int i = 0;
     for (i = 0; i <= 10; i++) {
         int *v = (int *)calloc(1, sizeof(int));
         *v = i; // memcpy ( v, &i, sizeof ( int ));
-        cstl_slist_push_back(pList, &v, sizeof(int *));
+        cstl_list_push_back(pList, &v, sizeof(int *));
     }
     return pList;
 }
@@ -140,12 +139,12 @@ t_cstl_for_each(void) {
     struct cstl_deque *pDeq;
     struct cstl_set   *pSet;
     struct cstl_map   *pMap;
-    struct cstl_slist *pSlist;
+    struct cstl_list *pList;
     struct cstl_iterator *pArrayIterator;
     struct cstl_iterator *pDequeIterator;
     struct cstl_iterator *pSetIterator;
     struct cstl_iterator *pMapIterator;
-    struct cstl_iterator *pSlistIterator;
+    struct cstl_iterator *pListIterator;
 
     printf("Performing for_each for array\n");
     pArray = create_c_array();
@@ -176,11 +175,11 @@ t_cstl_for_each(void) {
     cstl_map_delete_iterator(pMapIterator);
 
     printf("Performing for_each for slist\n");
-    pSlist = create_slist();
-    pSlistIterator = cstl_slist_new_iterator(pSlist);
-    cstl_for_each(pSlistIterator, print_integers_ptr, NULL);
-    cstl_slist_delete(pSlist);
-    cstl_slist_delete_iterator(pSlistIterator);
+    pList = create_slist();
+    pListIterator = cstl_list_new_iterator(pList);
+    cstl_for_each(pListIterator, print_integers_ptr, NULL);
+    cstl_list_delete(pList);
+    cstl_list_delete_iterator(pListIterator);
 }
 
 void
