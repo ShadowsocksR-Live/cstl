@@ -61,13 +61,13 @@ __cstl_slist_remove(struct cstl_list* pList, struct cstl_list_node* pSlistNode) 
 }
 
 void
-cstl_list_remove(struct cstl_list* pList, int pos) {
-    int i = 0;
+cstl_list_remove(struct cstl_list* pList, size_t pos) {
+    size_t i = 0;
 
     struct cstl_list_node* current = pList->head;
     struct cstl_list_node* previous = (struct cstl_list_node*)0;
 
-    if (pos > (pList->size - 1)) { return; }
+    if (pos >= pList->size) { return; }
 
     if (pos == 0) {
         pList->head = current->next;
@@ -86,8 +86,8 @@ cstl_list_remove(struct cstl_list* pList, int pos) {
 }
 
 cstl_error
-cstl_list_insert(struct cstl_list* pList, int pos, void* elem, size_t elem_size) {
-    int i = 0;
+cstl_list_insert(struct cstl_list* pList, size_t pos, void* elem, size_t elem_size) {
+    size_t i = 0;
     struct cstl_list_node* current = pList->head;
     struct cstl_list_node* new_node = (struct cstl_list_node*)0;
     struct cstl_list_node* previous = (struct cstl_list_node*)0;
@@ -148,12 +148,16 @@ cstl_list_find(struct cstl_list* pList, void* find_value) {
     return NULL;
 }
 
-const void * cstl_list_element_at(struct cstl_list* pList, int pos) {
-    struct cstl_list_node* current = pList->head;
-    int index = 0;
-    if (pos > pList->size) {
-        pos = pList->size;
+const void * cstl_list_element_at(struct cstl_list* pList, size_t pos) {
+    struct cstl_list_node* current = NULL;
+    size_t index = 0;
+    if (pList==NULL || pList->size==0) {
+        return NULL;
     }
+    if (pos >= pList->size) {
+        pos = (pList->size - 1);
+    }
+    current = pList->head;
     for (index=0; index<pos; ++index) {
         current = current->next;
     }

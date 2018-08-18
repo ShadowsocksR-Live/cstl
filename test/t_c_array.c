@@ -124,8 +124,8 @@ test_with_int() {
     rv = *(int*)p_rv;
     assert(rv == 7);
 
-    for (i = 0; i < cstl_array_size(myArray); i++) {
-        p_rv = (void*) cstl_array_element_at(myArray, i);
+    for (i = 0; i < (int) cstl_array_size(myArray); i++) {
+        p_rv = (void*) cstl_array_element_at(myArray, (size_t)i);
         print_e(p_rv);
     }
 

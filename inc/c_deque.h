@@ -27,15 +27,15 @@
 
 struct cstl_deque {
     struct cstl_object**pElements;
-    int capacity;
-    int head;
-    int tail;
-    int count;
+    size_t capacity;
+    size_t count;
+    size_t head;
+    size_t tail;
     cstl_compare compare_fn;
     cstl_destroy destruct_fn;
 };
 
-extern struct cstl_deque* cstl_deque_new( int deq_size , cstl_compare fn_c, cstl_destroy fn_d);
+extern struct cstl_deque* cstl_deque_new( size_t deq_size , cstl_compare fn_c, cstl_destroy fn_d);
 extern cstl_error     cstl_deque_push_back (struct cstl_deque* pDeq, void* elem, size_t elem_size);
 extern cstl_error     cstl_deque_push_front(struct cstl_deque* pDeq, void* elem, size_t elem_size);
 
@@ -44,9 +44,9 @@ extern cstl_error     cstl_deque_back(struct cstl_deque* pDeq, const void **elem
 extern cstl_error     cstl_deque_pop_back  (struct cstl_deque* pDeq);
 extern cstl_error     cstl_deque_pop_front (struct cstl_deque* pDeq);
 extern cstl_bool      cstl_deque_empty     (struct cstl_deque* pDeq);
-extern int            cstl_deque_size ( struct cstl_deque* pDeq);
+extern size_t         cstl_deque_size ( struct cstl_deque* pDeq);
 extern cstl_error     cstl_deque_delete ( struct cstl_deque* pDeq);
-extern const void *   cstl_deque_element_at(struct cstl_deque* pDeq, int index);
+extern const void *   cstl_deque_element_at(struct cstl_deque* pDeq, size_t index);
 
 extern struct cstl_iterator* cstl_deque_new_iterator(struct cstl_deque* pDeq);
 extern void cstl_deque_delete_iterator ( struct cstl_iterator* pItr);

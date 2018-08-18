@@ -34,17 +34,17 @@ struct cstl_list {
     struct cstl_list_node* head;
     cstl_destroy destruct_fn;
     cstl_compare compare_key_fn;
-    int size;
+    size_t size;
 };
 
 extern struct cstl_list * cstl_list_new (cstl_destroy fn_d, cstl_compare fn_c);
 extern void           cstl_list_delete   (struct cstl_list* pList);
-extern cstl_error     cstl_list_insert   (struct cstl_list* pList, int pos, void* elem, size_t elem_size);
+extern cstl_error     cstl_list_insert   (struct cstl_list* pList, size_t pos, void* elem, size_t elem_size);
 extern cstl_error     cstl_list_push_back(struct cstl_list* pList, void* elem, size_t elem_size);
-extern void           cstl_list_remove   (struct cstl_list* pList, int pos);
+extern void           cstl_list_remove   (struct cstl_list* pList, size_t pos);
 extern void cstl_list_for_each(struct cstl_list* pList, void(*fn)(const void *elem, void *p), void *p);
 extern const void *   cstl_list_find(struct cstl_list* pList, void* find_value);
-extern const void *   cstl_list_element_at(struct cstl_list* pList, int pos);
+extern const void *   cstl_list_element_at(struct cstl_list* pList, size_t pos);
 extern size_t  cstl_list_size(struct cstl_list* pList);
 
 extern struct cstl_iterator* cstl_list_new_iterator(struct cstl_list* pSlit);

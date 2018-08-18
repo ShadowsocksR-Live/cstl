@@ -112,8 +112,8 @@ test_with_deque_iterator() {
 void
 test_c_deque() {
     int flip = 1;
-    int i = 0;
-    int limit = 20;
+    size_t i = 0;
+    size_t limit = 20;
     const void*  element = NULL;
     int j = 0;
 

@@ -59,7 +59,7 @@ struct cstl_iterator {
     void (*replace_value)(struct cstl_iterator*,void*,size_t);
     const void* (*get_value)(void*);
     void* pContainer;
-    int   pCurrent;
+    size_t   pCurrent;
     void* pCurrentElement;
 };
 

@@ -28,7 +28,7 @@
 #define cstl_deque_INDEX(x)  ((char *)(pDeq)->pElements + (sizeof(struct cstl_object) * (x)))
 
 static cstl_error
-cstl_deque_insert(struct cstl_deque* pDeq, int index, void* elem, size_t elem_size) {
+cstl_deque_insert(struct cstl_deque* pDeq, size_t index, void* elem, size_t elem_size) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     struct cstl_object* pObject = cstl_object_new(elem, elem_size);
     if (!pObject) {
@@ -49,7 +49,7 @@ cstl_deque_grow(struct cstl_deque* pDeq) {
 }
 
 struct cstl_deque*
-cstl_deque_new(int deq_size, cstl_compare fn_c, cstl_destroy fn_d) {
+cstl_deque_new(size_t deq_size, cstl_compare fn_c, cstl_destroy fn_d) {
     struct cstl_deque* pDeq = (struct cstl_deque*)calloc(1, sizeof(struct cstl_deque));
     if (pDeq == (struct cstl_deque*)0) {
         return (struct cstl_deque*)0;
@@ -86,9 +86,9 @@ cstl_deque_push_back(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
 cstl_error
 cstl_deque_push_front(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
-    int to = 0;
-    int from = 0;
-    int count = 0;
+    size_t to = 0;
+    size_t from = 0;
+    size_t count = 0;
 
     if (pDeq->head == 0) {
         pDeq = cstl_deque_grow(pDeq);
@@ -171,7 +171,7 @@ cstl_deque_empty(struct cstl_deque* pDeq) {
     return pDeq->count == 0 ? cstl_true : cstl_false;
 }
 
-int
+size_t
 cstl_deque_size(struct cstl_deque* pDeq) {
     if (pDeq == (struct cstl_deque*)0) {
         return cstl_true;
@@ -180,7 +180,7 @@ cstl_deque_size(struct cstl_deque* pDeq) {
 }
 
 const void *
-cstl_deque_element_at(struct cstl_deque* pDeq, int index) {
+cstl_deque_element_at(struct cstl_deque* pDeq, size_t index) {
     if (!pDeq) {
         return NULL;
     }
@@ -189,7 +189,7 @@ cstl_deque_element_at(struct cstl_deque* pDeq, int index) {
 
 cstl_error
 cstl_deque_delete(struct cstl_deque* pDeq) {
-    int i = 0;
+    size_t i = 0;
 
     if (pDeq == (struct cstl_deque*)0) {
         return CSTL_ERROR_SUCCESS;
@@ -214,7 +214,7 @@ cstl_deque_delete(struct cstl_deque* pDeq) {
 static struct cstl_object*
 cstl_deque_get_next(struct cstl_iterator* pIterator) {
     struct cstl_deque *pDeq = (struct cstl_deque*)pIterator->pContainer;
-    int index = pIterator->pCurrent;
+    size_t index = pIterator->pCurrent;
 
     if (index < 0 || index >= pDeq->tail) {
         return (struct cstl_object*)0;
