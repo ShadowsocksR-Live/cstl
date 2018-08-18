@@ -87,7 +87,7 @@ cstl_array_element_at(struct cstl_array* pArray, size_t index) {
     if (!pArray) {
         return NULL;
     }
-    if (index > pArray->capacity) {
+    if (index >= pArray->count) {
         return NULL;
     }
     return cstl_object_get_data(pArray->pElements[index]);
@@ -166,7 +166,7 @@ cstl_array_remove_from(struct cstl_array* pArray, size_t index) {
     if (!pArray) {
         return rc;
     }
-    if (index > pArray->capacity) {
+    if (index >= pArray->count) {
         return CSTL_ARRAY_INDEX_OUT_OF_BOUND;
     }
     if (pArray->destruct_fn) {
@@ -213,11 +213,11 @@ cstl_array_delete(struct cstl_array* pArray) {
 static struct cstl_object*
 cstl_array_get_next(struct cstl_iterator* pIterator) {
     struct cstl_array *pArray = (struct cstl_array*)pIterator->pContainer;
-    if (pIterator->pCurrent >= cstl_array_size(pArray)) {
+    if (pIterator->current_index >= cstl_array_size(pArray)) {
         return (struct cstl_object*)0;
     }
-    pIterator->pCurrentElement = pArray->pElements[pIterator->pCurrent++];
-    return (struct cstl_object *)pIterator->pCurrentElement;
+    pIterator->current_element = pArray->pElements[pIterator->current_index++];
+    return (struct cstl_object *)pIterator->current_element;
 }
 
 static const void*
@@ -228,7 +228,7 @@ cstl_array_get_value(void* pObject) {
 static void
 cstl_array_replace_value(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
     struct cstl_array*  pArray = (struct cstl_array*)pIterator->pContainer;
-    struct cstl_object *currentElement = (struct cstl_object *)pIterator->pCurrentElement;
+    struct cstl_object *currentElement = (struct cstl_object *)pIterator->current_element;
     if (pArray->destruct_fn) {
         void *old_element = (void *) cstl_object_get_data(currentElement);
         if (old_element) {
@@ -245,7 +245,7 @@ cstl_array_new_iterator(struct cstl_array* pArray) {
     itr->get_value = cstl_array_get_value;
     itr->replace_value = cstl_array_replace_value;
     itr->pContainer = pArray;
-    itr->pCurrent = 0;
+    itr->current_index = 0;
     return itr;
 }
 

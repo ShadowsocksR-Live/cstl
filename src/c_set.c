@@ -117,16 +117,16 @@ cstl_set_minimum(struct cstl_set *x) {
 
 static struct cstl_object*
 cstl_set_get_next(struct cstl_iterator* pIterator) {
-    if (!pIterator->pCurrentElement) {
-        pIterator->pCurrentElement = cstl_set_minimum(pIterator->pContainer);
+    struct cstl_set *x = (struct cstl_set*)pIterator->pContainer;
+    if (!pIterator->current_element) {
+        pIterator->current_element = cstl_set_minimum(x);
     } else {
-        struct cstl_set *x = (struct cstl_set*)pIterator->pContainer;
-        pIterator->pCurrentElement = cstl_rb_tree_successor(x->root, pIterator->pCurrentElement);
+        pIterator->current_element = cstl_rb_tree_successor(x->root, (struct cstl_rb_node*)pIterator->current_element);
     }
-    if (!pIterator->pCurrentElement) {
+    if (!pIterator->current_element) {
         return (struct cstl_object*)0;
     }
-    return ((struct cstl_rb_node*)pIterator->pCurrentElement)->key;
+    return ((struct cstl_rb_node*)pIterator->current_element)->key;
 }
 
 static const void*
@@ -140,8 +140,8 @@ cstl_set_new_iterator(struct cstl_set* pSet) {
     itr->get_next = cstl_set_get_next;
     itr->get_value = cstl_set_get_value;
     itr->pContainer = pSet;
-    itr->pCurrent = 0;
-    itr->pCurrentElement = (void*)0;
+    itr->current_index = 0;
+    itr->current_element = (void*)0;
     return itr;
 }
 

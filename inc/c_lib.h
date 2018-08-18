@@ -59,8 +59,8 @@ struct cstl_iterator {
     void (*replace_value)(struct cstl_iterator*,void*,size_t);
     const void* (*get_value)(void*);
     void* pContainer;
-    size_t   pCurrent;
-    void* pCurrentElement;
+    size_t current_index;
+    void* current_element;
 };
 
 #include "c_array.h"

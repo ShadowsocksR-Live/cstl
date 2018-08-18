@@ -145,16 +145,16 @@ cstl_map_minimum(struct cstl_map *x) {
 
 static struct cstl_object*
 cstl_map_get_next(struct cstl_iterator* pIterator) {
-    if (!pIterator->pCurrentElement) {
-        pIterator->pCurrentElement = cstl_map_minimum(pIterator->pContainer);
+    struct cstl_map *x = (struct cstl_map*)pIterator->pContainer;
+    if (!pIterator->current_element) {
+        pIterator->current_element = cstl_map_minimum(x);
     } else {
-        struct cstl_map *x = (struct cstl_map*)pIterator->pContainer;
-        pIterator->pCurrentElement = cstl_rb_tree_successor(x->root, pIterator->pCurrentElement);
+        pIterator->current_element = cstl_rb_tree_successor(x->root, (struct cstl_rb_node*)pIterator->current_element);
     }
-    if (!pIterator->pCurrentElement) {
+    if (!pIterator->current_element) {
         return (struct cstl_object*)0;
     }
-    return ((struct cstl_rb_node*)pIterator->pCurrentElement)->value;
+    return ((struct cstl_rb_node*)pIterator->current_element)->value;
 }
 
 static const void*
@@ -165,14 +165,15 @@ cstl_map_get_value(void* pObject) {
 static void
 cstl_map_replace_value(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
     struct cstl_map *pMap = (struct cstl_map*)pIterator->pContainer;
+    struct cstl_rb_node* node = (struct cstl_rb_node*)pIterator->current_element;
 
     if (pMap->root->destruct_v_fn) {
-        void *old_element = (void *) cstl_object_get_data(pIterator->pCurrentElement);
+        void *old_element = (void *) cstl_object_get_data(node->value);
         if (old_element) {
             pMap->root->destruct_v_fn(old_element);
         }
     }
-    cstl_object_replace_raw(((struct cstl_rb_node*)pIterator->pCurrentElement)->value, elem, elem_size);
+    cstl_object_replace_raw(node->value, elem, elem_size);
 }
 
 struct cstl_iterator*
@@ -182,8 +183,8 @@ cstl_map_new_iterator(struct cstl_map* pMap) {
     itr->get_value = cstl_map_get_value;
     itr->replace_value = cstl_map_replace_value;
     itr->pContainer = pMap;
-    itr->pCurrent = 0;
-    itr->pCurrentElement = (void*)0;
+    itr->current_index = 0;
+    itr->current_element = (void*)0;
     return itr;
 }
 

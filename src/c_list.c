@@ -171,15 +171,15 @@ size_t cstl_list_size(struct cstl_list* pList) {
 static struct cstl_object*
 cstl_list_get_next(struct cstl_iterator* pIterator) {
     struct cstl_list *pList = (struct cstl_list*)pIterator->pContainer;
-    if (!pIterator->pCurrentElement) {
-        pIterator->pCurrentElement = (struct cstl_list_node*)pList->head;
+    if (!pIterator->current_element) {
+        pIterator->current_element = (struct cstl_list_node*)pList->head;
     } else {
-        pIterator->pCurrentElement = ((struct cstl_list_node*)pIterator->pCurrentElement)->next;
+        pIterator->current_element = ((struct cstl_list_node*)pIterator->current_element)->next;
     }
-    if (!pIterator->pCurrentElement) {
+    if (!pIterator->current_element) {
         return (struct cstl_object*)0;
     }
-    return ((struct cstl_list_node*)pIterator->pCurrentElement)->elem;
+    return ((struct cstl_list_node*)pIterator->current_element)->elem;
 }
 
 static const void*
@@ -190,7 +190,7 @@ cstl_list_get_value(void* pObject) {
 static void
 cstl_list_replace_value(struct cstl_iterator *pIterator, void* elem, size_t elem_size) {
     struct cstl_list*  pList = (struct cstl_list*)pIterator->pContainer;
-    struct cstl_object *pObj = ((struct cstl_list_node*)pIterator->pCurrentElement)->elem;
+    struct cstl_object *pObj = ((struct cstl_list_node*)pIterator->current_element)->elem;
 
     if (pList->destruct_fn) {
         void *old_element = (void *) cstl_object_get_data(pObj);
@@ -208,8 +208,8 @@ cstl_list_new_iterator(struct cstl_list* pList) {
     itr->get_value = cstl_list_get_value;
     itr->replace_value = cstl_list_replace_value;
     itr->pContainer = pList;
-    itr->pCurrentElement = (void*)0;
-    itr->pCurrent = 0;
+    itr->current_element = (void*)0;
+    itr->current_index = 0;
     return itr;
 }
 
