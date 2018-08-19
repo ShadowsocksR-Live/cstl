@@ -116,7 +116,7 @@ test_c_slist() {
 
     i = 55;
     v = (int *)calloc(1, sizeof(int));
-    memcpy(v, &i, sizeof(int));
+    *v = i;
     cstl_list_insert(list, 4, &v, sizeof(int *));
     cstl_list_for_each(list, print_e, NULL);
 
@@ -131,7 +131,7 @@ test_c_slist() {
 
     i = 1;
     v = (int *)calloc(1, sizeof(int));
-    memcpy(v, &i, sizeof(int));
+    *v = i;
     cstl_list_insert(list, 0, &v, sizeof(int *));
     cstl_list_for_each(list, print_e, NULL);
 
