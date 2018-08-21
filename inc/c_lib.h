@@ -80,9 +80,9 @@ extern void  cstl_copy ( void* destination, void* source, size_t size );
 extern void  cstl_get  ( void* destination, void* source, size_t size);
 extern char* cstl_strdup ( char *ptr );
 
-extern struct cstl_object* cstl_object_new (void* inObject, size_t obj_size);
+extern struct cstl_object* cstl_object_new (const void* inObject, size_t obj_size);
 extern const void * cstl_object_get_data(struct cstl_object *inObject);
 extern void  cstl_object_delete  (struct cstl_object* inObject );
-extern void cstl_object_replace_raw(struct cstl_object* current_object,void* elem, size_t elem_size);
+extern void cstl_object_replace_raw(struct cstl_object* current_object,const void* elem, size_t elem_size);
 
 #endif

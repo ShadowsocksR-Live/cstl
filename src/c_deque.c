@@ -104,26 +104,18 @@ cstl_deque_push_front(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
     return rc;
 }
 
-cstl_error
-cstl_deque_front(struct cstl_deque* pDeq, const void **elem) {
-    if (pDeq == (struct cstl_deque*)0) {
-        return CSTL_DEQUE_NOT_INITIALIZED;
+const void * cstl_deque_front(struct cstl_deque* pDeq) {
+    if (pDeq) {
+        return cstl_deque_element_at(pDeq, pDeq->head + 1);
     }
-    if (elem) {
-        *elem = cstl_deque_element_at(pDeq, pDeq->head + 1);
-    }
-    return CSTL_ERROR_SUCCESS;
+    return (struct cstl_deque*)0;
 }
 
-cstl_error
-cstl_deque_back(struct cstl_deque* pDeq, const void **elem) {
-    if (pDeq == (struct cstl_deque*)0) {
-        return CSTL_DEQUE_NOT_INITIALIZED;
+const void * cstl_deque_back(struct cstl_deque* pDeq) {
+    if (pDeq) {
+        return cstl_deque_element_at(pDeq, pDeq->tail - 1);
     }
-    if (elem) {
-        *elem = cstl_deque_element_at(pDeq, pDeq->tail - 1);
-    }
-    return CSTL_ERROR_SUCCESS;
+    return (struct cstl_deque*)0;
 }
 
 cstl_error

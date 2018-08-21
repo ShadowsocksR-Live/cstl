@@ -39,8 +39,8 @@ extern struct cstl_deque* cstl_deque_new( size_t deq_size , cstl_compare fn_c, c
 extern cstl_error     cstl_deque_push_back (struct cstl_deque* pDeq, void* elem, size_t elem_size);
 extern cstl_error     cstl_deque_push_front(struct cstl_deque* pDeq, void* elem, size_t elem_size);
 
-extern cstl_error     cstl_deque_front(struct cstl_deque* pDeq, const void **elem);
-extern cstl_error     cstl_deque_back(struct cstl_deque* pDeq, const void **elem);
+extern const void *   cstl_deque_front(struct cstl_deque* pDeq);
+extern const void *   cstl_deque_back(struct cstl_deque* pDeq);
 extern cstl_error     cstl_deque_pop_back  (struct cstl_deque* pDeq);
 extern cstl_error     cstl_deque_pop_front (struct cstl_deque* pDeq);
 extern cstl_bool      cstl_deque_empty     (struct cstl_deque* pDeq);

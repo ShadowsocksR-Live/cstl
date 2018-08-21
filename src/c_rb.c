@@ -148,7 +148,7 @@ __rb_insert_fixup(struct cstl_rb* pTree, struct cstl_rb_node* x) {
 }
 
 struct cstl_rb_node*
-cstl_rb_find(struct cstl_rb* pTree, void* key) {
+cstl_rb_find(struct cstl_rb* pTree, const void* key) {
     struct cstl_rb_node* x = pTree->root;
 
     while (x != rb_sentinel) {
@@ -167,7 +167,7 @@ cstl_rb_find(struct cstl_rb* pTree, void* key) {
 }
 
 cstl_error
-cstl_rb_insert(struct cstl_rb* pTree, void* k, size_t key_size, void* v, size_t value_size) {
+cstl_rb_insert(struct cstl_rb* pTree, const void* k, size_t key_size, const void* v, size_t value_size) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     struct cstl_rb_node* x;
     struct cstl_rb_node* y;
@@ -329,7 +329,7 @@ __remove_c_rb(struct cstl_rb* pTree, struct cstl_rb_node* z) {
 }
 
 struct cstl_rb_node*
-cstl_rb_remove(struct cstl_rb* pTree, void* key) {
+cstl_rb_remove(struct cstl_rb* pTree, const void* key) {
     struct cstl_rb_node* z = (struct cstl_rb_node*)0;
 
     z = pTree->root;

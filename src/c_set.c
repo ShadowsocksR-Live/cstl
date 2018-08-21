@@ -83,21 +83,17 @@ cstl_set_remove(struct cstl_set* pSet, void* key) {
     return rc;
 }
 
-cstl_bool
-cstl_set_find(struct cstl_set* pSet, void* key, const void** outKey) {
+const void * cstl_set_find(struct cstl_set* pSet, const void* key) {
     struct cstl_rb_node* node;
 
     if (pSet == (struct cstl_set*)0) {
-        return cstl_false;
+        return NULL;
     }
     node = cstl_rb_find(pSet->root, key);
     if (node == (struct cstl_rb_node*)0) {
-        return cstl_false;
+        return NULL;
     }
-    if (outKey) {
-        *outKey = cstl_object_get_data(node->key);
-    }
-    return cstl_true;
+    return cstl_object_get_data(node->key);
 }
 
 cstl_error

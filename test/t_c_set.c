@@ -100,7 +100,7 @@ test_c_set() {
         }
 
         index = 9;
-        cstl_set_find(pSet, &index, &outKey);
+        outKey = cstl_set_find(pSet, &index);
         assert(9 == *(int*)outKey);
         cstl_set_delete(pSet);
     }

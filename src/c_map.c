@@ -39,7 +39,7 @@ cstl_map_new(cstl_compare fn_c_k, cstl_destroy fn_k_d, cstl_destroy fn_v_d) {
 }
 
 cstl_error
-cstl_map_insert(struct cstl_map* pMap, void* key, size_t key_size, void* value, size_t value_size) {
+cstl_map_insert(struct cstl_map* pMap, const void* key, size_t key_size, const void* value, size_t value_size) {
     if (pMap == (struct cstl_map*)0) {
         return CSTL_MAP_NOT_INITIALIZED;
     }
@@ -47,7 +47,7 @@ cstl_map_insert(struct cstl_map* pMap, void* key, size_t key_size, void* value, 
 }
 
 cstl_bool
-cstl_map_exists(struct cstl_map* pMap, void* key) {
+cstl_map_exists(struct cstl_map* pMap, const void* key) {
     cstl_bool found = cstl_false;
     struct cstl_rb_node* node;
 
@@ -62,7 +62,7 @@ cstl_map_exists(struct cstl_map* pMap, void* key) {
 }
 
 cstl_error
-cstl_map_replace(struct cstl_map* pMap, void* key, void* value,  size_t value_size) {
+cstl_map_replace(struct cstl_map* pMap, const void* key, const void* value,  size_t value_size) {
     struct cstl_rb_node* node;
     if (pMap == (struct cstl_map*)0) {
         return CSTL_MAP_NOT_INITIALIZED;
@@ -84,7 +84,7 @@ cstl_map_replace(struct cstl_map* pMap, void* key, void* value,  size_t value_si
 
 
 cstl_error
-cstl_map_remove(struct cstl_map* pMap, void* key) {
+cstl_map_remove(struct cstl_map* pMap, const void* key) {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     struct cstl_rb_node* node;
     if (pMap == (struct cstl_map*)0) {

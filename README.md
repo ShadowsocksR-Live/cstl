@@ -43,8 +43,8 @@ struct cstl_deque* cstl_deque_new( size_t deq_size , cstl_compare fn_c, cstl_des
 cstl_error     cstl_deque_push_back (struct cstl_deque* pDeq, void* elem, size_t elem_size);
 cstl_error     cstl_deque_push_front(struct cstl_deque* pDeq, void* elem,size_t elem_size);
 
-cstl_error     cstl_deque_front(struct cstl_deque* pDeq, const void **elem);
-cstl_error     cstl_deque_back(struct cstl_deque* pDeq, const void **elem);
+const void * cstl_deque_front(struct cstl_deque* pDeq);
+const void * cstl_deque_back(struct cstl_deque* pDeq);
 cstl_error     cstl_deque_pop_back  (struct cstl_deque* pDeq);
 cstl_error     cstl_deque_pop_front (struct cstl_deque* pDeq);
 cstl_bool      cstl_deque_empty     (struct cstl_deque* pDeq);
@@ -89,7 +89,7 @@ struct cstl_set* cstl_set_new( cstl_compare fn_c, cstl_destroy fn_d);
 cstl_error   cstl_set_insert ( struct cstl_set* pSet, void* key, size_t key_size);
 cstl_bool    cstl_set_exists ( struct cstl_set* pSet, void* key);
 cstl_error   cstl_set_remove ( struct cstl_set* pSet, void* key);
-cstl_bool    cstl_set_find   ( struct cstl_set* pSet, void* key, const void **outKey);
+const void * cstl_set_find(struct cstl_set* pSet, const void* key);
 cstl_error   cstl_set_delete ( struct cstl_set* pSet);
 
 struct cstl_iterator* cstl_set_new_iterator(struct cstl_set* pSet);
@@ -103,9 +103,9 @@ struct cstl_map {
 };
 
 struct cstl_map* cstl_map_new    ( cstl_compare fn_c_k, cstl_destroy fn_k_d, cstl_destroy fn_v_d);
-cstl_error   cstl_map_insert ( struct cstl_map* pMap, void* key, size_t key_size, void* value,  size_t value_size);
-cstl_bool    cstl_map_exists ( struct cstl_map* pMap, void* key);
-cstl_error   cstl_map_remove ( struct cstl_map* pMap, void* key);
+cstl_error   cstl_map_insert ( struct cstl_map* pMap, const void* key, size_t key_size, const void* value, size_t value_size);
+cstl_bool    cstl_map_exists ( struct cstl_map* pMap, const void* key);
+cstl_error   cstl_map_remove ( struct cstl_map* pMap, const void* key);
 const void * cstl_map_find(struct cstl_map* pMap, const void* key);
 cstl_error   cstl_map_delete ( struct cstl_map* pMap);
 

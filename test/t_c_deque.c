@@ -129,10 +129,10 @@ test_c_deque() {
             flip = 1;
         }
     }
-    cstl_deque_front(myDeq, &element);
+    element = cstl_deque_front(myDeq);
     assert(*(int*)element == limit - 1);
 
-    cstl_deque_back(myDeq, &element);
+    element = cstl_deque_back(myDeq);
     assert(*(int*)element == limit);
 
     while (cstl_deque_empty(myDeq) != cstl_true) {

@@ -37,7 +37,7 @@ cstl_get(void* destination, void* source, size_t size) {
 }
 
 struct cstl_object*
-cstl_object_new(void* inObject, size_t obj_size) {
+cstl_object_new(const void* inObject, size_t obj_size) {
     struct cstl_object* tmp = (struct cstl_object*)calloc(1, sizeof(struct cstl_object));
     if (!tmp) {
         return (struct cstl_object*)0;
@@ -57,7 +57,7 @@ const void * cstl_object_get_data(struct cstl_object *inObject) {
 }
 
 void
-cstl_object_replace_raw(struct cstl_object* current_object, void* elem, size_t elem_size) {
+cstl_object_replace_raw(struct cstl_object* current_object, const void* elem, size_t elem_size) {
     free(current_object->raw_data);
     current_object->raw_data = (void*)calloc(elem_size, sizeof(char));
     memcpy(current_object->raw_data, elem, elem_size);
