@@ -106,14 +106,14 @@ cstl_deque_push_front(struct cstl_deque* pDeq, void* elem, size_t elem_size) {
 
 const void * cstl_deque_front(struct cstl_deque* pDeq) {
     if (pDeq) {
-        return cstl_deque_element_at(pDeq, pDeq->head + 1);
+        return cstl_deque_element_at(pDeq, 0);
     }
     return (struct cstl_deque*)0;
 }
 
 const void * cstl_deque_back(struct cstl_deque* pDeq) {
     if (pDeq) {
-        return cstl_deque_element_at(pDeq, pDeq->tail - 1);
+        return cstl_deque_element_at(pDeq, pDeq->count - 1);
     }
     return (struct cstl_deque*)0;
 }
@@ -124,7 +124,7 @@ cstl_deque_pop_back(struct cstl_deque* pDeq) {
         return CSTL_DEQUE_NOT_INITIALIZED;
     }
     if (pDeq->destruct_fn) {
-        void *elem = (void *) cstl_deque_element_at(pDeq, pDeq->tail - 1);
+        void *elem = (void *) cstl_deque_element_at(pDeq, pDeq->count - 1);
         if ( elem ) {
             pDeq->destruct_fn(elem);
         }
@@ -142,7 +142,7 @@ cstl_deque_pop_front(struct cstl_deque* pDeq) {
         return CSTL_DEQUE_NOT_INITIALIZED;
     }
     if (pDeq->destruct_fn) {
-        void *elem = (void *) cstl_deque_element_at(pDeq, pDeq->head + 1);
+        void *elem = (void *) cstl_deque_element_at(pDeq, 0);
         if ( elem ) {
             pDeq->destruct_fn(elem);
         }
@@ -173,10 +173,10 @@ cstl_deque_size(struct cstl_deque* pDeq) {
 
 const void *
 cstl_deque_element_at(struct cstl_deque* pDeq, size_t index) {
-    if (!pDeq) {
+    if ((pDeq==NULL) || (index >= pDeq->count)) {
         return NULL;
     }
-    return cstl_object_get_data(pDeq->pElements[index]);
+    return cstl_object_get_data(pDeq->pElements[(pDeq->head + 1) + index]);
 }
 
 cstl_error
@@ -187,7 +187,7 @@ cstl_deque_delete(struct cstl_deque* pDeq) {
         return CSTL_ERROR_SUCCESS;
     }
     if (pDeq->destruct_fn) {
-        for (i = pDeq->head + 1; i < pDeq->tail; i++) {
+        for (i = 0; i < pDeq->count; ++i) {
             void *elem = (void *) cstl_deque_element_at(pDeq, i);
             if ( elem ) {
                 pDeq->destruct_fn(elem);

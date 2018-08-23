@@ -146,10 +146,10 @@ test_c_deque() {
         *v = i;
         cstl_deque_push_back(myDeq, &v, sizeof(int*));
     }
-    for (i = myDeq->head + 1; i < myDeq->tail; i++) {
-        int **elem = (int **) cstl_deque_element_at(myDeq, i);
+    for (i = 0; i < myDeq->count; i++) {
+        int *elem = *(int **) cstl_deque_element_at(myDeq, i);
         if ( elem ) {
-            assert(**elem == j++);
+            assert(*elem == j++);
         }
     }
     cstl_deque_delete(myDeq);
