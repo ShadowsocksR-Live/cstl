@@ -35,11 +35,15 @@ cstl_list_new(cstl_destroy fn_d, cstl_compare fn_c) {
 }
 
 void
-cstl_list_delete(struct cstl_list* pList) {
+cstl_list_destroy(struct cstl_list* pList) {
+    cstl_list_clear(pList);
+    free(pList);
+}
+
+void cstl_list_clear(struct cstl_list* pList) {
     while (pList->size != 0) {
         cstl_list_remove(pList, 0);
     }
-    free(pList);
 }
 
 cstl_error

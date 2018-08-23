@@ -100,7 +100,7 @@ test_with_iterators() {
     print_using_iterators(pList);
     replace_values_using_iterators(pList);
     print_using_iterators(pList);
-    cstl_list_delete(pList);
+    cstl_list_destroy(pList);
 }
 
 void
@@ -165,7 +165,7 @@ test_c_slist() {
 
     assert(cstl_list_size(list) == 11);
 
-    cstl_list_delete(list);
+    cstl_list_destroy(list);
 
     test_with_iterators();
 }

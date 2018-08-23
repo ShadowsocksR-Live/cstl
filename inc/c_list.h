@@ -38,7 +38,8 @@ struct cstl_list {
 };
 
 extern struct cstl_list * cstl_list_new (cstl_destroy fn_d, cstl_compare fn_c);
-extern void           cstl_list_delete   (struct cstl_list* pList);
+extern void cstl_list_destroy(struct cstl_list* pList);
+extern void cstl_list_clear(struct cstl_list* pList);
 extern cstl_error     cstl_list_insert   (struct cstl_list* pList, size_t pos, void* elem, size_t elem_size);
 extern cstl_error     cstl_list_push_back(struct cstl_list* pList, void* elem, size_t elem_size);
 extern void           cstl_list_remove   (struct cstl_list* pList, size_t pos);

@@ -178,7 +178,7 @@ t_cstl_for_each(void) {
     pList = create_slist();
     pListIterator = cstl_list_new_iterator(pList);
     cstl_for_each(pListIterator, print_integers_ptr, NULL);
-    cstl_list_delete(pList);
+    cstl_list_destroy(pList);
     cstl_list_delete_iterator(pListIterator);
 }
 
