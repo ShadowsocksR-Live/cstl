@@ -208,7 +208,7 @@ cstl_deque_get_next(struct cstl_iterator* pIterator) {
     struct cstl_deque *pDeq = (struct cstl_deque*)pIterator->pContainer;
     size_t index = pIterator->current_index;
 
-    if (index < 0 || index >= pDeq->tail) {
+    if (index <= pDeq->head || index >= pDeq->tail) {
         return (struct cstl_object*)0;
     }
     pIterator->current_element = pDeq->pElements[pIterator->current_index++];
