@@ -163,6 +163,12 @@ cstl_map_get_next(struct cstl_iterator* pIterator) {
 }
 
 static const void*
+cstl_map_get_key(struct cstl_iterator *pIterator) {
+    struct cstl_rb_node *current = (struct cstl_rb_node*)pIterator->current_element;
+    return cstl_object_get_data(current->key);
+}
+
+static const void*
 cstl_map_get_value(void* pObject) {
     return cstl_object_get_data((struct cstl_object*)pObject);
 }
@@ -185,6 +191,7 @@ struct cstl_iterator*
 cstl_map_new_iterator(struct cstl_map* pMap) {
     struct cstl_iterator *itr = (struct cstl_iterator*)calloc(1, sizeof(struct cstl_iterator));
     itr->get_next = cstl_map_get_next;
+    itr->get_key = cstl_map_get_key;
     itr->get_value = cstl_map_get_value;
     itr->replace_value = cstl_map_replace_value;
     itr->pContainer = pMap;

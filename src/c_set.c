@@ -131,6 +131,12 @@ cstl_set_get_next(struct cstl_iterator* pIterator) {
 }
 
 static const void*
+cstl_set_get_key(struct cstl_iterator* pIterator) {
+    struct cstl_rb_node *current = (struct cstl_rb_node*)pIterator->current_element;
+    return cstl_object_get_data(current->key);
+}
+
+static const void*
 cstl_set_get_value(void* pObject) {
     return cstl_object_get_data((struct cstl_object*)pObject);
 }
@@ -139,6 +145,7 @@ struct cstl_iterator*
 cstl_set_new_iterator(struct cstl_set* pSet) {
     struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
     itr->get_next = cstl_set_get_next;
+    itr->get_key = cstl_set_get_key;
     itr->get_value = cstl_set_get_value;
     itr->pContainer = pSet;
     itr->current_index = 0;

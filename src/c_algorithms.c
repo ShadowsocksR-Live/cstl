@@ -26,13 +26,14 @@
 #include <stdlib.h>
 
 void
-cstl_for_each(struct cstl_iterator *pIterator, void(*fn)(const void*, void *p), void *p) {
+cstl_for_each(struct cstl_iterator *pIterator, void(*fn)(const void *value, const void *key, void *p), void *p) {
     struct cstl_object *pElement;
     if (pIterator==NULL || fn==NULL) {
         return;
     }
     while ((pElement = pIterator->get_next(pIterator)) != NULL) {
         const void *value = pIterator->get_value(pElement);
-        fn(value, p);
+        const void *key = pIterator->get_key ? pIterator->get_key(pIterator) : NULL;
+        fn(value, key, p);
     }
 }

@@ -23,7 +23,6 @@
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include "c_lib.h"
-#include "c_rb.h"
 #include <string.h>
 #include <assert.h>
 #include <stdio.h>
@@ -116,23 +115,9 @@ print_using_iterator(struct cstl_map *myMap) {
     myItr = cstl_map_new_iterator(myMap);
 
     while ((pElement = myItr->get_next(myItr))) {
-        struct cstl_rb_node *current = ((struct cstl_rb_node*)(myItr->current_element));
-        struct cstl_object* key0 = current->key;
-        struct cstl_object* value0 = current->value;
-        int *value = (int *)0;
-        char *key = (char *)0;
-
-        assert(value0 == pElement);
-
-#if 1
-        key = *((char **) cstl_object_get_data(key0));
-        value = (int *) cstl_object_get_data(value0);
+        int *value = (int *) myItr->get_value(pElement);
+        char *key = *((char **) myItr->get_key(myItr));
         printf("%s : %d\n", key, *value);
-#else
-        key = *((char **) myItr->get_value(key0));
-        value = (int *) myItr->get_value(pElement);
-        printf("%s : %d\n", key, *value);
-#endif
     }
     cstl_map_delete_iterator(myItr);
 }

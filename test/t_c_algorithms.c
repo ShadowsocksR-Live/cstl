@@ -3,15 +3,15 @@
 #include <assert.h>
 #include <string.h>
 
-void print_integers(const void *ptr, void *p) {
-    if (ptr) {
-        printf("%d\n", *(int*)ptr);
+void print_integers(const void *value, const void *key, void *p) {
+    if (value) {
+        printf("%d\n", *(int*)value);
     }
 }
 
-void print_integers_ptr(const void *ptr, void *p) {
-    if (ptr) {
-        printf("%d\n", **((int**)ptr));
+void print_integers_ptr(const void *value, const void *key, void *p) {
+    if (value) {
+        printf("%d\n", **((int**)value));
     }
 }
 
@@ -174,7 +174,7 @@ t_cstl_for_each(void) {
     cstl_map_delete(pMap);
     cstl_map_delete_iterator(pMapIterator);
 
-    printf("Performing for_each for slist\n");
+    printf("Performing for_each for list\n");
     pList = create_slist();
     pListIterator = cstl_list_new_iterator(pList);
     cstl_for_each(pListIterator, print_integers_ptr, NULL);
