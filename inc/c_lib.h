@@ -65,7 +65,6 @@ struct cstl_iterator {
 
 #include "c_array.h"
 #include "c_deque.h"
-#include "c_rb.h"
 #include "c_set.h"
 #include "c_map.h"
 #include "c_list.h"

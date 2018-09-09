@@ -25,6 +25,8 @@
 #ifndef _C_RB_H_
 #define _C_RB_H_
 
+struct cstl_object;
+
 struct cstl_rb_node {
     struct cstl_rb_node *left;
     struct cstl_rb_node *right;

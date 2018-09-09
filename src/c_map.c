@@ -23,7 +23,12 @@
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include "c_lib.h"
+#include "c_rb.h"
 #include <stdio.h>
+
+struct cstl_map {
+    struct cstl_rb* root;
+};
 
 struct cstl_map*
 cstl_map_new(cstl_compare fn_c_k, cstl_destroy fn_k_d, cstl_destroy fn_v_d) {

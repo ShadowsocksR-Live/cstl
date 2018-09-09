@@ -147,7 +147,7 @@ test_c_slist() {
     cstl_list_insert(list, 200, &v, sizeof(int *));
     cstl_list_for_each(list, print_e, NULL);
 
-    cstl_list_remove(list, list->size - 1);
+    cstl_list_remove(list, cstl_list_count(list) - 1);
     cstl_list_for_each(list, print_e, NULL);
 
     tmp = (int *)calloc(1, sizeof(int));

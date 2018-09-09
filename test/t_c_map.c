@@ -23,6 +23,7 @@
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include "c_lib.h"
+#include "c_rb.h"
 #include <string.h>
 #include <assert.h>
 #include <stdio.h>

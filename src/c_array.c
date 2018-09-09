@@ -26,6 +26,14 @@
 #include <string.h>
 #include <stdio.h>
 
+struct cstl_array {
+    size_t capacity; /* Number of maximum elements array can hold without reallocation */
+    size_t count;  /* Number of current elements in the array */
+    struct cstl_object** pElements; /* actual storage area */
+    cstl_compare compare_fn; /* Compare function pointer*/
+    cstl_destroy destruct_fn; /* Destructor function pointer*/
+};
+
 static struct cstl_array*
 cstl_array_check_and_grow(struct cstl_array* pArray) {
     if (pArray->count >= pArray->capacity) {

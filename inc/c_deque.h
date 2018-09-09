@@ -25,17 +25,10 @@
 #ifndef _C_DEQUE_H_
 #define _C_DEQUE_H_
 
-struct cstl_deque {
-    struct cstl_object**pElements;
-    size_t capacity;
-    size_t count;
-    size_t head;
-    size_t tail;
-    cstl_compare compare_fn;
-    cstl_destroy destruct_fn;
-};
+struct cstl_deque;
 
 extern struct cstl_deque* cstl_deque_new( size_t deq_size , cstl_compare fn_c, cstl_destroy fn_d);
+extern size_t cstl_deque_count(struct cstl_deque *deque);
 extern cstl_error     cstl_deque_push_back (struct cstl_deque* pDeq, void* elem, size_t elem_size);
 extern cstl_error     cstl_deque_push_front(struct cstl_deque* pDeq, void* elem, size_t elem_size);
 

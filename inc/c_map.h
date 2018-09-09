@@ -25,9 +25,7 @@
 #ifndef _C_MAP_H_
 #define _C_MAP_H_
 
-struct cstl_map {
-    struct cstl_rb* root;
-};
+struct cstl_map;
 
 extern struct cstl_map* cstl_map_new( cstl_compare fn_c_k, cstl_destroy fn_k_d, cstl_destroy fn_v_d);
 extern cstl_error   cstl_map_insert ( struct cstl_map* pMap, const void* key, size_t key_size, const void* value, size_t value_size);

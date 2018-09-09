@@ -146,7 +146,7 @@ test_c_deque() {
         *v = i;
         cstl_deque_push_back(myDeq, &v, sizeof(int*));
     }
-    for (i = 0; i < myDeq->count; i++) {
+    for (i = 0; i < cstl_deque_count(myDeq); i++) {
         int *elem = *(int **) cstl_deque_element_at(myDeq, i);
         if ( elem ) {
             assert(*elem == j++);

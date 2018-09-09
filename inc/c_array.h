@@ -25,13 +25,7 @@
 #ifndef _C_ARRAY_H_
 #define _C_ARRAY_H_
 
-struct cstl_array {
-    size_t capacity; /* Number of maximum elements array can hold without reallocation */
-    size_t count;  /* Number of current elements in the array */
-    struct cstl_object** pElements; /* actual storage area */
-    cstl_compare compare_fn; /* Compare function pointer*/
-    cstl_destroy destruct_fn; /* Destructor function pointer*/
-};
+struct cstl_array;
 
 extern struct cstl_array* cstl_array_new ( size_t init_size, cstl_compare fn_c, cstl_destroy fn_d);
 extern cstl_error cstl_array_push_back ( struct cstl_array* pArray, void* elem, size_t elem_size);

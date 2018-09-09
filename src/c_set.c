@@ -23,7 +23,12 @@
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include "c_lib.h"
+#include "c_rb.h"
 #include <stdio.h>
+
+struct cstl_set {
+    struct cstl_rb* root;
+};
 
 struct cstl_set*
 cstl_set_new(cstl_compare fn_c, cstl_destroy fn_d) {

@@ -25,6 +25,16 @@
 #include "c_lib.h"
 #include <string.h>
 
+struct cstl_deque {
+    struct cstl_object**pElements;
+    size_t capacity;
+    size_t count;
+    size_t head;
+    size_t tail;
+    cstl_compare compare_fn;
+    cstl_destroy destruct_fn;
+};
+
 #define cstl_deque_INDEX(x)  ((char *)(pDeq)->pElements + (sizeof(struct cstl_object) * (x)))
 
 static cstl_error
@@ -67,6 +77,10 @@ cstl_deque_new(size_t deq_size, cstl_compare fn_c, cstl_destroy fn_d) {
     pDeq->count = 0;
 
     return pDeq;
+}
+
+size_t cstl_deque_count(struct cstl_deque *deque) {
+    return deque->count;
 }
 
 cstl_error

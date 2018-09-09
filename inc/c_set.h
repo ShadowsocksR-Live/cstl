@@ -25,9 +25,7 @@
 #ifndef _C_SET_H_
 #define _C_SET_H_
 
-struct cstl_set {
-    struct cstl_rb* root;
-};
+struct cstl_set;
 
 extern struct cstl_set* cstl_set_new( cstl_compare fn_c, cstl_destroy fn_d);
 extern cstl_error   cstl_set_insert ( struct cstl_set* pSet, void* key, size_t key_size);

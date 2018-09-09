@@ -25,19 +25,10 @@
 #ifndef _CSTL_LIST_H_
 #define _CSTL_LIST_H_
 
-struct cstl_list_node {
-    struct cstl_object* elem;
-    struct cstl_list_node *next;
-};
-
-struct cstl_list {
-    struct cstl_list_node* head;
-    cstl_destroy destruct_fn;
-    cstl_compare compare_key_fn;
-    size_t size;
-};
+struct cstl_list;
 
 extern struct cstl_list * cstl_list_new (cstl_destroy fn_d, cstl_compare fn_c);
+extern size_t cstl_list_count(struct cstl_list* pList);
 extern void cstl_list_destroy(struct cstl_list* pList);
 extern void cstl_list_clear(struct cstl_list* pList);
 extern cstl_error     cstl_list_insert   (struct cstl_list* pList, size_t pos, void* elem, size_t elem_size);

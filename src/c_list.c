@@ -24,6 +24,18 @@
 
 #include "c_lib.h"
 
+struct cstl_list_node {
+    struct cstl_object* elem;
+    struct cstl_list_node *next;
+};
+
+struct cstl_list {
+    struct cstl_list_node* head;
+    cstl_destroy destruct_fn;
+    cstl_compare compare_key_fn;
+    size_t size;
+};
+
 struct cstl_list*
 cstl_list_new(cstl_destroy fn_d, cstl_compare fn_c) {
     struct cstl_list* pList = (struct cstl_list*)calloc(1, sizeof(struct cstl_list));
@@ -32,6 +44,10 @@ cstl_list_new(cstl_destroy fn_d, cstl_compare fn_c) {
     pList->compare_key_fn = fn_c;
     pList->size = 0;
     return pList;
+}
+
+size_t cstl_list_count(struct cstl_list* pList) {
+    return pList->size;
 }
 
 void
