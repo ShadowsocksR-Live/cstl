@@ -119,12 +119,17 @@ cstl_set_minimum(struct cstl_set *x) {
 static const void *
 cstl_set_get_next(struct cstl_iterator* pIterator) {
     struct cstl_set *x = (struct cstl_set*)pIterator->pContainer;
+    struct cstl_rb_node *ptr = NULL;
     if (!pIterator->current_element) {
         pIterator->current_element = cstl_set_minimum(x);
     } else {
         pIterator->current_element = cstl_rb_tree_successor(x->root, (struct cstl_rb_node*)pIterator->current_element);
     }
-    return pIterator->current_element;
+    ptr = (struct cstl_rb_node*)pIterator->current_element;
+    if (ptr==NULL || ptr->key==NULL) {
+        return NULL;
+    }
+    return ptr;
 }
 
 static const void*

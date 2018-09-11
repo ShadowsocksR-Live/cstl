@@ -151,12 +151,17 @@ cstl_map_minimum(struct cstl_map *x) {
 static const void *
 cstl_map_get_next(struct cstl_iterator* pIterator) {
     struct cstl_map *x = (struct cstl_map*)pIterator->pContainer;
+    struct cstl_rb_node *ptr = NULL;
     if (!pIterator->current_element) {
         pIterator->current_element = cstl_map_minimum(x);
     } else {
         pIterator->current_element = cstl_rb_tree_successor(x->root, (struct cstl_rb_node*)pIterator->current_element);
     }
-    return pIterator->current_element;
+    ptr = (struct cstl_rb_node*)pIterator->current_element;
+    if (ptr==NULL || ptr->key==NULL) {
+        return NULL;
+    }
+    return ptr;
 }
 
 static const void*
