@@ -32,7 +32,7 @@ cstl_for_each(struct cstl_iterator *pIterator, void(*fn)(const void *value, cons
         return;
     }
     while ((pElement = pIterator->get_next(pIterator)) != NULL) {
-        const void *value = pIterator->get_value(pElement);
+        const void *value = pIterator->get_value(pIterator);
         const void *key = pIterator->get_key ? pIterator->get_key(pIterator) : NULL;
         fn(value, key, p);
     }

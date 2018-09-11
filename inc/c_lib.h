@@ -58,7 +58,7 @@ struct cstl_iterator {
     struct cstl_object* (*get_next)(struct cstl_iterator *pIterator);
     void (*replace_value)(struct cstl_iterator *pIterator, void *new_value, size_t size);
     const void* (*get_key)(struct cstl_iterator *pIterator);
-    const void* (*get_value)(void*);
+    const void* (*get_value)(struct cstl_iterator *pIterator);
     void* pContainer;
     size_t current_index;
     void* current_element;

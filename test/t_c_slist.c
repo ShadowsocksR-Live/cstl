@@ -68,7 +68,7 @@ print_using_iterators(struct cstl_list* pList) {
     printf("------------------------------------------------\n");
     myItr = cstl_list_new_iterator(pList);
     while ((pElement = myItr->get_next(myItr)) != NULL) {
-        const void* value = myItr->get_value(pElement);
+        const void* value = myItr->get_value(myItr);
         printf("%d\n", **((int**)value));
     }
     cstl_list_delete_iterator(myItr);
@@ -82,7 +82,7 @@ replace_values_using_iterators(struct cstl_list* pList) {
     myItr = cstl_list_new_iterator(pList);
     while ((pElement = myItr->get_next(myItr)) != NULL) {
         int *v;
-        const void* old_value = myItr->get_value(pElement);
+        const void* old_value = myItr->get_value(myItr);
         int new_value = **((int**)old_value);
         new_value = new_value * 2;
 

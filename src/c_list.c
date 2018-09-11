@@ -203,8 +203,9 @@ cstl_list_get_next(struct cstl_iterator* pIterator) {
 }
 
 static const void*
-cstl_list_get_value(void* pObject) {
-    return cstl_object_get_data((struct cstl_object*)pObject);
+cstl_list_get_value(struct cstl_iterator *pIterator) {
+    struct cstl_object *pObj = ((struct cstl_list_node*)pIterator->current_element)->elem;
+    return cstl_object_get_data(pObj);
 }
 
 static void

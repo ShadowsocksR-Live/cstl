@@ -169,8 +169,9 @@ cstl_map_get_key(struct cstl_iterator *pIterator) {
 }
 
 static const void*
-cstl_map_get_value(void* pObject) {
-    return cstl_object_get_data((struct cstl_object*)pObject);
+cstl_map_get_value(struct cstl_iterator *pIterator) {
+    struct cstl_rb_node* current = (struct cstl_rb_node*)pIterator->current_element;
+    return cstl_object_get_data(current->value);
 }
 
 static void

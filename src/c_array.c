@@ -229,8 +229,9 @@ cstl_array_get_next(struct cstl_iterator* pIterator) {
 }
 
 static const void*
-cstl_array_get_value(void* pObject) {
-    return cstl_object_get_data((struct cstl_object *)pObject);
+cstl_array_get_value(struct cstl_iterator *pIterator) {
+    struct cstl_object *element = (struct cstl_object *)pIterator->current_element;
+    return cstl_object_get_data(element);
 }
 
 static void

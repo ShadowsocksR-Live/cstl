@@ -137,8 +137,8 @@ cstl_set_get_key(struct cstl_iterator* pIterator) {
 }
 
 static const void*
-cstl_set_get_value(void* pObject) {
-    return cstl_object_get_data((struct cstl_object*)pObject);
+cstl_set_get_value(struct cstl_iterator *pIterator) {
+    return cstl_set_get_key(pIterator);
 }
 
 struct cstl_iterator*
