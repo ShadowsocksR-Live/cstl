@@ -143,7 +143,7 @@ test_c_deque() {
     myDeq = cstl_deque_new(10, compare_e_ptr, free_e);
     for (i = 0; i <= limit; i++) {
         int *v = (int*)calloc(1, sizeof(int));
-        *v = i;
+        *v = (int)i;
         cstl_deque_push_back(myDeq, &v, sizeof(int*));
     }
     for (i = 0; i < cstl_deque_count(myDeq); i++) {

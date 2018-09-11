@@ -68,7 +68,7 @@ print_e(void* ptr) {
 
 static void
 test_with_int() {
-    int size = 10;
+    size_t size = 10;
     int i = 0;
     void* p_rv = (void*)0;
     int rv = 0;
@@ -134,7 +134,7 @@ test_with_int() {
 
 static void
 test_with_pointers() {
-    int size = 10;
+    size_t size = 10;
     int i = 0;
     int *rv;
     void* p_rv = (void*)0;
@@ -190,7 +190,7 @@ test_with_pointers() {
 
 static void
 test_with_strings() {
-    int size = 10;
+    size_t size = 10;
     char *input_array[11];
     int i = 0;
     char *rv;
