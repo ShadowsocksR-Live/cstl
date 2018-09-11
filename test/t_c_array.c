@@ -258,7 +258,7 @@ test_with_strings() {
 static void
 print_using_iterators(struct cstl_array* myArray) {
     struct cstl_iterator *myItr;
-    struct cstl_object *pElement;
+    const void *pElement;
     printf("------------------------------------------------\n");
     myItr = cstl_array_new_iterator(myArray);
     while ((pElement = myItr->get_next(myItr)) != NULL) {
@@ -271,7 +271,7 @@ print_using_iterators(struct cstl_array* myArray) {
 static void
 replace_values_using_iterators(struct cstl_array* myArray) {
     struct cstl_iterator *myItr;
-    struct cstl_object *pElement;
+    const void *pElement;
     printf("------------------------------------------------\n");
     myItr = cstl_array_new_iterator(myArray);
     while ((pElement = myItr->get_next(myItr)) != NULL) {

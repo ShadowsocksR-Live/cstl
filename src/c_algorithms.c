@@ -27,7 +27,7 @@
 
 void
 cstl_for_each(struct cstl_iterator *pIterator, void(*fn)(const void *value, const void *key, void *p), void *p) {
-    struct cstl_object *pElement;
+    const void *pElement;
     if (pIterator==NULL || fn==NULL) {
         return;
     }

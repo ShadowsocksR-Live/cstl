@@ -218,14 +218,14 @@ cstl_array_delete(struct cstl_array* pArray) {
     return rc;
 }
 
-static struct cstl_object*
+static const void *
 cstl_array_get_next(struct cstl_iterator* pIterator) {
     struct cstl_array *pArray = (struct cstl_array*)pIterator->pContainer;
     if (pIterator->current_index >= cstl_array_size(pArray)) {
-        return (struct cstl_object*)0;
+        return (const void *)0;
     }
     pIterator->current_element = pArray->pElements[pIterator->current_index++];
-    return (struct cstl_object *)pIterator->current_element;
+    return pIterator->current_element;
 }
 
 static const void*

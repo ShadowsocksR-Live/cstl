@@ -217,16 +217,16 @@ cstl_deque_delete(struct cstl_deque* pDeq) {
     return CSTL_ERROR_SUCCESS;
 }
 
-static struct cstl_object*
+static const void *
 cstl_deque_get_next(struct cstl_iterator* pIterator) {
     struct cstl_deque *pDeq = (struct cstl_deque*)pIterator->pContainer;
     size_t index = pIterator->current_index;
 
     if (index <= pDeq->head || index >= pDeq->tail) {
-        return (struct cstl_object*)0;
+        return (const void *)0;
     }
     pIterator->current_element = pDeq->pElements[pIterator->current_index++];
-    return (struct cstl_object*)pIterator->current_element;
+    return pIterator->current_element;
 }
 
 static const void*

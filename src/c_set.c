@@ -116,7 +116,7 @@ cstl_set_minimum(struct cstl_set *x) {
     return cstl_rb_minimum(x->root, x->root->root);
 }
 
-static struct cstl_object*
+static const void *
 cstl_set_get_next(struct cstl_iterator* pIterator) {
     struct cstl_set *x = (struct cstl_set*)pIterator->pContainer;
     if (!pIterator->current_element) {
@@ -124,10 +124,7 @@ cstl_set_get_next(struct cstl_iterator* pIterator) {
     } else {
         pIterator->current_element = cstl_rb_tree_successor(x->root, (struct cstl_rb_node*)pIterator->current_element);
     }
-    if (!pIterator->current_element) {
-        return (struct cstl_object*)0;
-    }
-    return ((struct cstl_rb_node*)pIterator->current_element)->key;
+    return pIterator->current_element;
 }
 
 static const void*

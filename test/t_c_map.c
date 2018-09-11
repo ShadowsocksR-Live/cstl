@@ -110,7 +110,7 @@ add_removed_check_all(struct cstl_map* myMap) {
 static void
 print_using_iterator(struct cstl_map *myMap) {
     struct cstl_iterator *myItr;
-    struct cstl_object *pElement;
+    const void *pElement;
     printf("------------------------------------------------\n");
     myItr = cstl_map_new_iterator(myMap);
 
@@ -125,7 +125,7 @@ print_using_iterator(struct cstl_map *myMap) {
 static void
 replace_values_using_iterators(struct cstl_map* myMap) {
     struct cstl_iterator *myItr;
-    struct cstl_object *pElement;
+    const void *pElement;
     printf("------------------------------------------------\n");
     myItr = cstl_map_new_iterator(myMap);
     while ((pElement = myItr->get_next(myItr)) != NULL) {

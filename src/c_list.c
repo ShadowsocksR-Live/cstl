@@ -188,7 +188,7 @@ size_t cstl_list_size(struct cstl_list* pList) {
     return pList ? pList->size : 0;
 }
 
-static struct cstl_object*
+static const void *
 cstl_list_get_next(struct cstl_iterator* pIterator) {
     struct cstl_list *pList = (struct cstl_list*)pIterator->pContainer;
     if (!pIterator->current_element) {
@@ -196,10 +196,7 @@ cstl_list_get_next(struct cstl_iterator* pIterator) {
     } else {
         pIterator->current_element = ((struct cstl_list_node*)pIterator->current_element)->next;
     }
-    if (!pIterator->current_element) {
-        return (struct cstl_object*)0;
-    }
-    return ((struct cstl_list_node*)pIterator->current_element)->elem;
+    return pIterator->current_element;
 }
 
 static const void*
