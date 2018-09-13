@@ -251,9 +251,9 @@ cstl_deque_replace_value(struct cstl_iterator *pIterator, void* elem, size_t ele
 struct cstl_iterator*
 cstl_deque_new_iterator(struct cstl_deque* pDeq) {
     struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
-    itr->get_next = cstl_deque_get_next;
-    itr->get_value = cstl_deque_get_value;
-    itr->replace_value = cstl_deque_replace_value;
+    itr->next = cstl_deque_get_next;
+    itr->current_value = cstl_deque_get_value;
+    itr->replace_current_value = cstl_deque_replace_value;
     itr->current_index = pDeq->head + 1;
     itr->pContainer = pDeq;
     return itr;

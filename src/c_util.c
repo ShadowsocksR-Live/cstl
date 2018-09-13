@@ -36,6 +36,19 @@ cstl_get(void* destination, void* source, size_t size) {
     memcpy(destination, (char*)source, size);
 }
 
+char * cstl_strdup(const char *ptr) {
+#ifdef WIN32
+    return _strdup(ptr);
+#else
+    return strdup(ptr);
+#endif
+}
+
+struct cstl_object {
+    void* raw_data;
+    size_t size;
+};
+
 struct cstl_object*
 cstl_object_new(const void* inObject, size_t obj_size) {
     struct cstl_object* tmp = (struct cstl_object*)calloc(1, sizeof(struct cstl_object));
@@ -69,13 +82,4 @@ cstl_object_delete(struct cstl_object* inObject) {
         free(inObject->raw_data);
         free(inObject);
     }
-}
-
-char*
-cstl_strdup(char *ptr) {
-#ifdef WIN32
-    return _strdup(ptr);
-#else
-    return strdup(ptr);
-#endif
 }

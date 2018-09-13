@@ -49,16 +49,11 @@ typedef int  cstl_bool;
 /*                            P  A  I   R                                  */
 /* ------------------------------------------------------------------------*/
 
-struct cstl_object {
-    void* raw_data;
-    size_t size;
-};
-
 struct cstl_iterator {
-    const void * (*get_next)(struct cstl_iterator *pIterator);
-    void (*replace_value)(struct cstl_iterator *pIterator, void *new_value, size_t size);
-    const void* (*get_key)(struct cstl_iterator *pIterator);
-    const void* (*get_value)(struct cstl_iterator *pIterator);
+    const void * (*next)(struct cstl_iterator *pIterator);
+    void (*replace_current_value)(struct cstl_iterator *pIterator, void *new_value, size_t size);
+    const void* (*current_key)(struct cstl_iterator *pIterator);
+    const void* (*current_value)(struct cstl_iterator *pIterator);
     void* pContainer;
     size_t current_index;
     void* current_element;
@@ -78,7 +73,9 @@ struct cstl_iterator {
 
 extern void  cstl_copy ( void* destination, void* source, size_t size );
 extern void  cstl_get  ( void* destination, void* source, size_t size);
-extern char* cstl_strdup ( char *ptr );
+extern char* cstl_strdup (const char *ptr);
+
+struct cstl_object;
 
 extern struct cstl_object* cstl_object_new (const void* inObject, size_t obj_size);
 extern const void * cstl_object_get_data(struct cstl_object *inObject);

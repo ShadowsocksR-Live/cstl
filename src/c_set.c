@@ -146,9 +146,9 @@ cstl_set_get_value(struct cstl_iterator *pIterator) {
 struct cstl_iterator*
 cstl_set_new_iterator(struct cstl_set* pSet) {
     struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
-    itr->get_next = cstl_set_get_next;
-    itr->get_key = cstl_set_get_key;
-    itr->get_value = cstl_set_get_value;
+    itr->next = cstl_set_get_next;
+    itr->current_key = cstl_set_get_key;
+    itr->current_value = cstl_set_get_value;
     itr->pContainer = pSet;
     itr->current_index = 0;
     itr->current_element = (void*)0;

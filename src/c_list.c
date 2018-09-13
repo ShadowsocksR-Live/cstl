@@ -222,9 +222,9 @@ cstl_list_replace_value(struct cstl_iterator *pIterator, void* elem, size_t elem
 struct cstl_iterator*
 cstl_list_new_iterator(struct cstl_list* pList) {
     struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
-    itr->get_next = cstl_list_get_next;
-    itr->get_value = cstl_list_get_value;
-    itr->replace_value = cstl_list_replace_value;
+    itr->next = cstl_list_get_next;
+    itr->current_value = cstl_list_get_value;
+    itr->replace_current_value = cstl_list_replace_value;
     itr->pContainer = pList;
     itr->current_element = (void*)0;
     itr->current_index = 0;

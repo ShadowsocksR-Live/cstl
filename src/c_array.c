@@ -250,9 +250,9 @@ cstl_array_replace_value(struct cstl_iterator *pIterator, void* elem, size_t ele
 struct cstl_iterator*
 cstl_array_new_iterator(struct cstl_array* pArray) {
     struct cstl_iterator *itr = (struct cstl_iterator*) calloc(1, sizeof(struct cstl_iterator));
-    itr->get_next = cstl_array_get_next;
-    itr->get_value = cstl_array_get_value;
-    itr->replace_value = cstl_array_replace_value;
+    itr->next = cstl_array_get_next;
+    itr->current_value = cstl_array_get_value;
+    itr->replace_current_value = cstl_array_replace_value;
     itr->pContainer = pArray;
     itr->current_index = 0;
     return itr;

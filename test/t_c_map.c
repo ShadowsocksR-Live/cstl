@@ -114,9 +114,9 @@ print_using_iterator(struct cstl_map *myMap) {
     printf("------------------------------------------------\n");
     myItr = cstl_map_new_iterator(myMap);
 
-    while ((pElement = myItr->get_next(myItr))) {
-        int *value = (int *) myItr->get_value(myItr);
-        char *key = *((char **) myItr->get_key(myItr));
+    while ((pElement = myItr->next(myItr))) {
+        int *value = (int *) myItr->current_value(myItr);
+        char *key = *((char **) myItr->current_key(myItr));
         printf("%s : %d\n", key, *value);
     }
     cstl_map_delete_iterator(myItr);
@@ -128,11 +128,11 @@ replace_values_using_iterators(struct cstl_map* myMap) {
     const void *pElement;
     printf("------------------------------------------------\n");
     myItr = cstl_map_new_iterator(myMap);
-    while ((pElement = myItr->get_next(myItr)) != NULL) {
-        const void* old_value = myItr->get_value(myItr);
+    while ((pElement = myItr->next(myItr)) != NULL) {
+        const void* old_value = myItr->current_value(myItr);
         int new_value = *(int*)old_value;
         new_value = new_value * 2;
-        myItr->replace_value(myItr, &new_value, sizeof(new_value));
+        myItr->replace_current_value(myItr, &new_value, sizeof(new_value));
     }
     cstl_map_delete_iterator(myItr);
 }
