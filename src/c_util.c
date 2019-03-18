@@ -52,16 +52,18 @@ struct cstl_object {
 struct cstl_object*
 cstl_object_new(const void* inObject, size_t obj_size) {
     struct cstl_object* tmp = (struct cstl_object*)calloc(1, sizeof(struct cstl_object));
+    void *raw_data = (void *)0;
     if (!tmp) {
         return (struct cstl_object*)0;
     }
     tmp->size = obj_size;
-    tmp->raw_data = (void*)calloc(obj_size, sizeof(char));
-    if (!tmp->raw_data) {
+    raw_data = (void*)calloc(obj_size, sizeof(char));
+    if (!raw_data) {
         free(tmp);
         return (struct cstl_object*)0;
     }
-    memcpy(tmp->raw_data, inObject, obj_size);
+    memcpy(raw_data, inObject, obj_size);
+    tmp->raw_data = raw_data;
     return tmp;
 }
 
