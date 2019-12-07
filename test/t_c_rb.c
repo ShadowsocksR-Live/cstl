@@ -23,8 +23,10 @@
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include "c_lib.h"
+#include "c_rb.h"
 
-/*#include <stdio.h>
+/*
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
@@ -34,10 +36,10 @@
 
 #define rb_sentinel &tree->sentinel 
 
-static void*
+static const void*
 get_key ( struct cstl_rb* tree, struct cstl_rb_node* node) {
         if ( node ) 
-            return node->raw_data.key;
+            return cstl_object_get_data(node->key);
         return (void*)0;
     }
 
@@ -61,7 +63,7 @@ static struct cstl_rb_node*
     }
 
 int 
-compare_rb_e ( void*  l, void* r ) {
+compare_rb_e (const void*  l, const void* r ) {
 
     int left =  0;
     int right = 0;
@@ -92,23 +94,18 @@ typedef struct test_data_tree {
 
 
 static struct cstl_rb_node*
-__find_c_rb ( struct cstl_rb* tree, cstl_compare fn_c, void* key ) {
+__find_c_rb ( struct cstl_rb* tree, cstl_compare fn_c, const void* key ) {
     struct cstl_rb_node* node = tree->root;
-    void* current_key = (void*)0;
     int compare_result = 0;
 
-    current_key = (void*)calloc (1, tree->size_of_key);
-    memcpy ( current_key, key, tree->size_of_key);
-
-    compare_result = (fn_c)(current_key, node->raw_data.key);
-    while ((node != rb_sentinel) && (compare_result = (fn_c)(current_key, node->raw_data.key)) != 0 ){
+    compare_result = (fn_c)(key, cstl_object_get_data(node->key));
+    while ((node != rb_sentinel) && (compare_result = (fn_c)(key, cstl_object_get_data(node->key))) != 0 ){
         if ( compare_result < 0 ) {
             node = node->left;
         } else {
             node = node->right;
         }
-    } 
-    free ( current_key );
+    }
     return node;
 }
 struct cstl_rb_node*
@@ -163,9 +160,9 @@ test_all_elements(struct cstl_rb* tree, TS ts[], int size) {
 static struct cstl_rb* 
 create_tree(TS ts[], int size) {
     int i = 0;
-    struct cstl_rb* tree = cstl_rb_new( compare_rb_e,free_rb_e, (void*)0, sizeof(int),0);
+    struct cstl_rb* tree = cstl_rb_new( compare_rb_e,free_rb_e, (void*)0);
     for ( i = 0; i < size; i++) {
-        cstl_rb_insert( tree, &(ts[i].element) ,(void*)0);
+        cstl_rb_insert( tree, &(ts[i].element), sizeof((ts[i].element)), (void*)0, 0);
     }
     return tree;
 }
@@ -217,7 +214,7 @@ test_c_rb() {
         size_after_delete = (sizeof(ts_delete_leaf_13)/sizeof(TS));
         node = cstl_rb_remove( tree, &i);
         if ( node != (struct cstl_rb_node*)0  ) {
-            free ( node->raw_data.key);
+            cstl_object_delete ( node->key);
             free ( node);
         }
         test_all_elements(tree, ts_delete_leaf_13, size_after_delete);
@@ -227,7 +224,7 @@ test_c_rb() {
         size_after_delete = (sizeof(ts_delete_9)/sizeof(TS));
         node = cstl_rb_remove( tree, &i);
         if ( node != (struct cstl_rb_node*)0  ) {
-            free ( node->raw_data.key);
+            cstl_object_delete ( node->key);
             free ( node);
         }
         test_all_elements(tree, ts_delete_9, size_after_delete);
@@ -237,18 +234,19 @@ test_c_rb() {
         size_after_delete = (sizeof(ts_delete_15)/sizeof(TS));
         node = cstl_rb_remove( tree, &i);
         if ( node != (struct cstl_rb_node*)0  ) {
-            free ( node->raw_data.key);
+            cstl_object_delete ( node->key);
             free ( node);
         }
         test_all_elements(tree, ts_delete_15, size_after_delete);
     }
     {
         int i = 1;
-        cstl_rb_insert( tree, &i, (void*)0);
+        cstl_rb_insert( tree, &i, sizeof(i), (void*)0, 0);
         size_after_delete = (sizeof(ts_insert_1)/sizeof(TS));
         test_all_elements(tree, ts_insert_1, size_after_delete);
     }
     {
       cstl_rb_delete(tree);
     }
-}*/
+}
+*/
