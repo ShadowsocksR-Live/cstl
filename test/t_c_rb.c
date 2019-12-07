@@ -102,15 +102,15 @@ struct cstl_rb_node* find(struct cstl_rb* tree, void* key ) {
 
 static void update_values ( void* v, int *l, int *r, int *p , int *e, struct cstl_rb* tree ) {
     struct cstl_rb_node* x;
-    if ( get_key(tree,v)) 
-        *e = *(int*)get_key (tree,v);
-    x = get_left(tree,v);
+    if ( get_key(tree, (struct cstl_rb_node*)v)) 
+        *e = *(int*)get_key (tree, (struct cstl_rb_node*)v);
+    x = get_left(tree, (struct cstl_rb_node*)v);
     if ( x )
         *l = *(int*)get_key(tree,x);
-    x = get_right(tree,v);
+    x = get_right(tree, (struct cstl_rb_node*)v);
     if (x) 
         *r = *(int*)get_key(tree,x);
-    x = get_parent ( tree, v );
+    x = get_parent ( tree, (struct cstl_rb_node*)v );
     if (x)
         *p = *(int*)get_key(tree,x);
 }

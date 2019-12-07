@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual C++ Express 2010
+# Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "clib", "clib.vcxproj", "{B0D5C92E-C0FD-48EB-A472-FF5DC031ECB9}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "tclib", "tclib.vcxproj", "{7DB3F94C-1BA0-4BFF-B8FF-5BD95CF0A9F9}"

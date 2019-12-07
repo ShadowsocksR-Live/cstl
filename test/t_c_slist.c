@@ -157,7 +157,8 @@ test_c_slist() {
     }
 
     *tmp = 100;
-    assert((outValue = cstl_list_find(list, &tmp)) == NULL);
+    outValue = cstl_list_find(list, &tmp);
+    assert(outValue == NULL);
     free(tmp);
 
     outValue = cstl_list_element_at(list, 7);

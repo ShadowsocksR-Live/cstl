@@ -64,7 +64,8 @@ check_exists_all(struct cstl_map* myMap) {
         char *key = char_value[i];
         int *value;
         assert(cstl_true == cstl_map_exists(myMap, &key));
-        assert((value = (int *)cstl_map_find(myMap, &key)) != NULL);
+        value = (int *)cstl_map_find(myMap, &key);
+        assert(value != NULL);
         printf("-----> [%s == %d]\n", key, *value);
         assert(*value == int_value[i]);
     }
@@ -73,19 +74,24 @@ check_exists_all(struct cstl_map* myMap) {
 static void
 remove_some_exist(struct cstl_map* myMap) {
     char *key = "A";
-    assert(CSTL_ERROR_SUCCESS == cstl_map_remove(myMap, &key));
+    cstl_error error;
+    error = cstl_map_remove(myMap, &key);
+    assert(CSTL_ERROR_SUCCESS == error);
     assert(cstl_false == cstl_map_exists(myMap, &key));
 
     key = "X";
-    assert(CSTL_ERROR_SUCCESS == cstl_map_remove(myMap, &key));
+    error = cstl_map_remove(myMap, &key);
+    assert(CSTL_ERROR_SUCCESS == error);
     assert(cstl_false == cstl_map_exists(myMap, &key));
 
     key = "Z";
-    assert(CSTL_ERROR_SUCCESS == cstl_map_remove(myMap, &key));
+    error = cstl_map_remove(myMap, &key);
+    assert(CSTL_ERROR_SUCCESS == error);
     assert(cstl_false == cstl_map_exists(myMap, &key));
 
     key = "H";
-    assert(CSTL_ERROR_SUCCESS == cstl_map_remove(myMap, &key));
+    error = cstl_map_remove(myMap, &key);
+    assert(CSTL_ERROR_SUCCESS == error);
     assert(cstl_false == cstl_map_exists(myMap, &key));
 }
 
