@@ -25,7 +25,6 @@
 #include "c_lib.h"
 #include "c_rb.h"
 
-/*
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,34 +35,31 @@
 
 #define rb_sentinel &tree->sentinel 
 
-static const void*
-get_key ( struct cstl_rb* tree, struct cstl_rb_node* node) {
-        if ( node ) 
-            return cstl_object_get_data(node->key);
-        return (void*)0;
-    }
+static const void* get_key ( struct cstl_rb* tree, struct cstl_rb_node* node) {
+    if ( node ) 
+        return cstl_object_get_data(node->key);
+    return (void*)0;
+}
 
-static struct cstl_rb_node*
-    get_left (struct cstl_rb* tree, struct cstl_rb_node* node ) {
-        if ( node->left != rb_sentinel && node->left != (struct cstl_rb_node*)0 )
-            return node->left;
-        return (struct cstl_rb_node*)0 ;
-    }
-static struct cstl_rb_node*
-    get_right (struct cstl_rb* tree, struct cstl_rb_node* node ){
-        if ( node->right != rb_sentinel && node->right != (struct cstl_rb_node*)0 )
-            return node->right;
-        return (struct cstl_rb_node*)0 ;
-    }
-static struct cstl_rb_node*
-    get_parent ( struct cstl_rb* tree,struct cstl_rb_node* node ) {
-        if ( node->parent != rb_sentinel && node->parent != (struct cstl_rb_node*)0 )
-            return node->parent;
-        return (struct cstl_rb_node*)0 ;
-    }
+static struct cstl_rb_node* get_left (struct cstl_rb* tree, struct cstl_rb_node* node ) {
+    if ( node->left != rb_sentinel && node->left != (struct cstl_rb_node*)0 )
+        return node->left;
+    return (struct cstl_rb_node*)0 ;
+}
 
-int 
-compare_rb_e (const void*  l, const void* r ) {
+static struct cstl_rb_node* get_right (struct cstl_rb* tree, struct cstl_rb_node* node ){
+    if ( node->right != rb_sentinel && node->right != (struct cstl_rb_node*)0 )
+        return node->right;
+    return (struct cstl_rb_node*)0 ;
+}
+
+static struct cstl_rb_node* get_parent ( struct cstl_rb* tree,struct cstl_rb_node* node ) {
+    if ( node->parent != rb_sentinel && node->parent != (struct cstl_rb_node*)0 )
+        return node->parent;
+    return (struct cstl_rb_node*)0 ;
+}
+
+int compare_rb_e (const void*  l, const void* r ) {
 
     int left =  0;
     int right = 0;
@@ -77,13 +73,6 @@ compare_rb_e (const void*  l, const void* r ) {
     return 1;
 }
 
-void 
-free_rb_e ( void* p ) {
-    if ( p ) {
-        free ( p );
-    }
-}
-
 typedef struct test_data_tree {
     int element;
     int left;
@@ -93,8 +82,7 @@ typedef struct test_data_tree {
 } TS;
 
 
-static struct cstl_rb_node*
-__find_c_rb ( struct cstl_rb* tree, cstl_compare fn_c, const void* key ) {
+static struct cstl_rb_node* __find_c_rb ( struct cstl_rb* tree, cstl_compare fn_c, const void* key ) {
     struct cstl_rb_node* node = tree->root;
     int compare_result = 0;
 
@@ -108,8 +96,7 @@ __find_c_rb ( struct cstl_rb* tree, cstl_compare fn_c, const void* key ) {
     }
     return node;
 }
-struct cstl_rb_node*
-find(struct cstl_rb* tree, void* key ) {
+struct cstl_rb_node* find(struct cstl_rb* tree, void* key ) {
     return __find_c_rb ( tree, tree->compare_fn, key );
 }
 
@@ -124,29 +111,30 @@ static void update_values ( void* v, int *l, int *r, int *p , int *e, struct cst
     if (x) 
         *r = *(int*)get_key(tree,x);
     x = get_parent ( tree, v );
-    if (x) 		
+    if (x)
         *p = *(int*)get_key(tree,x);
 }
 
-static void 
-test_each_elements(int l,int r, int p, int e,void* v, TS ts[], int i, struct cstl_rb* tree) {
+static void test_each_elements(int l,int r, int p, int e,void* v, TS ts[], int i, struct cstl_rb* tree) {
     assert ( ts[i].element == e);
-    if (ts[i].left != 0 ) 
+    if (ts[i].left != 0 ) {
         assert ( ts[i].left == l);
-    else
-        assert ((void* )0 == (void* )get_key(tree,get_left(tree,v)));
-    if ( ts[i].right != 0 ) 
+    } else {
+        assert ((void* )0 == (void* )get_key(tree,get_left(tree,(struct cstl_rb_node*)v)));
+    }
+    if ( ts[i].right != 0 ) {
         assert (ts[i].right == r);
-    else
-        assert ((void* )0 == (void* )get_key(tree,get_right(tree,v)));
-    if (ts[i].parent != 0 ) 
+    } else {
+        assert ((void* )0 == (void* )get_key(tree,get_right(tree,(struct cstl_rb_node*)v)));
+    }
+    if (ts[i].parent != 0 ) {
         assert (ts[i].parent == p);
-    else
-        assert ((void* )0 == (void* )get_key(tree,get_parent(tree,v)));
+    } else {
+        assert ((void* )0 == (void* )get_key(tree,get_parent(tree,(struct cstl_rb_node*)v)));
+    }
 }
 
-static void
-test_all_elements(struct cstl_rb* tree, TS ts[], int size) {
+static void test_all_elements(struct cstl_rb* tree, TS ts[], int size) {
     int i = 0;
     for ( i = 0; i < size; i++) {
         void* v = (void*)0;
@@ -157,10 +145,9 @@ test_all_elements(struct cstl_rb* tree, TS ts[], int size) {
     }
 }
 
-static struct cstl_rb* 
-create_tree(TS ts[], int size) {
+static struct cstl_rb* create_tree(TS ts[], int size) {
     int i = 0;
-    struct cstl_rb* tree = cstl_rb_new( compare_rb_e,free_rb_e, (void*)0);
+    struct cstl_rb* tree = cstl_rb_new(compare_rb_e, (cstl_destroy)0, (cstl_destroy)0);
     for ( i = 0; i < size; i++) {
         cstl_rb_insert( tree, &(ts[i].element), sizeof((ts[i].element)), (void*)0, 0);
     }
@@ -168,8 +155,7 @@ create_tree(TS ts[], int size) {
 }
 
 
-void 
-test_c_rb() {
+void test_c_rb() {
     int size;
     int size_after_delete;
     int i = 0;
@@ -246,7 +232,6 @@ test_c_rb() {
         test_all_elements(tree, ts_insert_1, size_after_delete);
     }
     {
-      cstl_rb_delete(tree);
+        cstl_rb_delete(tree);
     }
 }
-*/

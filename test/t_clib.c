@@ -37,10 +37,9 @@ int main( int argc, char**argv ) {
     size_t i = 0;
     for (i = 0; i < 10000; i++)
     {
-        /*
         printf("Performing test for red-black tree\n");
         test_c_rb();
-         */
+
         printf("Performing test for dynamic array\n");
         test_c_array();
         printf("Performing test for deque\n");
