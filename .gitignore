@@ -8,6 +8,7 @@ CMakeFiles/
 cmake_install.cmake
 *.cbp
 
+.vscode/
 
 #################
 ## Eclipse

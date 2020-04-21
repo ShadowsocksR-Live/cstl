@@ -23,6 +23,8 @@
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include <stdio.h>
+#include <stdlib.h>
+
 extern void test_c_array();
 extern void test_c_deque();
 extern void test_c_tree();
