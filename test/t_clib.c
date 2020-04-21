@@ -33,8 +33,30 @@ extern void test_c_slist();
 extern void test_c_map();
 extern void test_c_algorithms();
 
+#if defined(_MSC_VER)
+#if !defined(_CRTDBG_MAP_ALLOC)
+#define _CRTDBG_MAP_ALLOC
+#endif
+#include <stdlib.h>
+#include <crtdbg.h>
+
+#define MEM_CHECK_BEGIN() do { _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF ); } while(0)
+#define MEM_CHECK_BREAK_ALLOC(x) do { _CrtSetBreakAlloc(x); } while(0)
+#define MEM_CHECK_DUMP_LEAKS() do { _CrtDumpMemoryLeaks(); } while(0)
+#else
+#define MEM_CHECK_BEGIN() do { } while(0)
+#define MEM_CHECK_BREAK_ALLOC(x) do { (void)x; } while(0)
+#define MEM_CHECK_DUMP_LEAKS() do { } while(0)
+#endif
+
+void on_atexit(void) {
+    MEM_CHECK_DUMP_LEAKS();
+}
+
 int main( int argc, char**argv ) {
     size_t i = 0;
+    MEM_CHECK_BEGIN();
+    atexit(on_atexit);
     for (i = 0; i < 10000; i++)
     {
         printf("Performing test for red-black tree\n");

@@ -447,7 +447,7 @@ cstl_rb_get_next(struct cstl_rb* pTree, struct cstl_rb_node**current, struct cst
         if ((*current)->left == rb_sentinel) {
             prev_current = (*current);
             (*current) = (*current)->right;
-            return prev_current->raw_data.key;
+            return prev_current;
         } else {
             (*pre) = (*current)->left;
             while ((*pre)->right != rb_sentinel && (*pre)->right != (*current))
@@ -459,7 +459,7 @@ cstl_rb_get_next(struct cstl_rb* pTree, struct cstl_rb_node**current, struct cst
                 (*pre)->right = rb_sentinel;
                 prev_current = (*current);
                 (*current) = (*current)->right;
-                return prev_current->raw_data.key;
+                return prev_current;
             }
         }
     }
