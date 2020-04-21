@@ -1,9 +1,11 @@
 cmake_minimum_required(VERSION 2.5)
-project(test)
+project(cstl)
+
+include_directories(inc)
 
 set(CMAKE_CXX_STANDARD 11)
 
-set(SOURCE_FILES
+add_library(${PROJECT_NAME}
         inc/c_algorithms.h
         inc/c_array.h
         inc/c_deque.h
@@ -22,6 +24,9 @@ set(SOURCE_FILES
         src/c_rb.c
         src/c_set.c
         src/c_util.c
+)
+
+add_executable(test_cstl
         test/t_c_algorithms.c
         test/t_c_array.c
         test/t_c_deque.c
@@ -29,8 +34,7 @@ set(SOURCE_FILES
         test/t_c_rb.c
         test/t_c_set.c
         test/t_c_slist.c
-        test/t_clib.c)
+        test/t_clib.c
+)
 
-include_directories(inc)
-
-add_executable(tstclib ${SOURCE_FILES})
+target_link_libraries(test_cstl ${PROJECT_NAME})
