@@ -5,6 +5,9 @@ include_directories(inc)
 
 set(CMAKE_CXX_STANDARD 11)
 
+add_definitions(-Wall -Werror -ggdb3 -std=c99 -Wextra -pedantic)
+add_definitions("-D_DEFAULT_SOURCE -D_GNU_SOURCE")
+
 add_library(${PROJECT_NAME}
         inc/c_algorithms.h
         inc/c_array.h

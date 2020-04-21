@@ -4,12 +4,14 @@
 #include <string.h>
 
 void print_integers(const void *value, const void *key, void *p) {
+    (void)key; (void)p;
     if (value) {
         printf("%d\n", *(int*)value);
     }
 }
 
 void print_integers_ptr(const void *value, const void *key, void *p) {
+    (void)key; (void)p;
     if (value) {
         printf("%d\n", **((int**)value));
     }
@@ -59,7 +61,7 @@ create_c_array() {
         cstl_array_push_back(myArray, &i, sizeof(int));
     }
     assert(cstl_false == cstl_array_empty(myArray));
-    assert(size == cstl_array_size(myArray));
+    assert((size_t)size == cstl_array_size(myArray));
     for (i = 0; i < size; i++) {
         p_rv = (void*) cstl_array_element_at(myArray, i);
         rv = *(int*)p_rv;

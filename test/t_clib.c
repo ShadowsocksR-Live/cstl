@@ -57,6 +57,7 @@ void on_atexit(void) {
 
 int main( int argc, char**argv ) {
     size_t i = 0;
+    (void)argc; (void)argv;
     MEM_CHECK_BEGIN();
     atexit(on_atexit);
     for (i = 0; i < 10000; i++)

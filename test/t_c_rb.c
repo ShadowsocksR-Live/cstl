@@ -36,6 +36,7 @@
 #define rb_sentinel &tree->sentinel 
 
 static const void* get_key ( struct cstl_rb* tree, struct cstl_rb_node* node) {
+    (void)tree;
     if ( node ) 
         return cstl_object_get_data(node->key);
     return (void*)0;
@@ -48,6 +49,7 @@ static struct cstl_rb_node* get_left (struct cstl_rb* tree, struct cstl_rb_node*
 }
 
 static struct cstl_rb_node* get_right (struct cstl_rb* tree, struct cstl_rb_node* node ){
+    (void)tree;
     if ( node->right != rb_sentinel && node->right != (struct cstl_rb_node*)0 )
         return node->right;
     return (struct cstl_rb_node*)0 ;

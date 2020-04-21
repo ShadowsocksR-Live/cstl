@@ -50,6 +50,7 @@ add_elements_to_list(struct cstl_list* ll, int x, int y) {
 }
 void
 print_e(const void* ptr, void *p) {
+    (void)p;
     if (ptr) {
         printf("%d\n", **((int**)ptr));
     }
