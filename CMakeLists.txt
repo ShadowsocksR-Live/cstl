@@ -5,8 +5,20 @@ include_directories(inc)
 
 set(CMAKE_CXX_STANDARD 11)
 
+set(CSTL_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "cstl library root directory" FORCE)
+
+# set(CSTL_LIBRARY_ONLY ON CACHE INTERNAL "using cstl Library only" )
+
+if (CSTL_LIBRARY_ONLY)
+option(ENABLE_PROGRAMS "Build CSTL test programs." OFF)
+else()
+option(ENABLE_PROGRAMS "Build CSTL test programs." ON)
+endif()
+
+if (UNIX)
 add_definitions(-Wall -Werror -ggdb3 -std=c99 -Wextra -pedantic)
 add_definitions("-D_DEFAULT_SOURCE -D_GNU_SOURCE")
+endif()
 
 add_library(${PROJECT_NAME}
         inc/c_algorithms.h
@@ -29,6 +41,8 @@ add_library(${PROJECT_NAME}
         src/c_util.c
 )
 
+if(ENABLE_PROGRAMS)
+
 add_executable(test_cstl
         test/t_c_algorithms.c
         test/t_c_array.c
@@ -41,3 +55,5 @@ add_executable(test_cstl
 )
 
 target_link_libraries(test_cstl ${PROJECT_NAME})
+
+endif()
