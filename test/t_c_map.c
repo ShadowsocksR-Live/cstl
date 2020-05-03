@@ -153,6 +153,10 @@ test_with_iterators() {
     cstl_map_delete(myMap);
 }
 
+void iter_fn(struct cstl_map *map, const void *key, const void *value, void *p) {
+    cstl_map_remove(map, key);
+}
+
 void
 test_c_map() {
     struct cstl_map* myMap = cstl_map_new(compare_e, key_destroy, NULL);
@@ -160,6 +164,7 @@ test_c_map() {
     check_exists_all(myMap);
     remove_some_exist(myMap);
     add_removed_check_all(myMap);
+    cstl_map_traverse(myMap, iter_fn, NULL);
     cstl_map_delete(myMap);
     test_with_iterators();
 }
