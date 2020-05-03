@@ -24,6 +24,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 extern void test_c_array();
 extern void test_c_deque();
@@ -56,6 +57,7 @@ void on_atexit(void) {
 }
 
 int main( int argc, char**argv ) {
+    clock_t t = clock();
     size_t i = 0;
     (void)argc; (void)argv;
     MEM_CHECK_BEGIN();
@@ -77,6 +79,10 @@ int main( int argc, char**argv ) {
         test_c_slist();
         printf("Performing algorithms tests\n");
         test_c_algorithms();
+    }
+    {
+        double time_taken = ((double)(clock() - t)) / CLOCKS_PER_SEC; // in seconds
+        printf("tests took %f seconds to execute \n", time_taken);
     }
     return 0;
 }
