@@ -153,8 +153,8 @@ test_with_iterators() {
     cstl_map_delete(myMap);
 }
 
-void iter_fn(struct cstl_map *map, const void *key, const void *value, void *p) {
-    (void)value; (void)p;
+void iter_fn(struct cstl_map *map, const void *key, const void *value, cstl_bool *stop, void *p) {
+    (void)value; (void)stop; (void)p;
     cstl_map_remove(map, key);
 }
 
