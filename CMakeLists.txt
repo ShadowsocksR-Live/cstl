@@ -1,18 +1,22 @@
 cmake_minimum_required(VERSION 2.5)
 project(cstl)
 
+include(CMakeDependentOption)
+
 include_directories(inc)
 
 set(CMAKE_CXX_STANDARD 11)
 
 set(CSTL_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "cstl library root directory" FORCE)
 
-# set(CSTL_LIBRARY_ONLY ON CACHE INTERNAL "using cstl Library only" )
+cmake_dependent_option(BUILD_TESTING
+  "Build cstl Library only" ON
+  "CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR" OFF)
 
-if (CSTL_LIBRARY_ONLY)
-option(ENABLE_PROGRAMS "Build CSTL test programs." OFF)
+if (BUILD_TESTING)
+  option(ENABLE_PROGRAMS "Build CSTL test programs." ON)
 else()
-option(ENABLE_PROGRAMS "Build CSTL test programs." ON)
+  option(ENABLE_PROGRAMS "Build CSTL test programs." OFF)
 endif()
 
 if (UNIX)
