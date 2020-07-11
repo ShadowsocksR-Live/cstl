@@ -2,6 +2,8 @@
 *.a
 .idea/
 cmake-build-*
+Makefile
+test_cstl
 tstclib
 CMakeCache.txt
 CMakeFiles/
