@@ -10,8 +10,8 @@ set(CMAKE_CXX_STANDARD 11)
 set(CSTL_ROOT_DIR ${CMAKE_CURRENT_SOURCE_DIR} CACHE INTERNAL "cstl library root directory" FORCE)
 
 cmake_dependent_option(BUILD_TESTING
-  "Build cstl Library only" ON
-  "CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR" OFF)
+  "Build cstl Library only"
+  ON "CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR" OFF)
 
 if (BUILD_TESTING)
   option(ENABLE_PROGRAMS "Build CSTL test programs." ON)
