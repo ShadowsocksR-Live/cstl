@@ -118,7 +118,6 @@ static void update_values ( void* v, int *l, int *r, int *p , int *e, struct cst
 }
 
 static void test_each_elements(int l,int r, int p, int e,void* v, TS ts[], int i, struct cstl_rb* tree) {
-    (void)l; (void)r; (void)p; (void)e; (void)v; (void)ts; (void)i; (void)tree;
     assert ( ts[i].element == e);
     if (ts[i].left != 0 ) {
         assert ( ts[i].left == l);
