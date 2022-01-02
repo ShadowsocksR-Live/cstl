@@ -93,7 +93,6 @@ remove_some_exist(struct cstl_map* myMap) {
     error = cstl_map_remove(myMap, &key);
     assert(CSTL_ERROR_SUCCESS == error);
     assert(cstl_false == cstl_map_exists(myMap, &key));
-    (void)error;
 }
 
 static void
