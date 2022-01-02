@@ -66,7 +66,6 @@ create_c_array() {
         p_rv = (void*) cstl_array_element_at(myArray, i);
         rv = *(int*)p_rv;
         assert(rv == i);
-        (void)rv;
     }
     return myArray;
 }
