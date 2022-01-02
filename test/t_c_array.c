@@ -130,6 +130,7 @@ test_with_int() {
     }
 
     cstl_array_delete(myArray);
+    (void)rv;
 }
 
 static void
@@ -186,6 +187,7 @@ test_with_pointers() {
     assert(*rv == 8);
 
     cstl_array_delete(myArray);
+    (void)rv;
 }
 
 static void
@@ -253,6 +255,7 @@ test_with_strings() {
     assert(strcmp(rv, input_array[8]) == 0);
 
     cstl_array_delete(myArray);
+    (void)rv;
 }
 
 static void
@@ -303,6 +306,7 @@ create_array() {
         rv = *(int*)p_rv;
         assert(rv == i);
     }
+    (void)rv;
     return myArray;
 }
 
