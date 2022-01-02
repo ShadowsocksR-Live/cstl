@@ -1,0 +1,36 @@
+name: CMake
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        build: [Release, Debug]
+
+    runs-on: ${{ matrix.os }}
+
+    env:
+      BUILD_TYPE: ${{ matrix.build }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Configure CMake
+      run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=${{env.BUILD_TYPE}}
+
+    - name: Build
+      run: cmake --build ${{github.workspace}}/build --config ${{env.BUILD_TYPE}}
+
+    - name: Test on Windows
+      if: matrix.os == 'windows-latest'
+      run: ${{github.workspace}}/build/${{env.BUILD_TYPE}}/test_cstl.exe
+
+    - name: Test on linux and macos
+      if: runner.os != 'Windows'
+      run: ${{github.workspace}}/build/test_cstl
