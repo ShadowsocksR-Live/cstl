@@ -69,7 +69,6 @@ test_with_iterators() {
     for (index = 0; index < size; index++) {
         int v = test[index];
         assert(cstl_true == cstl_set_exists(pSet, &v));
-        (void)v;
     }
     printf("------------------------------------------------\n");
     myItr = cstl_set_new_iterator(pSet);
@@ -98,14 +97,12 @@ test_c_set() {
         for (index = 0; index < size; index++) {
             int v = test[index];
             assert(cstl_true == cstl_set_exists(pSet, &v));
-            (void)v;
         }
 
         index = 9;
         outKey = cstl_set_find(pSet, &index);
         assert(9 == *(int*)outKey);
         cstl_set_delete(pSet);
-        (void)outKey;
     }
     {
         typedef struct test {
@@ -150,7 +147,6 @@ test_c_set() {
         cstl_set_delete_iterator(myItr);
         }
         cstl_set_delete(pSet);
-        (void)v;
     }
     test_with_iterators();
 }
