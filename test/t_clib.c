@@ -62,7 +62,7 @@ int main( int argc, char**argv ) {
     (void)argc; (void)argv;
     MEM_CHECK_BEGIN();
     atexit(on_atexit);
-    for (i = 0; i < 10000; i++)
+    for (i = 0; i < 1; i++)
     {
         printf("Performing test for red-black tree\n");
         test_c_rb();
