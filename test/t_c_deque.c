@@ -154,4 +154,6 @@ test_c_deque() {
     }
     cstl_deque_delete(myDeq);
     test_with_deque_iterator();
+    (void)element;
+    (void)j;
 }
