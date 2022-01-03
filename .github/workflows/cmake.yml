@@ -29,8 +29,8 @@ jobs:
 
     - name: Test on Windows
       if: matrix.os == 'windows-latest'
-      run: ${{github.workspace}}/build/${{env.BUILD_TYPE}}/test_cstl.exe
+      run: ${{github.workspace}}/build/${{env.BUILD_TYPE}}/test-cstl.exe
 
     - name: Test on linux and macos
       if: runner.os != 'Windows'
-      run: ${{github.workspace}}/build/test_cstl
+      run: ${{github.workspace}}/build/test-cstl
