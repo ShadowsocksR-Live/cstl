@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "cstl", "cstl.vcxproj", "{475DE074-DA8E-3E95-929A-5D73E659170A}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test_cstl", "test-cstl.vcxproj", "{2C18D160-302B-3D88-BD12-F0714E0C1263}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test-cstl", "test-cstl.vcxproj", "{2C18D160-302B-3D88-BD12-F0714E0C1263}"
 	ProjectSection(ProjectDependencies) = postProject
 		{475DE074-DA8E-3E95-929A-5D73E659170A} = {475DE074-DA8E-3E95-929A-5D73E659170A}
 	EndProjectSection

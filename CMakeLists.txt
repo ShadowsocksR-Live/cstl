@@ -53,6 +53,6 @@ include_directories(inc)
 add_library(cstl STATIC ${CSTL_SRC_FILES})
 
 if (BUILD_CSTL_TESTING)
-    add_executable(test_cstl ${CSTL_TEST_FILES})
-    target_link_libraries(test_cstl cstl)
+    add_executable(test-cstl ${CSTL_TEST_FILES})
+    target_link_libraries(test-cstl cstl)
 endif()

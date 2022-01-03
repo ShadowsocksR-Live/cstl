@@ -22,7 +22,7 @@
     <ProjectGuid>{2C18D160-302B-3D88-BD12-F0714E0C1263}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <Platform>Win32</Platform>
-    <ProjectName>test_cstl</ProjectName>
+    <ProjectName>test-cstl</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
