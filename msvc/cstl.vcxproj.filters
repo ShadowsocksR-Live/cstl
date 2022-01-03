@@ -1,20 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
-    <Filter Include="Header Files">
-      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
-      <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
-    </Filter>
-    <Filter Include="Resource Files">
-      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
-      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
-    </Filter>
-  </ItemGroup>
-  <ItemGroup>
     <ClCompile Include="..\src\c_algorithms.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -24,6 +10,9 @@
     <ClCompile Include="..\src\c_deque.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\c_list.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\c_map.c">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -31,9 +20,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\c_set.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\c_list.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\c_util.c">
@@ -53,7 +39,13 @@
     <ClInclude Include="..\inc\c_errors.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\inc\c_iterator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
     <ClInclude Include="..\inc\c_lib.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\inc\c_list.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\c_map.h">
@@ -65,11 +57,13 @@
     <ClInclude Include="..\inc\c_set.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\c_list.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\README.md" />
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{C29B761F-DB53-36CC-B42D-1B208811B37A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{B4B10EE7-BF3F-325B-8FBB-8B1F07CCB69E}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
 </Project>
