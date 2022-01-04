@@ -22,19 +22,20 @@
  *  THE SOFTWARE.
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
-#ifndef _C_SET_H_
-#define _C_SET_H_
+#ifndef __C_STL_SET_H__
+#define __C_STL_SET_H__
 
 struct cstl_set;
 
-extern struct cstl_set* cstl_set_new( cstl_compare fn_c, cstl_destroy fn_d);
-extern cstl_error   cstl_set_insert ( struct cstl_set* pSet, void* key, size_t key_size);
-extern cstl_bool    cstl_set_exists ( struct cstl_set* pSet, void* key);
-extern cstl_error   cstl_set_remove ( struct cstl_set* pSet, void* key);
-extern const void * cstl_set_find   ( struct cstl_set* pSet, const void* key);
-extern cstl_error   cstl_set_delete ( struct cstl_set* pSet);
+extern struct cstl_set *cstl_set_new(cstl_compare fn_c, cstl_destroy fn_d);
+extern cstl_error cstl_set_insert(struct cstl_set *pSet, void *key,
+                                  size_t key_size);
+extern cstl_bool cstl_set_exists(struct cstl_set *pSet, void *key);
+extern cstl_error cstl_set_remove(struct cstl_set *pSet, void *key);
+extern const void *cstl_set_find(struct cstl_set *pSet, const void *key);
+extern cstl_error cstl_set_delete(struct cstl_set *pSet);
 
-extern struct cstl_iterator* cstl_set_new_iterator(struct cstl_set* pSet);
-extern void cstl_set_delete_iterator ( struct cstl_iterator* pItr);
+extern struct cstl_iterator *cstl_set_new_iterator(struct cstl_set *pSet);
+extern void cstl_set_delete_iterator(struct cstl_iterator *pItr);
 
-#endif
+#endif /* __C_STL_SET_H__ */

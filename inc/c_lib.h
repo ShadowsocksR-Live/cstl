@@ -22,8 +22,8 @@
  *  THE SOFTWARE.
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
-#ifndef _C_LIB_H_
-#define _C_LIB_H_
+#ifndef __C_STL_LIB_H__
+#define __C_STL_LIB_H__
 
 #include <stdlib.h>
 
@@ -33,53 +33,55 @@
 /*       C O M M O N       D E F I N I T O N S                             */
 /* ------------------------------------------------------------------------*/
 
-typedef void (*cstl_destroy)(void*);
-typedef int  (*cstl_compare)(const void*,const void*);
-typedef void (*cstl_traversal)( void*);
+typedef void (*cstl_destroy)(void *);
+typedef int (*cstl_compare)(const void *, const void *);
+typedef void (*cstl_traversal)(void *);
 
-typedef int  cstl_error;
-typedef int  cstl_bool;
+typedef int cstl_error;
+typedef int cstl_bool;
 
-#define cstl_black           0
-#define cstl_red             1
-#define cstl_true            1
-#define cstl_false           0
+#define cstl_black 0
+#define cstl_red   1
+#define cstl_true  1
+#define cstl_false 0
 
 /* ------------------------------------------------------------------------*/
 /*                            P  A  I   R                                  */
 /* ------------------------------------------------------------------------*/
 
 struct cstl_iterator {
-    const void * (*next)(struct cstl_iterator *pIterator);
-    void (*replace_current_value)(struct cstl_iterator *pIterator, void *new_value, size_t size);
-    const void* (*current_key)(struct cstl_iterator *pIterator);
-    const void* (*current_value)(struct cstl_iterator *pIterator);
-    void* pContainer;
+    const void *(*next)(struct cstl_iterator *pIterator);
+    void (*replace_current_value)(struct cstl_iterator *pIterator,
+                                  void *new_value, size_t size);
+    const void *(*current_key)(struct cstl_iterator *pIterator);
+    const void *(*current_value)(struct cstl_iterator *pIterator);
+    void *pContainer;
     size_t current_index;
-    void* current_element;
+    void *current_element;
 };
 
+#include "c_algorithms.h"
 #include "c_array.h"
 #include "c_deque.h"
-#include "c_set.h"
-#include "c_map.h"
 #include "c_list.h"
 #include "c_map.h"
-#include "c_algorithms.h"
+#include "c_set.h"
 
 /* ------------------------------------------------------------------------*/
 /*            H E L P E R       F U N C T I O N S                          */
 /* ------------------------------------------------------------------------*/
 
-extern void  cstl_copy ( void* destination, void* source, size_t size );
-extern void  cstl_get  ( void* destination, void* source, size_t size);
-extern char* cstl_strdup (const char *ptr);
+extern void cstl_copy(void *destination, void *source, size_t size);
+extern void cstl_get(void *destination, void *source, size_t size);
+extern char *cstl_strdup(const char *ptr);
 
 struct cstl_object;
 
-extern struct cstl_object* cstl_object_new (const void* inObject, size_t obj_size);
-extern const void * cstl_object_get_data(struct cstl_object *inObject);
-extern void  cstl_object_delete  (struct cstl_object* inObject );
-extern void cstl_object_replace_raw(struct cstl_object* current_object,const void* elem, size_t elem_size);
+extern struct cstl_object *cstl_object_new(const void *inObject,
+                                           size_t obj_size);
+extern const void *cstl_object_get_data(struct cstl_object *inObject);
+extern void cstl_object_delete(struct cstl_object *inObject);
+extern void cstl_object_replace_raw(struct cstl_object *current_object,
+                                    const void *elem, size_t elem_size);
 
-#endif
+#endif /* __C_STL_LIB_H__ */

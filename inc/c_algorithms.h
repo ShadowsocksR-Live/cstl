@@ -21,9 +21,13 @@
  *  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  *  THE SOFTWARE.
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
-#ifndef _C_ALGORITHMS_
-#define _C_ALGORITHMS_
+#ifndef __C_STL_ALGORITHMS__
+#define __C_STL_ALGORITHMS__
 
-extern void cstl_for_each(struct cstl_iterator* pIterator, void (*fn)(const void *value, const void *key, void*p), void *p);
+struct cstl_iterator;
 
-#endif
+extern void
+cstl_for_each(struct cstl_iterator *pIterator,
+              void (*fn)(const void *value, const void *key, void *p), void *p);
+
+#endif /* __C_STL_ALGORITHMS__ */

@@ -40,30 +40,48 @@ extern void test_c_algorithms();
 #if !defined(_CRTDBG_MAP_ALLOC)
 #define _CRTDBG_MAP_ALLOC
 #endif
-#include <stdlib.h>
 #include <crtdbg.h>
+#include <stdlib.h>
 
-#define MEM_CHECK_BEGIN() do { _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF ); } while(0)
-#define MEM_CHECK_BREAK_ALLOC(x) do { _CrtSetBreakAlloc(x); } while(0)
-#define MEM_CHECK_DUMP_LEAKS() do { _CrtDumpMemoryLeaks(); } while(0)
+#define MEM_CHECK_BEGIN()                                             \
+    do {                                                              \
+        _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF); \
+    } while (0)
+#define MEM_CHECK_BREAK_ALLOC(x) \
+    do {                         \
+        _CrtSetBreakAlloc(x);    \
+    } while (0)
+#define MEM_CHECK_DUMP_LEAKS() \
+    do {                       \
+        _CrtDumpMemoryLeaks(); \
+    } while (0)
 #else
-#define MEM_CHECK_BEGIN() do { } while(0)
-#define MEM_CHECK_BREAK_ALLOC(x) do { (void)x; } while(0)
-#define MEM_CHECK_DUMP_LEAKS() do { } while(0)
+#define MEM_CHECK_BEGIN() \
+    do {                  \
+    } while (0)
+#define MEM_CHECK_BREAK_ALLOC(x) \
+    do {                         \
+        (void)x;                 \
+    } while (0)
+#define MEM_CHECK_DUMP_LEAKS() \
+    do {                       \
+    } while (0)
 #endif
 
-void on_atexit(void) {
+void on_atexit(void)
+{
     MEM_CHECK_DUMP_LEAKS();
 }
 
-int main( int argc, char**argv ) {
+int main(int argc, char **argv)
+{
     clock_t t = clock();
-    size_t i = 0;
-    (void)argc; (void)argv;
+    size_t i  = 0;
+    (void)argc;
+    (void)argv;
     MEM_CHECK_BEGIN();
     atexit(on_atexit);
-    for (i = 0; i < 1; i++)
-    {
+    for (i = 0; i < 1; i++) {
         printf("Performing test for red-black tree\n");
         test_c_rb();
 
@@ -81,7 +99,8 @@ int main( int argc, char**argv ) {
         test_c_algorithms();
     }
     {
-        double time_taken = ((double)(clock() - t)) / CLOCKS_PER_SEC; // in seconds
+        double time_taken =
+            ((double)(clock() - t)) / CLOCKS_PER_SEC; // in seconds
         printf("tests took %f seconds to execute \n", time_taken);
     }
     return 0;

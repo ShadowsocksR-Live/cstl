@@ -22,18 +22,21 @@
  *  THE SOFTWARE.
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
-#include "c_lib.h"
 #include <stdlib.h>
+#include "c_lib.h"
 
-void
-cstl_for_each(struct cstl_iterator *pIterator, void(*fn)(const void *value, const void *key, void *p), void *p) {
+void cstl_for_each(struct cstl_iterator *pIterator,
+                   void (*fn)(const void *value, const void *key, void *p),
+                   void *p)
+{
     const void *pElement;
-    if (pIterator==NULL || fn==NULL) {
+    if (pIterator == NULL || fn == NULL) {
         return;
     }
     while ((pElement = pIterator->next(pIterator)) != NULL) {
         const void *value = pIterator->current_value(pIterator);
-        const void *key = pIterator->current_key ? pIterator->current_key(pIterator) : NULL;
+        const void *key =
+            pIterator->current_key ? pIterator->current_key(pIterator) : NULL;
         fn(value, key, p);
     }
 }
