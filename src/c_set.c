@@ -23,8 +23,8 @@
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include <stdio.h>
-#include "c_stl_lib.h"
 #include "c_rb.h"
+#include "c_stl_lib.h"
 
 struct cstl_set {
     struct cstl_rb *root;
