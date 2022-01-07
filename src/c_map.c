@@ -23,7 +23,7 @@
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include <stdio.h>
-#include "c_lib.h"
+#include "c_stl_lib.h"
 #include "c_rb.h"
 
 struct cstl_map {

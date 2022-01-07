@@ -166,7 +166,7 @@
     <ClInclude Include="..\inc\c_deque.h" />
     <ClInclude Include="..\inc\c_errors.h" />
     <ClInclude Include="..\inc\c_iterator.h" />
-    <ClInclude Include="..\inc\c_lib.h" />
+    <ClInclude Include="..\inc\c_stl_lib.h" />
     <ClInclude Include="..\inc\c_list.h" />
     <ClInclude Include="..\inc\c_map.h" />
     <ClInclude Include="..\inc\c_rb.h" />

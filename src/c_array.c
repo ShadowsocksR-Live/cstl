@@ -24,7 +24,7 @@
 
 #include <stdio.h>
 #include <string.h>
-#include "c_lib.h"
+#include "c_stl_lib.h"
 
 struct cstl_array {
     size_t capacity; /* Number of maximum elements array can hold */

@@ -25,7 +25,7 @@
 #ifndef __C_STL_RB_H__
 #define __C_STL_RB_H__
 
-#include "c_lib.h"
+#include "c_stl_lib.h"
 
 struct cstl_object;
 

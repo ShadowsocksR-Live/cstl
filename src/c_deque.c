@@ -23,7 +23,7 @@
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
 #include <string.h>
-#include "c_lib.h"
+#include "c_stl_lib.h"
 
 struct cstl_deque {
     struct cstl_object **pElements;

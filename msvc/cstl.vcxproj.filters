@@ -42,7 +42,7 @@
     <ClInclude Include="..\inc\c_iterator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\c_lib.h">
+    <ClInclude Include="..\inc\c_stl_lib.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\c_list.h">

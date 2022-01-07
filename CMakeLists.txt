@@ -22,7 +22,7 @@ set(CSTL_SRC_FILES
     inc/c_deque.h
     inc/c_errors.h
     inc/c_iterator.h
-    inc/c_lib.h
+    inc/c_stl_lib.h
     inc/c_list.h
     inc/c_map.h
     inc/c_rb.h

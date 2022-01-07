@@ -22,7 +22,7 @@
  *  THE SOFTWARE.
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
-#include "c_lib.h"
+#include "c_stl_lib.h"
 
 struct cstl_list_node {
     struct cstl_object *elem;

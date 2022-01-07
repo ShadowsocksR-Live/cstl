@@ -24,7 +24,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "c_lib.h"
+#include "c_stl_lib.h"
 
 void cstl_copy(void *destination, void *source, size_t size)
 {
