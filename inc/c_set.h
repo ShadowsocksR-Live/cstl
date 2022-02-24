@@ -38,4 +38,6 @@ extern cstl_error cstl_set_delete(struct cstl_set *pSet);
 extern struct cstl_iterator *cstl_set_new_iterator(struct cstl_set *pSet);
 extern void cstl_set_delete_iterator(struct cstl_iterator *pItr);
 
+extern void cstl_set_container_traverse(struct cstl_set *set, void(*fn)(struct cstl_set *set, const void *obj, cstl_bool *stop, void *p), void *p);
+
 #endif /* __C_STL_SET_H__ */

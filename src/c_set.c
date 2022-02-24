@@ -164,3 +164,19 @@ void cstl_set_delete_iterator(struct cstl_iterator *pItr)
 {
     free(pItr);
 }
+
+void cstl_set_container_traverse(struct cstl_set *set, void(*fn)(struct cstl_set *set, const void *obj, cstl_bool *stop, void *p), void *p) {
+    struct cstl_iterator *iterator;
+    const void *element;
+    cstl_bool stop = cstl_false;
+    if (set==NULL || fn==NULL) {
+        return;
+    }
+    iterator = cstl_set_new_iterator(set);
+    while( (element = iterator->next(iterator)) ) {
+        const void *obj = *((const void **) iterator->current_value(iterator));
+        fn(set, obj, &stop, p);
+        if (stop != cstl_false) { break; }
+    }
+    cstl_set_delete_iterator(iterator);
+}
