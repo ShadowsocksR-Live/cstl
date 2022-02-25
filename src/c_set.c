@@ -22,9 +22,11 @@
  *  THE SOFTWARE.
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
+#include <assert.h>
 #include <stdio.h>
 #include "c_rb.h"
 #include "c_stl_lib.h"
+#include "c_set.h"
 
 struct cstl_set {
     struct cstl_rb *root;
@@ -165,7 +167,7 @@ void cstl_set_delete_iterator(struct cstl_iterator *pItr)
     free(pItr);
 }
 
-void cstl_set_container_traverse(struct cstl_set *set, void(*fn)(struct cstl_set *set, const void *obj, cstl_bool *stop, void *p), void *p) {
+void cstl_set_container_traverse(struct cstl_set *set, fn_cstl_set_iter fn, void *p) {
     struct cstl_iterator *iterator;
     const void *element;
     cstl_bool stop = cstl_false;
@@ -179,4 +181,14 @@ void cstl_set_container_traverse(struct cstl_set *set, void(*fn)(struct cstl_set
         if (stop != cstl_false) { break; }
     }
     cstl_set_delete_iterator(iterator);
+}
+
+void cstl_set_container_add(struct cstl_set *set, void *obj) {
+    assert(set && obj);
+    cstl_set_insert(set, &obj, sizeof(void *));
+}
+
+void cstl_set_container_remove(struct cstl_set *set, void *obj) {
+    assert(cstl_true == cstl_set_exists(set, &obj));
+    cstl_set_remove(set, &obj);
 }
