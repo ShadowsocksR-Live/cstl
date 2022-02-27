@@ -249,3 +249,20 @@ void cstl_map_traverse(struct cstl_map *map, map_iter_callback cb, void *p)
     }
     cstl_map_delete_iterator(iterator);
 }
+
+void cstl_map_const_traverse(struct cstl_map *map, fn_map_walker fn, void *p) {
+    struct cstl_iterator *iterator;
+    cstl_bool stop = cstl_false;
+    const void *element;
+    if (map==NULL || fn==NULL) {
+        return;
+    }
+    iterator = cstl_map_new_iterator(map);
+    while( (element = iterator->next(iterator)) ) {
+        const void *key = iterator->current_key(iterator);
+        const void *value = iterator->current_value(iterator);
+        fn(key, value, &stop, p);
+        if (stop != cstl_false) { break; }
+    }
+    cstl_map_delete_iterator(iterator);
+}

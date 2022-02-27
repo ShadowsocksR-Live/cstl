@@ -47,4 +47,7 @@ typedef void (*map_iter_callback)(struct cstl_map *map, const void *key,
 extern void cstl_map_traverse(struct cstl_map *map, map_iter_callback cb,
                               void *p);
 
+typedef void(*fn_map_walker)(const void *key, const void *value, cstl_bool *stop, void *p);
+void cstl_map_const_traverse(struct cstl_map *map, fn_map_walker fn, void *p);
+
 #endif /* __C_STL_MAP_H__ */
