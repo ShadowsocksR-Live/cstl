@@ -130,7 +130,6 @@ void test_c_set()
         struct cstl_set *pSet = cstl_set_new(compare_e, delete_e);
         size                  = sizeof(ti) / sizeof(ti[0]);
 
-        //*
         for (index = 0; index < size; index++) {
             char *temp = cstl_strdup(ti[index].string);
             cstl_set_insert(pSet, &temp, sizeof(char *));
@@ -138,9 +137,8 @@ void test_c_set()
         for (index = 0; index < size; index++) {
             v = ti[index].string;
             assert(cstl_true == cstl_set_exists(pSet, &v));
-            // cstl_set_remove(pSet, &v);
+            /* cstl_set_remove(pSet, &v); */
         }
-        // */
         {
             const void *pElement;
             struct cstl_iterator *myItr = cstl_set_new_iterator(pSet);

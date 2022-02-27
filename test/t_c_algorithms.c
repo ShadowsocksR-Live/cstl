@@ -137,7 +137,7 @@ static struct cstl_list *create_slist()
     int i                   = 0;
     for (i = 0; i <= 10; i++) {
         int *v = (int *)calloc(1, sizeof(int));
-        *v     = i; // memcpy ( v, &i, sizeof ( int ));
+        *v     = i; /* memcpy ( v, &i, sizeof ( int )); */
         cstl_list_push_back(pList, &v, sizeof(int *));
     }
     return pList;

@@ -100,7 +100,7 @@ int main(int argc, char **argv)
     }
     {
         double time_taken =
-            ((double)(clock() - t)) / CLOCKS_PER_SEC; // in seconds
+            ((double)(clock() - t)) / CLOCKS_PER_SEC; /* in seconds */
         printf("tests took %f seconds to execute \n", time_taken);
     }
     return 0;
