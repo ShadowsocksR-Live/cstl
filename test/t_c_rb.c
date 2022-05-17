@@ -85,27 +85,6 @@ typedef struct test_data_tree {
     enum cstl_rb_color color;
 } TS;
 
-static struct cstl_rb_node *__find_c_rb(struct cstl_rb *tree, cstl_compare fn_c,
-                                        const void *key)
-{
-    struct cstl_rb_node *node = tree->root;
-    int result                = 0;
-
-    while ((node != rb_sentinel(tree)) &&
-           (result = fn_c(key, cstl_object_get_data(node->key))) != 0) {
-        if (result < 0) {
-            node = node->left;
-        } else {
-            node = node->right;
-        }
-    }
-    return node;
-}
-struct cstl_rb_node *find(struct cstl_rb *tree, void *key)
-{
-    return __find_c_rb(tree, tree->compare_fn, key);
-}
-
 static void retrieve_values(struct cstl_rb_node *v, TS *data, struct cstl_rb *tree)
 {
     struct cstl_rb_node *x = NULL;
@@ -135,7 +114,7 @@ static void test_all_elements(struct cstl_rb *tree, TS ts[], int size)
     int i = 0;
     for (i = 0; i < size; i++) {
         struct test_data_tree data;
-        struct cstl_rb_node *v = find(tree, &ts[i].element);
+        struct cstl_rb_node *v = cstl_rb_find(tree, &ts[i].element);
         memset(&data, 0, sizeof(data));
         retrieve_values(v, &data, tree);
         test_each_elements(&data, &ts[i]);
@@ -238,4 +217,32 @@ void test_c_rb()
     {
         cstl_rb_delete(tree);
     }
+}
+
+void test_c_rb2(void)
+{
+    struct cstl_rb_node *node;
+    int i;
+    struct cstl_rb *t = cstl_rb_new(compare_rb_e, NULL, NULL);
+
+    for (i = 0; i < 5000; i++) {
+        int x = rand() % 10000;
+        int y = rand() % 10000;
+        if (CSTL_RBTREE_KEY_DUPLICATE ==
+            cstl_rb_insert(t, &x, sizeof(x), &y, sizeof(y))) {
+            continue;
+        }
+        node = cstl_rb_find(t, &x);
+        assert(*((int*)cstl_object_get_data(node->value)) == y);
+    }
+    for (i = 0; i < 60000; i++) {
+        int x = rand() % 10000;
+        node = cstl_rb_remove(t, &x);
+        if (node != NULL) {
+            cstl_object_delete(node->key);
+            cstl_object_delete(node->value);
+            free(node);
+        }
+    }
+    cstl_rb_delete(t);
 }
