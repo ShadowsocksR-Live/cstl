@@ -167,6 +167,45 @@ struct cstl_rb_node *cstl_rb_find(struct cstl_rb *pTree, const void *key)
     return x;
 }
 
+static struct cstl_rb_node *_create_rb_node(struct cstl_rb *pTree,
+                                            const void *k, size_t key_size,
+                                            const void *v, size_t value_size)
+{
+    struct cstl_rb_node *node;
+    node = (struct cstl_rb_node *)calloc(1, sizeof(struct cstl_rb_node));
+    if (node) {
+        node->left   = rb_sentinel(pTree);
+        node->right  = rb_sentinel(pTree);
+        node->color  = cstl_red;
+        node->parent = rb_sentinel(pTree);
+
+        assert(k && key_size);
+        node->key = cstl_object_new(k, key_size);
+        if (v && value_size) {
+            node->value = cstl_object_new(v, value_size);
+        }
+    }
+    return node;
+}
+
+static void _destroy_rb_node(struct cstl_rb_node *node)
+{
+    if (node) {
+        cstl_object_delete(node->key);
+        cstl_object_delete(node->value);
+        free(node);
+    }
+}
+
+static int _rb_node_compare(struct cstl_rb *pTree, struct cstl_rb_node *lhs,
+                            struct cstl_rb_node *rhs)
+{
+    const void *new_key = cstl_object_get_data(lhs->key);
+    const void *cur_key = cstl_object_get_data(rhs->key);
+    return pTree->compare_fn(new_key, cur_key);
+}
+
+
 cstl_error cstl_rb_insert(struct cstl_rb *pTree, const void *k, size_t key_size,
                           const void *v, size_t value_size)
 {
@@ -175,32 +214,18 @@ cstl_error cstl_rb_insert(struct cstl_rb *pTree, const void *k, size_t key_size,
     struct cstl_rb_node *y;
     struct cstl_rb_node *z;
 
-    x = (struct cstl_rb_node *)calloc(1, sizeof(struct cstl_rb_node));
+    x = _create_rb_node(pTree, k, key_size, v, value_size);
     if (x == (struct cstl_rb_node *)0) {
         return CSTL_ERROR_MEMORY;
-    }
-    x->left  = rb_sentinel(pTree);
-    x->right = rb_sentinel(pTree);
-    x->color = cstl_red;
-
-    x->key = cstl_object_new(k, key_size);
-    if (v) {
-        x->value = cstl_object_new(v, value_size);
-    } else {
-        x->value = (struct cstl_object *)0;
     }
 
     y = pTree->root;
     z = (struct cstl_rb_node *)0;
 
     while (y != rb_sentinel(pTree)) {
-        const void *cur_key = cstl_object_get_data(y->key);
-        const void *new_key = cstl_object_get_data(x->key);
-        int c               = pTree->compare_fn(new_key, cur_key);
+        int c = _rb_node_compare(pTree, x, y);
         if (c == 0) {
-            cstl_object_delete(x->key);
-            cstl_object_delete(x->value);
-            free(x);
+            _destroy_rb_node(x);
             return CSTL_RBTREE_KEY_DUPLICATE;
         }
         z = y;
@@ -212,10 +237,7 @@ cstl_error cstl_rb_insert(struct cstl_rb *pTree, const void *k, size_t key_size,
     }
     x->parent = z;
     if (z) {
-        const void *cur_key = cstl_object_get_data(z->key);
-        const void *new_key = cstl_object_get_data(x->key);
-        int c               = pTree->compare_fn(new_key, cur_key);
-        if (c < 0) {
+        if (_rb_node_compare(pTree, x, z) < 0) {
             z->left = x;
         } else {
             z->right = x;
@@ -351,13 +373,14 @@ struct cstl_rb_node *cstl_rb_remove(struct cstl_rb *pTree, const void *key)
     return __remove_c_rb(pTree, z);
 }
 
-static void __delete_c_rb_node(struct cstl_rb *pTree, struct cstl_rb_node *x)
+static void __c_rb_node_dying(struct cstl_rb *pTree, struct cstl_rb_node *x)
 {
     if (pTree->destruct_k_fn) {
         void *key = (void *)cstl_object_get_data(x->key);
         pTree->destruct_k_fn(key);
     }
     cstl_object_delete(x->key);
+    x->key = NULL;
 
     if (x->value) {
         if (pTree->destruct_v_fn) {
@@ -365,6 +388,7 @@ static void __delete_c_rb_node(struct cstl_rb *pTree, struct cstl_rb_node *x)
             pTree->destruct_v_fn(value);
         }
         cstl_object_delete(x->value);
+        x->value = NULL;
     }
 }
 
@@ -379,7 +403,7 @@ cstl_error cstl_rb_delete(struct cstl_rb *pTree)
         } else if (z->right != rb_sentinel(pTree)) {
             z = z->right;
         } else {
-            __delete_c_rb_node(pTree, z);
+            __c_rb_node_dying(pTree, z);
             if (z->parent) {
                 z = z->parent;
                 if (z->left != rb_sentinel(pTree)) {
@@ -472,10 +496,12 @@ cstl_rb_get_next(struct cstl_rb* pTree, struct cstl_rb_node**current, struct cst
 
 void debug_verify_properties(struct cstl_rb *t)
 {
+#ifndef NDEBUG
     debug_verify_property_1(t, t->root);
     debug_verify_property_2(t, t->root);
     debug_verify_property_4(t, t->root);
     debug_verify_property_5(t, t->root);
+#endif
 }
 
 void debug_verify_property_1(struct cstl_rb *pTree, struct cstl_rb_node *n)
