@@ -167,28 +167,34 @@ void cstl_set_delete_iterator(struct cstl_iterator *pItr)
     free(pItr);
 }
 
-void cstl_set_container_traverse(struct cstl_set *set, fn_cstl_set_iter fn, void *p) {
+void cstl_set_container_traverse(struct cstl_set *set, fn_cstl_set_iter fn,
+                                 void *p)
+{
     struct cstl_iterator *iterator;
     const void *element;
     cstl_bool stop = cstl_false;
-    if (set==NULL || fn==NULL) {
+    if (set == NULL || fn == NULL) {
         return;
     }
     iterator = cstl_set_new_iterator(set);
-    while( (element = iterator->next(iterator)) ) {
-        const void *obj = *((const void **) iterator->current_value(iterator));
+    while ((element = iterator->next(iterator))) {
+        const void *obj = *((const void **)iterator->current_value(iterator));
         fn(set, obj, &stop, p);
-        if (stop != cstl_false) { break; }
+        if (stop != cstl_false) {
+            break;
+        }
     }
     cstl_set_delete_iterator(iterator);
 }
 
-void cstl_set_container_add(struct cstl_set *set, void *obj) {
+void cstl_set_container_add(struct cstl_set *set, void *obj)
+{
     assert(set && obj);
     cstl_set_insert(set, &obj, sizeof(void *));
 }
 
-void cstl_set_container_remove(struct cstl_set *set, void *obj) {
+void cstl_set_container_remove(struct cstl_set *set, void *obj)
+{
     assert(cstl_true == cstl_set_exists(set, &obj));
     cstl_set_remove(set, &obj);
 }

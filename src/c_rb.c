@@ -205,7 +205,6 @@ static int _rb_node_compare(struct cstl_rb *pTree, struct cstl_rb_node *lhs,
     return pTree->compare_fn(new_key, cur_key);
 }
 
-
 cstl_error cstl_rb_insert(struct cstl_rb *pTree, const void *k, size_t key_size,
                           const void *v, size_t value_size)
 {
@@ -338,13 +337,13 @@ static struct cstl_rb_node *__remove_c_rb(struct cstl_rb *pTree,
     }
     if (y != node) {
         struct cstl_object *tmp;
-        tmp    = node->key;
+        tmp       = node->key;
         node->key = y->key;
-        y->key = tmp;
+        y->key    = tmp;
 
-        tmp      = node->value;
+        tmp         = node->value;
         node->value = y->value;
-        y->value = tmp;
+        y->value    = tmp;
     }
     if (y->color == cstl_black) {
         __rb_remove_fixup(pTree, x);
@@ -496,12 +495,10 @@ cstl_rb_get_next(struct cstl_rb* pTree, struct cstl_rb_node**current, struct cst
 
 void debug_verify_properties(struct cstl_rb *t)
 {
-#ifndef NDEBUG
     debug_verify_property_1(t, t->root);
     debug_verify_property_2(t, t->root);
     debug_verify_property_4(t, t->root);
     debug_verify_property_5(t, t->root);
-#endif
 }
 
 void debug_verify_property_1(struct cstl_rb *pTree, struct cstl_rb_node *n)

@@ -41,7 +41,8 @@ static const void *get_key(struct cstl_rb *tree, struct cstl_rb_node *node)
 static struct cstl_rb_node *get_left(struct cstl_rb *tree,
                                      struct cstl_rb_node *node)
 {
-    if (node->left != rb_sentinel(tree) && node->left != (struct cstl_rb_node *)0)
+    if (node->left != rb_sentinel(tree) &&
+        node->left != (struct cstl_rb_node *)0)
         return node->left;
     return (struct cstl_rb_node *)0;
 }
@@ -50,7 +51,8 @@ static struct cstl_rb_node *get_right(struct cstl_rb *tree,
                                       struct cstl_rb_node *node)
 {
     (void)tree;
-    if (node->right != rb_sentinel(tree) && node->right != (struct cstl_rb_node *)0)
+    if (node->right != rb_sentinel(tree) &&
+        node->right != (struct cstl_rb_node *)0)
         return node->right;
     return (struct cstl_rb_node *)0;
 }
@@ -58,7 +60,8 @@ static struct cstl_rb_node *get_right(struct cstl_rb *tree,
 static struct cstl_rb_node *get_parent(struct cstl_rb *tree,
                                        struct cstl_rb_node *node)
 {
-    if (node->parent != rb_sentinel(tree) && node->parent != (struct cstl_rb_node *)0)
+    if (node->parent != rb_sentinel(tree) &&
+        node->parent != (struct cstl_rb_node *)0)
         return node->parent;
     return (struct cstl_rb_node *)0;
 }
@@ -85,7 +88,8 @@ typedef struct test_data_tree {
     enum cstl_rb_color color;
 } TS;
 
-static void retrieve_values(struct cstl_rb_node *v, TS *data, struct cstl_rb *tree)
+static void retrieve_values(struct cstl_rb_node *v, TS *data,
+                            struct cstl_rb *tree)
 {
     struct cstl_rb_node *x = NULL;
     data->element          = *(int *)get_key(tree, v);
@@ -164,14 +168,17 @@ void test_c_rb()
         { 4, 0, 0, 3, cstl_red },
     };
     TS ts_delete_15[] = {
-        { 6, 3, 7, 17, cstl_red },      { 18, 0, 20, 17, cstl_black }, { 3, 2, 4, 6, cstl_black },
-        { 7, 0, 0, 6, cstl_black },     { 17, 6, 18, 0, cstl_black },  { 20, 0, 0, 18, cstl_red },
-        { 2, 0, 0, 3, cstl_red },       { 4, 0, 0, 3, cstl_red },
+        { 6, 3, 7, 17, cstl_red },    { 18, 0, 20, 17, cstl_black },
+        { 3, 2, 4, 6, cstl_black },   { 7, 0, 0, 6, cstl_black },
+        { 17, 6, 18, 0, cstl_black }, { 20, 0, 0, 18, cstl_red },
+        { 2, 0, 0, 3, cstl_red },     { 4, 0, 0, 3, cstl_red },
     };
     TS ts_insert_1[] = {
-        { 6, 3, 17, 0, cstl_black },    { 18, 0, 20, 17, cstl_black }, { 3, 2, 4, 6, cstl_red },
-        { 7, 0, 0, 17, cstl_black },    { 17, 7, 18, 6, cstl_red },    { 20, 0, 0, 18, cstl_red },
-        { 2, 1, 0, 3, cstl_black },     { 4, 0, 0, 3, cstl_black },    { 1, 0, 0, 2, cstl_red },
+        { 6, 3, 17, 0, cstl_black }, { 18, 0, 20, 17, cstl_black },
+        { 3, 2, 4, 6, cstl_red },    { 7, 0, 0, 17, cstl_black },
+        { 17, 7, 18, 6, cstl_red },  { 20, 0, 0, 18, cstl_red },
+        { 2, 1, 0, 3, cstl_black },  { 4, 0, 0, 3, cstl_black },
+        { 1, 0, 0, 2, cstl_red },
     };
 
     size = (sizeof(ts) / sizeof(TS));
@@ -233,11 +240,11 @@ void test_c_rb2(void)
             continue;
         }
         node = cstl_rb_find(t, &x);
-        assert(*((int*)cstl_object_get_data(node->value)) == y);
+        assert(*((int *)cstl_object_get_data(node->value)) == y);
     }
     for (i = 0; i < 60000; i++) {
         int x = rand() % 10000;
-        node = cstl_rb_remove(t, &x);
+        node  = cstl_rb_remove(t, &x);
         if (node != NULL) {
             cstl_object_delete(node->key);
             cstl_object_delete(node->value);

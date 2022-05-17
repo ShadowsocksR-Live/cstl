@@ -27,10 +27,7 @@
 
 #include "c_stl_lib.h"
 
-enum cstl_rb_color {
-    cstl_red = 0,
-    cstl_black = 1
-};
+enum cstl_rb_color { cstl_red = 0, cstl_black = 1 };
 
 struct cstl_object;
 
