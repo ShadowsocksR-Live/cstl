@@ -286,15 +286,15 @@ static void __rb_remove_fixup(struct cstl_rb *pTree, struct cstl_rb_node *x)
 }
 
 static struct cstl_rb_node *__remove_c_rb(struct cstl_rb *pTree,
-                                          struct cstl_rb_node *z)
+                                          struct cstl_rb_node *node)
 {
     struct cstl_rb_node *x = (struct cstl_rb_node *)0;
     struct cstl_rb_node *y = (struct cstl_rb_node *)0;
 
-    if (z->left == rb_sentinel(pTree) || z->right == rb_sentinel(pTree)) {
-        y = z;
+    if (node->left == rb_sentinel(pTree) || node->right == rb_sentinel(pTree)) {
+        y = node;
     } else {
-        y = z->right;
+        y = node->right;
         while (y->left != rb_sentinel(pTree)) {
             y = y->left;
         }
@@ -314,14 +314,14 @@ static struct cstl_rb_node *__remove_c_rb(struct cstl_rb *pTree,
     } else {
         pTree->root = x;
     }
-    if (y != z) {
+    if (y != node) {
         struct cstl_object *tmp;
-        tmp    = z->key;
-        z->key = y->key;
+        tmp    = node->key;
+        node->key = y->key;
         y->key = tmp;
 
-        tmp      = z->value;
-        z->value = y->value;
+        tmp      = node->value;
+        node->value = y->value;
         y->value = tmp;
     }
     if (y->color == cstl_black) {
@@ -480,11 +480,11 @@ void debug_verify_properties(struct cstl_rb *t)
 
 void debug_verify_property_1(struct cstl_rb *pTree, struct cstl_rb_node *n)
 {
-    assert(debug_node_color(pTree, n) == cstl_red ||
-           debug_node_color(pTree, n) == cstl_black);
     if (n == rb_sentinel(pTree)) {
         return;
     }
+    assert(debug_node_color(pTree, n) == cstl_red ||
+           debug_node_color(pTree, n) == cstl_black);
     debug_verify_property_1(pTree, n->left);
     debug_verify_property_1(pTree, n->right);
 }

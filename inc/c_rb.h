@@ -29,7 +29,7 @@
 
 enum cstl_rb_color {
     cstl_red = 0,
-    cstl_black = 1,
+    cstl_black = 1
 };
 
 struct cstl_object;

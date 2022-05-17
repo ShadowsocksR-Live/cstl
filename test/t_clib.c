@@ -28,7 +28,6 @@
 
 extern void test_c_array();
 extern void test_c_deque();
-extern void test_c_tree();
 extern void test_c_rb();
 extern void test_c_set();
 extern void test_c_map();
