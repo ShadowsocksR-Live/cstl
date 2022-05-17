@@ -30,11 +30,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define BLACK 0
-#define RED   1
-
-#define rb_sentinel &tree->sentinel
-
 static const void *get_key(struct cstl_rb *tree, struct cstl_rb_node *node)
 {
     (void)tree;
@@ -46,7 +41,7 @@ static const void *get_key(struct cstl_rb *tree, struct cstl_rb_node *node)
 static struct cstl_rb_node *get_left(struct cstl_rb *tree,
                                      struct cstl_rb_node *node)
 {
-    if (node->left != rb_sentinel && node->left != (struct cstl_rb_node *)0)
+    if (node->left != rb_sentinel(tree) && node->left != (struct cstl_rb_node *)0)
         return node->left;
     return (struct cstl_rb_node *)0;
 }
@@ -55,7 +50,7 @@ static struct cstl_rb_node *get_right(struct cstl_rb *tree,
                                       struct cstl_rb_node *node)
 {
     (void)tree;
-    if (node->right != rb_sentinel && node->right != (struct cstl_rb_node *)0)
+    if (node->right != rb_sentinel(tree) && node->right != (struct cstl_rb_node *)0)
         return node->right;
     return (struct cstl_rb_node *)0;
 }
@@ -63,27 +58,23 @@ static struct cstl_rb_node *get_right(struct cstl_rb *tree,
 static struct cstl_rb_node *get_parent(struct cstl_rb *tree,
                                        struct cstl_rb_node *node)
 {
-    if (node->parent != rb_sentinel && node->parent != (struct cstl_rb_node *)0)
+    if (node->parent != rb_sentinel(tree) && node->parent != (struct cstl_rb_node *)0)
         return node->parent;
     return (struct cstl_rb_node *)0;
 }
 
 int compare_rb_e(const void *l, const void *r)
 {
-    int left  = 0;
-    int right = 0;
+    int left  = *(int *)l;
+    int right = *(int *)r;
 
-    if (l)
-        left = *(int *)l;
-    if (r)
-        right = *(int *)r;
-
-    if (left < right)
+    if (left < right) {
         return -1;
-    if (left == right)
+    } else if (left == right) {
         return 0;
-
-    return 1;
+    } else {
+        return 1;
+    }
 }
 
 typedef struct test_data_tree {
@@ -91,7 +82,7 @@ typedef struct test_data_tree {
     int left;
     int right;
     int parent;
-    int color;
+    enum cstl_rb_color color;
 } TS;
 
 static struct cstl_rb_node *__find_c_rb(struct cstl_rb *tree, cstl_compare fn_c,
@@ -100,9 +91,8 @@ static struct cstl_rb_node *__find_c_rb(struct cstl_rb *tree, cstl_compare fn_c,
     struct cstl_rb_node *node = tree->root;
     int result                = 0;
 
-    result = (fn_c)(key, cstl_object_get_data(node->key));
-    while ((node != rb_sentinel) &&
-           (result = (fn_c)(key, cstl_object_get_data(node->key))) != 0) {
+    while ((node != rb_sentinel(tree)) &&
+           (result = fn_c(key, cstl_object_get_data(node->key))) != 0) {
         if (result < 0) {
             node = node->left;
         } else {
@@ -116,66 +106,39 @@ struct cstl_rb_node *find(struct cstl_rb *tree, void *key)
     return __find_c_rb(tree, tree->compare_fn, key);
 }
 
-static void update_values(void *v, int *l, int *r, int *p, int *e,
-                          struct cstl_rb *tree)
+static void retrieve_values(struct cstl_rb_node *v, TS *data, struct cstl_rb *tree)
 {
-    struct cstl_rb_node *x;
-    if (get_key(tree, (struct cstl_rb_node *)v))
-        *e = *(int *)get_key(tree, (struct cstl_rb_node *)v);
-    x = get_left(tree, (struct cstl_rb_node *)v);
-    if (x)
-        *l = *(int *)get_key(tree, x);
-    x = get_right(tree, (struct cstl_rb_node *)v);
-    if (x)
-        *r = *(int *)get_key(tree, x);
-    x = get_parent(tree, (struct cstl_rb_node *)v);
-    if (x)
-        *p = *(int *)get_key(tree, x);
+    struct cstl_rb_node *x = NULL;
+    data->element          = *(int *)get_key(tree, v);
+    data->color            = v->color;
+    if ((x = get_left(tree, v)))
+        data->left = *(int *)get_key(tree, x);
+    if ((x = get_right(tree, v)))
+        data->right = *(int *)get_key(tree, x);
+    if ((x = get_parent(tree, v)))
+        data->parent = *(int *)get_key(tree, x);
 }
 
-static void test_each_elements(int l, int r, int p, int e, void *v, TS ts[],
-                               int i, struct cstl_rb *tree)
+static void test_each_elements(TS *lhs, TS *rhs)
 {
-    (void)l;
-    (void)r;
-    (void)p;
-    (void)e;
-    (void)v;
-    (void)ts;
-    (void)i;
-    (void)tree;
-    assert(ts[i].element == e);
-    if (ts[i].left != 0) {
-        assert(ts[i].left == l);
-    } else {
-        assert((void *)0 ==
-               (void *)get_key(tree, get_left(tree, (struct cstl_rb_node *)v)));
-    }
-    if (ts[i].right != 0) {
-        assert(ts[i].right == r);
-    } else {
-        assert(
-            (void *)0 ==
-            (void *)get_key(tree, get_right(tree, (struct cstl_rb_node *)v)));
-    }
-    if (ts[i].parent != 0) {
-        assert(ts[i].parent == p);
-    } else {
-        assert(
-            (void *)0 ==
-            (void *)get_key(tree, get_parent(tree, (struct cstl_rb_node *)v)));
-    }
+    assert(lhs->element == rhs->element);
+    assert(lhs->color == rhs->color);
+    assert(lhs->left == rhs->left);
+    assert(lhs->right == rhs->right);
+    assert(lhs->parent == rhs->parent);
+    (void)lhs;
+    (void)rhs;
 }
 
 static void test_all_elements(struct cstl_rb *tree, TS ts[], int size)
 {
     int i = 0;
     for (i = 0; i < size; i++) {
-        void *v = (void *)0;
-        int l, r, p, e;
-        v = find(tree, &ts[i].element);
-        update_values(v, &l, &r, &p, &e, tree);
-        test_each_elements(l, r, p, e, v, ts, i, tree);
+        struct test_data_tree data;
+        struct cstl_rb_node *v = find(tree, &ts[i].element);
+        memset(&data, 0, sizeof(data));
+        retrieve_values(v, &data, tree);
+        test_each_elements(&data, &ts[i]);
     }
 }
 
@@ -200,36 +163,36 @@ void test_c_rb()
     struct cstl_rb_node *node;
 
     TS ts[] = {
-        { 15, 6, 18, 0, BLACK },   { 6, 3, 9, 15, RED },
-        { 18, 17, 20, 15, BLACK }, { 3, 2, 4, 6, BLACK },
-        { 7, 0, 0, 9, RED },       { 17, 0, 0, 18, RED },
-        { 20, 0, 0, 18, RED },     { 2, 0, 0, 3, RED },
-        { 4, 0, 0, 3, RED },       { 13, 0, 0, 9, RED },
-        { 9, 7, 13, 6, BLACK },
+        { 15, 6, 18, 0, cstl_black },   { 6, 3, 9, 15, cstl_red },
+        { 18, 17, 20, 15, cstl_black }, { 3, 2, 4, 6, cstl_black },
+        { 7, 0, 0, 9, cstl_red },       { 17, 0, 0, 18, cstl_red },
+        { 20, 0, 0, 18, cstl_red },     { 2, 0, 0, 3, cstl_red },
+        { 4, 0, 0, 3, cstl_red },       { 13, 0, 0, 9, cstl_red },
+        { 9, 7, 13, 6, cstl_black },
     };
     TS ts_delete_leaf_13[] = {
-        { 15, 6, 18, 0, BLACK },   { 6, 3, 9, 15, RED },
-        { 18, 17, 20, 15, BLACK }, { 3, 2, 4, 6, BLACK },
-        { 7, 0, 0, 9, RED },       { 17, 0, 0, 18, RED },
-        { 20, 0, 0, 18, RED },     { 2, 0, 0, 3, RED },
-        { 4, 0, 0, 3, RED },       { 9, 7, 0, 6, BLACK },
+        { 15, 6, 18, 0, cstl_black },   { 6, 3, 9, 15, cstl_red },
+        { 18, 17, 20, 15, cstl_black }, { 3, 2, 4, 6, cstl_black },
+        { 7, 0, 0, 9, cstl_red },       { 17, 0, 0, 18, cstl_red },
+        { 20, 0, 0, 18, cstl_red },     { 2, 0, 0, 3, cstl_red },
+        { 4, 0, 0, 3, cstl_red },       { 9, 7, 0, 6, cstl_black },
     };
     TS ts_delete_9[] = {
-        { 15, 6, 18, 0, BLACK },   { 6, 3, 7, 15, RED },
-        { 18, 17, 20, 15, BLACK }, { 3, 2, 4, 6, RED },
-        { 7, 0, 0, 6, RED },       { 17, 0, 0, 18, RED },
-        { 20, 0, 0, 18, RED },     { 2, 0, 0, 3, RED },
-        { 4, 0, 0, 3, RED },
+        { 15, 6, 18, 0, cstl_black },   { 6, 3, 7, 15, cstl_red },
+        { 18, 17, 20, 15, cstl_black }, { 3, 2, 4, 6, cstl_black },
+        { 7, 0, 0, 6, cstl_black },     { 17, 0, 0, 18, cstl_red },
+        { 20, 0, 0, 18, cstl_red },     { 2, 0, 0, 3, cstl_red },
+        { 4, 0, 0, 3, cstl_red },
     };
     TS ts_delete_15[] = {
-        { 6, 3, 7, 17, RED }, { 18, 0, 20, 17, BLACK }, { 3, 2, 4, 6, RED },
-        { 7, 0, 0, 6, RED },  { 17, 6, 18, 0, RED },    { 20, 0, 0, 18, RED },
-        { 2, 0, 0, 3, RED },  { 4, 0, 0, 3, RED },
+        { 6, 3, 7, 17, cstl_red },      { 18, 0, 20, 17, cstl_black }, { 3, 2, 4, 6, cstl_black },
+        { 7, 0, 0, 6, cstl_black },     { 17, 6, 18, 0, cstl_black },  { 20, 0, 0, 18, cstl_red },
+        { 2, 0, 0, 3, cstl_red },       { 4, 0, 0, 3, cstl_red },
     };
     TS ts_insert_1[] = {
-        { 6, 3, 17, 0, BLACK }, { 18, 0, 20, 17, BLACK }, { 3, 2, 4, 6, RED },
-        { 7, 0, 0, 17, RED },   { 17, 7, 18, 6, RED },    { 20, 0, 0, 18, RED },
-        { 2, 1, 0, 3, BLACK },  { 4, 0, 0, 3, BLACK },    { 1, 0, 0, 2, RED },
+        { 6, 3, 17, 0, cstl_black },    { 18, 0, 20, 17, cstl_black }, { 3, 2, 4, 6, cstl_red },
+        { 7, 0, 0, 17, cstl_black },    { 17, 7, 18, 6, cstl_red },    { 20, 0, 0, 18, cstl_red },
+        { 2, 1, 0, 3, cstl_black },     { 4, 0, 0, 3, cstl_black },    { 1, 0, 0, 2, cstl_red },
     };
 
     size = (sizeof(ts) / sizeof(TS));

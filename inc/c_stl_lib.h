@@ -40,8 +40,6 @@ typedef void (*cstl_traversal)(void *);
 typedef int cstl_error;
 typedef int cstl_bool;
 
-#define cstl_black 0
-#define cstl_red   1
 #define cstl_true  1
 #define cstl_false 0
 

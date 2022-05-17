@@ -29,8 +29,6 @@
 #include <stdio.h>
 #include <string.h>
 
-#define rb_sentinel(pTree) &(pTree)->sentinel
-
 static void debug_verify_properties(struct cstl_rb *);
 static void debug_verify_property_1(struct cstl_rb *, struct cstl_rb_node *);
 static void debug_verify_property_2(struct cstl_rb *, struct cstl_rb_node *);

@@ -27,13 +27,18 @@
 
 #include "c_stl_lib.h"
 
+enum cstl_rb_color {
+    cstl_red = 0,
+    cstl_black = 1,
+};
+
 struct cstl_object;
 
 struct cstl_rb_node {
     struct cstl_rb_node *left;
     struct cstl_rb_node *right;
     struct cstl_rb_node *parent;
-    int color;
+    enum cstl_rb_color color;
     struct cstl_object *key;
     struct cstl_object *value;
 };
@@ -45,6 +50,8 @@ struct cstl_rb {
     cstl_destroy destruct_v_fn;
     cstl_compare compare_fn;
 };
+
+#define rb_sentinel(pTree) &(pTree)->sentinel
 
 extern struct cstl_rb *cstl_rb_new(cstl_compare fn_c, cstl_destroy fn_ed,
                                    cstl_destroy fn_vd);
