@@ -190,8 +190,7 @@ void test_c_rb()
         size_after_delete = (sizeof(ts_delete_leaf_13) / sizeof(TS));
         node              = cstl_rb_remove(tree, &i);
         if (node != (struct cstl_rb_node *)0) {
-            cstl_object_delete(node->key);
-            free(node);
+            cstl_rb_node_clearup(node, cstl_true);
         }
         test_all_elements(tree, ts_delete_leaf_13, size_after_delete);
     }
@@ -200,8 +199,7 @@ void test_c_rb()
         size_after_delete = (sizeof(ts_delete_9) / sizeof(TS));
         node              = cstl_rb_remove(tree, &i);
         if (node != (struct cstl_rb_node *)0) {
-            cstl_object_delete(node->key);
-            free(node);
+            cstl_rb_node_clearup(node, cstl_true);
         }
         test_all_elements(tree, ts_delete_9, size_after_delete);
     }
@@ -210,8 +208,7 @@ void test_c_rb()
         size_after_delete = (sizeof(ts_delete_15) / sizeof(TS));
         node              = cstl_rb_remove(tree, &i);
         if (node != (struct cstl_rb_node *)0) {
-            cstl_object_delete(node->key);
-            free(node);
+            cstl_rb_node_clearup(node, cstl_true);
         }
         test_all_elements(tree, ts_delete_15, size_after_delete);
     }
@@ -246,9 +243,7 @@ void test_c_rb2(void)
         int x = rand() % 10000;
         node  = cstl_rb_remove(t, &x);
         if (node != NULL) {
-            cstl_object_delete(node->key);
-            cstl_object_delete(node->value);
-            free(node);
+            cstl_rb_node_clearup(node, cstl_true);
         }
     }
     cstl_rb_delete(t);

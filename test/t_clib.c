@@ -100,8 +100,8 @@ int main(int argc, char **argv)
         test_c_algorithms();
     }
     {
-        double time_taken =
-            ((double)(clock() - t)) / CLOCKS_PER_SEC; /* in seconds */
+        /* in seconds */
+        double time_taken = (((double)clock() - (double)t)) / CLOCKS_PER_SEC;
         printf("tests took %f seconds to execute \n", time_taken);
     }
     return 0;

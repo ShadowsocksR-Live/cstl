@@ -59,6 +59,7 @@ extern struct cstl_rb_node *cstl_rb_find(struct cstl_rb *pTree,
                                          const void *key);
 extern struct cstl_rb_node *cstl_rb_remove(struct cstl_rb *pTree,
                                            const void *key);
+extern void cstl_rb_node_clearup(struct cstl_rb_node *node, cstl_bool destroy);
 extern cstl_error cstl_rb_delete(struct cstl_rb *pTree);
 extern cstl_bool cstl_rb_empty(struct cstl_rb *pTree);
 

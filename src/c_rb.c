@@ -49,7 +49,7 @@ static void __left_rotate(struct cstl_rb *pTree, struct cstl_rb_node *x)
     if (y != rb_sentinel(pTree)) {
         y->parent = x->parent;
     }
-    if (x->parent) {
+    if (x->parent != rb_sentinel(pTree)) {
         if (x == x->parent->left) {
             x->parent->left = y;
         } else {
@@ -74,7 +74,7 @@ static void __right_rotate(struct cstl_rb *pTree, struct cstl_rb_node *x)
     if (y != rb_sentinel(pTree)) {
         y->parent = x->parent;
     }
-    if (x->parent) {
+    if (x->parent != rb_sentinel(pTree)) {
         if (x == x->parent->right) {
             x->parent->right = y;
         } else {
@@ -102,7 +102,7 @@ struct cstl_rb *cstl_rb_new(cstl_compare fn_c, cstl_destroy fn_ed,
     pTree->root            = rb_sentinel(pTree);
     pTree->sentinel.left   = rb_sentinel(pTree);
     pTree->sentinel.right  = rb_sentinel(pTree);
-    pTree->sentinel.parent = (struct cstl_rb_node *)0;
+    pTree->sentinel.parent = rb_sentinel(pTree);
     pTree->sentinel.color  = cstl_black;
 
     return pTree;
@@ -148,7 +148,7 @@ static void __rb_insert_fixup(struct cstl_rb *pTree, struct cstl_rb_node *x)
     pTree->root->color = cstl_black;
 }
 
-struct cstl_rb_node *cstl_rb_find(struct cstl_rb *pTree, const void *key)
+static struct cstl_rb_node *__rb_find(struct cstl_rb *pTree, const void *key)
 {
     struct cstl_rb_node *x = pTree->root;
 
@@ -161,8 +161,14 @@ struct cstl_rb_node *cstl_rb_find(struct cstl_rb *pTree, const void *key)
             x = c < 0 ? x->left : x->right;
         }
     }
+    return x;
+}
+
+struct cstl_rb_node *cstl_rb_find(struct cstl_rb *pTree, const void *key)
+{
+    struct cstl_rb_node *x = __rb_find(pTree, key);
     if (x == rb_sentinel(pTree)) {
-        return (struct cstl_rb_node *)0;
+        x = (struct cstl_rb_node *)0;
     }
     return x;
 }
@@ -188,12 +194,16 @@ static struct cstl_rb_node *_create_rb_node(struct cstl_rb *pTree,
     return node;
 }
 
-static void _destroy_rb_node(struct cstl_rb_node *node)
+void cstl_rb_node_clearup(struct cstl_rb_node *node, cstl_bool destroy)
 {
     if (node) {
         cstl_object_delete(node->key);
+        node->key = (struct cstl_object *)0;
         cstl_object_delete(node->value);
-        free(node);
+        node->value = (struct cstl_object *)0;
+        if (destroy) {
+            free(node);
+        }
     }
 }
 
@@ -219,12 +229,12 @@ cstl_error cstl_rb_insert(struct cstl_rb *pTree, const void *k, size_t key_size,
     }
 
     y = pTree->root;
-    z = (struct cstl_rb_node *)0;
+    z = rb_sentinel(pTree);
 
     while (y != rb_sentinel(pTree)) {
         int c = _rb_node_compare(pTree, x, y);
         if (c == 0) {
-            _destroy_rb_node(x);
+            cstl_rb_node_clearup(x, cstl_true);
             return CSTL_RBTREE_KEY_DUPLICATE;
         }
         z = y;
@@ -235,7 +245,7 @@ cstl_error cstl_rb_insert(struct cstl_rb *pTree, const void *k, size_t key_size,
         }
     }
     x->parent = z;
-    if (z) {
+    if (z != rb_sentinel(pTree)) {
         if (_rb_node_compare(pTree, x, z) < 0) {
             z->left = x;
         } else {
@@ -309,8 +319,7 @@ static void __rb_remove_fixup(struct cstl_rb *pTree, struct cstl_rb_node *x)
 static struct cstl_rb_node *__remove_c_rb(struct cstl_rb *pTree,
                                           struct cstl_rb_node *node)
 {
-    struct cstl_rb_node *x = (struct cstl_rb_node *)0;
-    struct cstl_rb_node *y = (struct cstl_rb_node *)0;
+    struct cstl_rb_node *x, *y;
 
     if (node->left == rb_sentinel(pTree) || node->right == rb_sentinel(pTree)) {
         y = node;
@@ -326,7 +335,7 @@ static struct cstl_rb_node *__remove_c_rb(struct cstl_rb *pTree,
         x = y->right;
     }
     x->parent = y->parent;
-    if (y->parent) {
+    if (y->parent != rb_sentinel(pTree)) {
         if (y == y->parent->left) {
             y->parent->left = x;
         } else {
@@ -354,18 +363,7 @@ static struct cstl_rb_node *__remove_c_rb(struct cstl_rb *pTree,
 
 struct cstl_rb_node *cstl_rb_remove(struct cstl_rb *pTree, const void *key)
 {
-    struct cstl_rb_node *z = (struct cstl_rb_node *)0;
-
-    z = pTree->root;
-    while (z != rb_sentinel(pTree)) {
-        const void *cur_key = cstl_object_get_data(z->key);
-        int c               = pTree->compare_fn(key, cur_key);
-        if (c == 0) {
-            break;
-        } else {
-            z = (c < 0) ? z->left : z->right;
-        }
-    }
+    struct cstl_rb_node *z = __rb_find(pTree, key);
     if (z == rb_sentinel(pTree)) {
         return (struct cstl_rb_node *)0;
     }
@@ -378,17 +376,12 @@ static void __c_rb_node_dying(struct cstl_rb *pTree, struct cstl_rb_node *x)
         void *key = (void *)cstl_object_get_data(x->key);
         pTree->destruct_k_fn(key);
     }
-    cstl_object_delete(x->key);
-    x->key = NULL;
 
-    if (x->value) {
-        if (pTree->destruct_v_fn) {
-            void *value = (void *)cstl_object_get_data(x->value);
-            pTree->destruct_v_fn(value);
-        }
-        cstl_object_delete(x->value);
-        x->value = NULL;
+    if (pTree->destruct_v_fn && x->value) {
+        void *value = (void *)cstl_object_get_data(x->value);
+        pTree->destruct_v_fn(value);
     }
+    cstl_rb_node_clearup(x, cstl_false);
 }
 
 cstl_error cstl_rb_delete(struct cstl_rb *pTree)
@@ -403,7 +396,7 @@ cstl_error cstl_rb_delete(struct cstl_rb *pTree)
             z = z->right;
         } else {
             __c_rb_node_dying(pTree, z);
-            if (z->parent) {
+            if (z->parent != rb_sentinel(pTree)) {
                 z = z->parent;
                 if (z->left != rb_sentinel(pTree)) {
                     free(z->left);
@@ -546,21 +539,19 @@ void debug_verify_property_5(struct cstl_rb *pTree, struct cstl_rb_node *root)
 
 void debug_verify_property_5_helper(struct cstl_rb *pTree,
                                     struct cstl_rb_node *n, int black_count,
-                                    int *path_black_count)
+                                    int *_black_count)
 {
     if (debug_node_color(pTree, n) == cstl_black) {
         black_count++;
     }
     if (n == rb_sentinel(pTree)) {
-        if (*path_black_count == -1) {
-            *path_black_count = black_count;
+        if (*_black_count == -1) {
+            *_black_count = black_count;
         } else {
-            assert(black_count == *path_black_count);
+            assert(black_count == *_black_count);
         }
         return;
     }
-    debug_verify_property_5_helper(pTree, n->left, black_count,
-                                   path_black_count);
-    debug_verify_property_5_helper(pTree, n->right, black_count,
-                                   path_black_count);
+    debug_verify_property_5_helper(pTree, n->left, black_count, _black_count);
+    debug_verify_property_5_helper(pTree, n->right, black_count, _black_count);
 }
