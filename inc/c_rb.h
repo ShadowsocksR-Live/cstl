@@ -42,7 +42,7 @@ extern void cstl_rb_node_set_value(struct cstl_rb_node *node, const void *value,
                                    size_t size);
 
 extern struct cstl_rb *cstl_rb_create(cstl_compare fn_c, cstl_destroy fn_ed,
-                                   cstl_destroy fn_vd);
+                                      cstl_destroy fn_vd);
 extern struct cstl_rb_node *cstl_rb_get_root(struct cstl_rb *pTree);
 extern cstl_error cstl_rb_insert(struct cstl_rb *pTree, const void *key,
                                  size_t key_size, const void *value,

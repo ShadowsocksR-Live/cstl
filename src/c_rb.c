@@ -134,7 +134,8 @@ static void do_notify_value_destroy(struct cstl_rb_node *node)
     }
 }
 
-void cstl_rb_node_set_value(struct cstl_rb_node *node, const void *value, size_t size)
+void cstl_rb_node_set_value(struct cstl_rb_node *node, const void *value,
+                            size_t size)
 {
     struct cstl_rb *pTree;
     assert(node);
@@ -147,6 +148,7 @@ void cstl_rb_node_set_value(struct cstl_rb_node *node, const void *value, size_t
     } else {
         node->value = cstl_object_new(value, size);
     }
+    (void)pTree;
 }
 
 static void __left_rotate(struct cstl_rb *pTree, struct cstl_rb_node *x)
@@ -214,7 +216,7 @@ struct cstl_rb *cstl_rb_create(cstl_compare fn_c, cstl_destroy fn_ed,
     pTree->sentinel.left   = rb_sentinel(pTree);
     pTree->sentinel.right  = rb_sentinel(pTree);
     pTree->sentinel.parent = rb_sentinel(pTree);
-    pTree->sentinel.pTree = pTree;
+    pTree->sentinel.pTree  = pTree;
     pTree->sentinel.color  = cstl_black;
 
     return pTree;
@@ -335,8 +337,8 @@ void cstl_rb_node_clearup(struct cstl_rb_node *node, cstl_bool destroy)
 static int _rb_node_compare(struct cstl_rb_node *lhs, struct cstl_rb_node *rhs)
 {
     struct cstl_rb *pTree = lhs->pTree;
-    const void *new_key = cstl_object_get_data(lhs->key);
-    const void *cur_key = cstl_object_get_data(rhs->key);
+    const void *new_key   = cstl_object_get_data(lhs->key);
+    const void *cur_key   = cstl_object_get_data(rhs->key);
     assert(pTree == rhs->pTree);
     return pTree->compare_fn(new_key, cur_key);
 }

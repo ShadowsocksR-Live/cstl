@@ -170,7 +170,7 @@ static const void *cstl_map_iter_get_value(struct cstl_iterator *pIterator)
 static void cstl_map_iter_replace_value(struct cstl_iterator *pIterator,
                                         void *elem, size_t elem_size)
 {
-    struct cstl_map *pMap = (struct cstl_map *)pIterator->pContainer;
+    /* struct cstl_map *pMap = (struct cstl_map *)pIterator->pContainer; */
     struct cstl_rb_node *node =
         (struct cstl_rb_node *)pIterator->current_element;
 
