@@ -22,11 +22,11 @@
  *  THE SOFTWARE.
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
+#include "c_set.h"
 #include <assert.h>
 #include <stdio.h>
 #include "c_rb.h"
 #include "c_stl_lib.h"
-#include "c_set.h"
 
 struct cstl_set {
     struct cstl_rb *root;
@@ -39,7 +39,7 @@ struct cstl_set *cstl_set_new(cstl_compare fn_c, cstl_destroy fn_d)
     if (pSet == (struct cstl_set *)0) {
         return (struct cstl_set *)0;
     }
-    pSet->root = cstl_rb_new(fn_c, fn_d, (void *)0);
+    pSet->root = cstl_rb_create(fn_c, fn_d, (void *)0);
     if (pSet->root == (struct cstl_rb *)0) {
         return (struct cstl_set *)0;
     }
@@ -78,15 +78,7 @@ cstl_error cstl_set_remove(struct cstl_set *pSet, void *key)
     }
     node = cstl_rb_remove(pSet->root, key);
     if (node != (struct cstl_rb_node *)0) {
-        if (pSet->root->destruct_k_fn) {
-            void *key = (void *)cstl_object_get_data(node->key);
-            if (key) {
-                pSet->root->destruct_k_fn(key);
-            }
-        }
-        cstl_object_delete(node->key);
-
-        free(node);
+        cstl_rb_node_clearup(node, cstl_true);
     }
     return rc;
 }
@@ -102,7 +94,7 @@ const void *cstl_set_find(struct cstl_set *pSet, const void *key)
     if (node == (struct cstl_rb_node *)0) {
         return NULL;
     }
-    return cstl_object_get_data(node->key);
+    return cstl_rb_node_get_key(node);
 }
 
 cstl_error cstl_set_delete(struct cstl_set *x)
@@ -117,7 +109,7 @@ cstl_error cstl_set_delete(struct cstl_set *x)
 
 static struct cstl_rb_node *cstl_set_minimum(struct cstl_set *x)
 {
-    return cstl_rb_minimum(x->root, x->root->root);
+    return cstl_rb_minimum(x->root, cstl_rb_get_root(x->root));
 }
 
 static const void *cstl_set_get_next(struct cstl_iterator *pIterator)
@@ -131,7 +123,7 @@ static const void *cstl_set_get_next(struct cstl_iterator *pIterator)
             x->root, (struct cstl_rb_node *)pIterator->current_element);
     }
     ptr = (struct cstl_rb_node *)pIterator->current_element;
-    if (ptr == NULL || ptr->key == NULL) {
+    if (ptr == NULL || cstl_rb_node_get_key(ptr) == NULL) {
         return NULL;
     }
     return ptr;
@@ -141,7 +133,7 @@ static const void *cstl_set_get_key(struct cstl_iterator *pIterator)
 {
     struct cstl_rb_node *current =
         (struct cstl_rb_node *)pIterator->current_element;
-    return cstl_object_get_data(current->key);
+    return cstl_rb_node_get_key(current);
 }
 
 static const void *cstl_set_get_value(struct cstl_iterator *pIterator)
@@ -153,12 +145,14 @@ struct cstl_iterator *cstl_set_new_iterator(struct cstl_set *pSet)
 {
     struct cstl_iterator *itr =
         (struct cstl_iterator *)calloc(1, sizeof(struct cstl_iterator));
-    itr->next            = cstl_set_get_next;
-    itr->current_key     = cstl_set_get_key;
-    itr->current_value   = cstl_set_get_value;
-    itr->pContainer      = pSet;
-    itr->current_index   = 0;
-    itr->current_element = (void *)0;
+    if (itr) {
+        itr->next            = cstl_set_get_next;
+        itr->current_key     = cstl_set_get_key;
+        itr->current_value   = cstl_set_get_value;
+        itr->pContainer      = pSet;
+        itr->current_index   = 0;
+        itr->current_element = (void *)0;
+    }
     return itr;
 }
 

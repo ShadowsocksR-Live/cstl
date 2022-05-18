@@ -39,7 +39,7 @@ struct cstl_map *cstl_map_new(cstl_compare fn_c_k, cstl_destroy fn_k_d,
     if (pMap == (struct cstl_map *)0) {
         return (struct cstl_map *)0;
     }
-    pMap->root = cstl_rb_new(fn_c_k, fn_k_d, fn_v_d);
+    pMap->root = cstl_rb_create(fn_c_k, fn_k_d, fn_v_d);
     if (pMap->root == (struct cstl_rb *)0) {
         return (struct cstl_map *)0;
     }
@@ -88,13 +88,7 @@ cstl_error cstl_map_replace(struct cstl_map *pMap, const void *key,
         return CSTL_RBTREE_KEY_NOT_FOUND;
     }
 
-    if (pMap->root->destruct_v_fn) {
-        void *old_element = (void *)cstl_object_get_data(node->value);
-        if (old_element) {
-            pMap->root->destruct_v_fn(old_element);
-        }
-    }
-    cstl_object_replace_raw(node->value, value, value_size);
+    cstl_rb_node_set_value(node, value, value_size);
     return CSTL_ERROR_SUCCESS;
 }
 
@@ -107,24 +101,7 @@ cstl_error cstl_map_remove(struct cstl_map *pMap, const void *key)
     }
     node = cstl_rb_remove(pMap->root, key);
     if (node != (struct cstl_rb_node *)0) {
-        void *removed_node = (void *)0;
-        if (pMap->root->destruct_k_fn) {
-            removed_node = (void *)cstl_object_get_data(node->key);
-            if (removed_node) {
-                pMap->root->destruct_k_fn(removed_node);
-            }
-        }
-        cstl_object_delete(node->key);
-
-        if (pMap->root->destruct_v_fn) {
-            removed_node = (void *)cstl_object_get_data(node->value);
-            if (removed_node) {
-                pMap->root->destruct_v_fn(removed_node);
-            }
-        }
-        cstl_object_delete(node->value);
-
-        free(node);
+        cstl_rb_node_clearup(node, cstl_true);
         pMap->map_changed = cstl_true;
     }
     return rc;
@@ -141,7 +118,7 @@ const void *cstl_map_find(struct cstl_map *pMap, const void *key)
     if (node == (struct cstl_rb_node *)0) {
         return (void *)0;
     }
-    return cstl_object_get_data(node->value);
+    return cstl_rb_node_get_value(node);
 }
 
 cstl_error cstl_map_delete(struct cstl_map *x)
@@ -156,7 +133,7 @@ cstl_error cstl_map_delete(struct cstl_map *x)
 
 static struct cstl_rb_node *cstl_map_minimum(struct cstl_map *x)
 {
-    return cstl_rb_minimum(x->root, x->root->root);
+    return cstl_rb_minimum(x->root, cstl_rb_get_root(x->root));
 }
 
 static const void *cstl_map_iter_get_next(struct cstl_iterator *pIterator)
@@ -170,7 +147,7 @@ static const void *cstl_map_iter_get_next(struct cstl_iterator *pIterator)
             x->root, (struct cstl_rb_node *)pIterator->current_element);
     }
     ptr = (struct cstl_rb_node *)pIterator->current_element;
-    if (ptr == NULL || ptr->key == NULL) {
+    if (ptr == NULL || cstl_rb_node_get_key(ptr) == NULL) {
         return NULL;
     }
     return ptr;
@@ -180,14 +157,14 @@ static const void *cstl_map_iter_get_key(struct cstl_iterator *pIterator)
 {
     struct cstl_rb_node *current =
         (struct cstl_rb_node *)pIterator->current_element;
-    return cstl_object_get_data(current->key);
+    return cstl_rb_node_get_key(current);
 }
 
 static const void *cstl_map_iter_get_value(struct cstl_iterator *pIterator)
 {
     struct cstl_rb_node *current =
         (struct cstl_rb_node *)pIterator->current_element;
-    return cstl_object_get_data(current->value);
+    return cstl_rb_node_get_value(current);
 }
 
 static void cstl_map_iter_replace_value(struct cstl_iterator *pIterator,
@@ -197,27 +174,23 @@ static void cstl_map_iter_replace_value(struct cstl_iterator *pIterator,
     struct cstl_rb_node *node =
         (struct cstl_rb_node *)pIterator->current_element;
 
-    if (pMap->root->destruct_v_fn) {
-        void *old_element = (void *)cstl_object_get_data(node->value);
-        if (old_element) {
-            pMap->root->destruct_v_fn(old_element);
-        }
-    }
-    cstl_object_replace_raw(node->value, elem, elem_size);
+    cstl_rb_node_set_value(node, elem, elem_size);
 }
 
 struct cstl_iterator *cstl_map_new_iterator(struct cstl_map *pMap)
 {
     struct cstl_iterator *itr =
         (struct cstl_iterator *)calloc(1, sizeof(struct cstl_iterator));
-    itr->next                  = cstl_map_iter_get_next;
-    itr->current_key           = cstl_map_iter_get_key;
-    itr->current_value         = cstl_map_iter_get_value;
-    itr->replace_current_value = cstl_map_iter_replace_value;
-    itr->pContainer            = pMap;
-    itr->current_index         = 0;
-    itr->current_element       = (void *)0;
-    pMap->map_changed          = cstl_false;
+    if (itr) {
+        itr->next                  = cstl_map_iter_get_next;
+        itr->current_key           = cstl_map_iter_get_key;
+        itr->current_value         = cstl_map_iter_get_value;
+        itr->replace_current_value = cstl_map_iter_replace_value;
+        itr->pContainer            = pMap;
+        itr->current_index         = 0;
+        itr->current_element       = (void *)0;
+        pMap->map_changed          = cstl_false;
+    }
     return itr;
 }
 

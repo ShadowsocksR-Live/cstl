@@ -22,6 +22,7 @@
  *  THE SOFTWARE.
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
+#include <assert.h>
 #include <stdlib.h>
 #include <string.h>
 #include "c_stl_lib.h"
@@ -77,9 +78,12 @@ const void *cstl_object_get_data(struct cstl_object *inObject)
 void cstl_object_replace_raw(struct cstl_object *current_object,
                              const void *elem, size_t elem_size)
 {
+    assert(current_object);
     free(current_object->raw_data);
     current_object->raw_data = (void *)calloc(elem_size, sizeof(char));
-    memcpy(current_object->raw_data, elem, elem_size);
+    if (current_object->raw_data) {
+        memcpy(current_object->raw_data, elem, elem_size);
+    }
 }
 
 void cstl_object_delete(struct cstl_object *inObject)

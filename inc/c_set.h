@@ -25,6 +25,8 @@
 #ifndef __C_STL_SET_H__
 #define __C_STL_SET_H__
 
+#include "c_stl_lib.h"
+
 struct cstl_set;
 
 extern struct cstl_set *cstl_set_new(cstl_compare fn_c, cstl_destroy fn_d);

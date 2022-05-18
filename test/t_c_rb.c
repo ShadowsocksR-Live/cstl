@@ -34,36 +34,8 @@ static const void *get_key(struct cstl_rb *tree, struct cstl_rb_node *node)
 {
     (void)tree;
     if (node)
-        return cstl_object_get_data(node->key);
+        return cstl_rb_node_get_key(node);
     return (void *)0;
-}
-
-static struct cstl_rb_node *get_left(struct cstl_rb *tree,
-                                     struct cstl_rb_node *node)
-{
-    if (node->left != rb_sentinel(tree) &&
-        node->left != (struct cstl_rb_node *)0)
-        return node->left;
-    return (struct cstl_rb_node *)0;
-}
-
-static struct cstl_rb_node *get_right(struct cstl_rb *tree,
-                                      struct cstl_rb_node *node)
-{
-    (void)tree;
-    if (node->right != rb_sentinel(tree) &&
-        node->right != (struct cstl_rb_node *)0)
-        return node->right;
-    return (struct cstl_rb_node *)0;
-}
-
-static struct cstl_rb_node *get_parent(struct cstl_rb *tree,
-                                       struct cstl_rb_node *node)
-{
-    if (node->parent != rb_sentinel(tree) &&
-        node->parent != (struct cstl_rb_node *)0)
-        return node->parent;
-    return (struct cstl_rb_node *)0;
 }
 
 int compare_rb_e(const void *l, const void *r)
@@ -93,12 +65,12 @@ static void retrieve_values(struct cstl_rb_node *v, TS *data,
 {
     struct cstl_rb_node *x = NULL;
     data->element          = *(int *)get_key(tree, v);
-    data->color            = v->color;
-    if ((x = get_left(tree, v)))
+    data->color            = cstl_rb_node_get_color(v);
+    if ((x = cstl_rb_node_get_left(v)))
         data->left = *(int *)get_key(tree, x);
-    if ((x = get_right(tree, v)))
+    if ((x = cstl_rb_node_get_right(v)))
         data->right = *(int *)get_key(tree, x);
-    if ((x = get_parent(tree, v)))
+    if ((x = cstl_rb_node_get_parent(v)))
         data->parent = *(int *)get_key(tree, x);
 }
 
@@ -129,7 +101,7 @@ static struct cstl_rb *create_tree(TS ts[], int size)
 {
     int i = 0;
     struct cstl_rb *tree =
-        cstl_rb_new(compare_rb_e, (cstl_destroy)0, (cstl_destroy)0);
+        cstl_rb_create(compare_rb_e, (cstl_destroy)0, (cstl_destroy)0);
     for (i = 0; i < size; i++) {
         cstl_rb_insert(tree, &(ts[i].element), sizeof((ts[i].element)),
                        (void *)0, 0);
@@ -227,7 +199,7 @@ void test_c_rb2(void)
 {
     struct cstl_rb_node *node;
     int i;
-    struct cstl_rb *t = cstl_rb_new(compare_rb_e, NULL, NULL);
+    struct cstl_rb *t = cstl_rb_create(compare_rb_e, NULL, NULL);
 
     for (i = 0; i < 5000; i++) {
         int x = rand() % 10000;
@@ -237,7 +209,7 @@ void test_c_rb2(void)
             continue;
         }
         node = cstl_rb_find(t, &x);
-        assert(*((int *)cstl_object_get_data(node->value)) == y);
+        assert(*((int *)cstl_rb_node_get_value(node)) == y);
     }
     for (i = 0; i < 60000; i++) {
         int x = rand() % 10000;
