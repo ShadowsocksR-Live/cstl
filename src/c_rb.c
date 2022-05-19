@@ -219,6 +219,9 @@ struct cstl_rb *cstl_rb_create(cstl_compare fn_c, cstl_destroy fn_ed,
     pTree->sentinel.pTree  = pTree;
     pTree->sentinel.color  = cstl_black;
 
+    /* make code checker happy */
+    debug_verify_properties(pTree);
+
     return pTree;
 }
 
@@ -384,7 +387,9 @@ cstl_error cstl_rb_insert(struct cstl_rb *pTree, const void *k, size_t key_size,
     }
     __rb_insert_fixup(pTree, x);
 
+#ifndef NDEBUG
     debug_verify_properties(pTree);
+#endif
     return rc;
 }
 
@@ -485,7 +490,9 @@ static struct cstl_rb_node *__remove_c_rb(struct cstl_rb *pTree,
     if (y->color == cstl_black) {
         __rb_remove_fixup(pTree, x);
     }
+#ifndef NDEBUG
     debug_verify_properties(pTree);
+#endif
     return y;
 }
 
