@@ -124,12 +124,12 @@ size_t cstl_array_capacity(struct cstl_array *pArray)
     return pArray->capacity;
 }
 
-cstl_bool cstl_array_empty(struct cstl_array *pArray)
+bool cstl_array_empty(struct cstl_array *pArray)
 {
     if (pArray == (struct cstl_array *)0) {
         return 0;
     }
-    return pArray->count == 0 ? cstl_true : cstl_false;
+    return pArray->count == 0 ? true : false;
 }
 
 cstl_error cstl_array_reserve(struct cstl_array *pArray, size_t new_size)

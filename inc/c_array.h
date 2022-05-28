@@ -37,7 +37,7 @@ extern cstl_error cstl_array_insert_at(struct cstl_array *pArray, size_t index,
                                        void *elem, size_t elem_size);
 extern size_t cstl_array_size(struct cstl_array *pArray);
 extern size_t cstl_array_capacity(struct cstl_array *pArray);
-extern cstl_bool cstl_array_empty(struct cstl_array *pArray);
+extern bool cstl_array_empty(struct cstl_array *pArray);
 extern cstl_error cstl_array_reserve(struct cstl_array *pArray, size_t pos);
 extern const void *cstl_array_front(struct cstl_array *pArray);
 extern const void *cstl_array_back(struct cstl_array *pArray);

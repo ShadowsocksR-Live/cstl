@@ -59,12 +59,12 @@ static struct cstl_array *create_c_array()
     int rv     = 0;
 
     struct cstl_array *myArray = cstl_array_new(8, compare_integers, NULL);
-    assert(cstl_true == cstl_array_empty(myArray));
+    assert(true == cstl_array_empty(myArray));
 
     for (i = 0; i < size; i++) {
         cstl_array_push_back(myArray, &i, sizeof(int));
     }
-    assert(cstl_false == cstl_array_empty(myArray));
+    assert(false == cstl_array_empty(myArray));
     assert((size_t)size == cstl_array_size(myArray));
     for (i = 0; i < size; i++) {
         p_rv = (void *)cstl_array_element_at(myArray, i);

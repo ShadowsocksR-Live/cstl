@@ -53,10 +53,10 @@ static void insert_all(struct cstl_map *myMap)
     int size = sizeof(char_value) / sizeof(char_value[0]);
     int i    = 0;
     for (i = 0; i < size; i++) {
-        char *key = cstl_strdup(char_value[i]);
+        char *key = strdup(char_value[i]);
         int value = int_value[i];
         printf("Inserting [%s -> %d]\n", key, value);
-        cstl_map_insert(myMap, &key, sizeof(char *), &value, sizeof(int));
+        cstl_map_insert(myMap, &key, sizeof(char *), &value, sizeof(value));
     }
 }
 
@@ -67,7 +67,7 @@ static void check_exists_all(struct cstl_map *myMap)
     for (i = 0; i < size; i++) {
         char *key = char_value[i];
         int *value;
-        assert(cstl_true == cstl_map_exists(myMap, &key));
+        assert(true == cstl_map_exists(myMap, &key));
         value = (int *)cstl_map_find(myMap, &key);
         assert(value != NULL);
         printf("-----> [%s == %d]\n", key, *value);
@@ -81,37 +81,37 @@ static void remove_some_exist(struct cstl_map *myMap)
     cstl_error error;
     error = cstl_map_remove(myMap, &key);
     assert(CSTL_ERROR_SUCCESS == error);
-    assert(cstl_false == cstl_map_exists(myMap, &key));
+    assert(false == cstl_map_exists(myMap, &key));
 
     key   = "X";
     error = cstl_map_remove(myMap, &key);
     assert(CSTL_ERROR_SUCCESS == error);
-    assert(cstl_false == cstl_map_exists(myMap, &key));
+    assert(false == cstl_map_exists(myMap, &key));
 
     key   = "Z";
     error = cstl_map_remove(myMap, &key);
     assert(CSTL_ERROR_SUCCESS == error);
-    assert(cstl_false == cstl_map_exists(myMap, &key));
+    assert(false == cstl_map_exists(myMap, &key));
 
     key   = "H";
     error = cstl_map_remove(myMap, &key);
     assert(CSTL_ERROR_SUCCESS == error);
-    assert(cstl_false == cstl_map_exists(myMap, &key));
+    assert(false == cstl_map_exists(myMap, &key));
     (void)error;
 }
 
 static void add_removed_check_all(struct cstl_map *myMap)
 {
-    char *key = cstl_strdup("A");
+    char *key = strdup("A");
     cstl_map_insert(myMap, &key, sizeof(char *), &int_value[0], sizeof(int));
 
-    key = cstl_strdup("X");
+    key = strdup("X");
     cstl_map_insert(myMap, &key, sizeof(char *), &int_value[23], sizeof(int));
 
-    key = cstl_strdup("Z");
+    key = strdup("Z");
     cstl_map_insert(myMap, &key, sizeof(char *), &int_value[25], sizeof(int));
 
-    key = cstl_strdup("H");
+    key = strdup("H");
     cstl_map_insert(myMap, &key, sizeof(char *), &int_value[7], sizeof(int));
 
     check_exists_all(myMap);
@@ -158,7 +158,7 @@ static void test_with_iterators()
 }
 
 void iter_fn(struct cstl_map *map, const void *key, const void *value,
-             cstl_bool *stop, void *p)
+             bool *stop, void *p)
 {
     (void)value;
     (void)stop;

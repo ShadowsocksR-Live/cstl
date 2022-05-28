@@ -135,7 +135,7 @@ void test_c_deque()
     element = cstl_deque_back(myDeq);
     assert(*(int *)element == (int)limit);
 
-    while (cstl_deque_empty(myDeq) != cstl_true) {
+    while (cstl_deque_empty(myDeq) != true) {
         cstl_deque_pop_front(myDeq);
     }
     cstl_deque_delete(myDeq);

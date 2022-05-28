@@ -37,15 +37,6 @@ void cstl_get(void *destination, void *source, size_t size)
     memcpy(destination, (char *)source, size);
 }
 
-char *cstl_strdup(const char *ptr)
-{
-#ifdef WIN32
-    return _strdup(ptr);
-#else
-    return strdup(ptr);
-#endif
-}
-
 struct cstl_object {
     void *raw_data;
     size_t size;

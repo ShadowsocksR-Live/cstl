@@ -25,6 +25,7 @@
 #ifndef __C_STL_LIB_H__
 #define __C_STL_LIB_H__
 
+#include <stdbool.h>
 #include <stdlib.h>
 
 #include "c_errors.h"
@@ -36,12 +37,6 @@
 typedef void (*cstl_destroy)(void *);
 typedef int (*cstl_compare)(const void *, const void *);
 typedef void (*cstl_traversal)(void *);
-
-typedef int cstl_error;
-typedef int cstl_bool;
-
-#define cstl_true  1
-#define cstl_false 0
 
 /* ------------------------------------------------------------------------*/
 /*                            P  A  I   R                                  */
@@ -71,7 +66,6 @@ struct cstl_iterator {
 
 extern void cstl_copy(void *destination, void *source, size_t size);
 extern void cstl_get(void *destination, void *source, size_t size);
-extern char *cstl_strdup(const char *ptr);
 
 struct cstl_object;
 

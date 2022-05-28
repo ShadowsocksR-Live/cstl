@@ -25,33 +25,38 @@
 #ifndef __C_STL_ERRORS_H__
 #define __C_STL_ERRORS_H__
 
-/* ------------------------------------------------------------------------*/
-/*                 C O M M O N    E R R O R    C O D E                     */
-/* ------------------------------------------------------------------------*/
-#define CSTL_ERROR_SUCCESS        0
-#define CSTL_ERROR_ERROR          1
-#define CSTL_ERROR_MEMORY         2
-#define CSTL_ELEMENT_RETURN_ERROR 3
-/* ------------------------------------------------------------------------*/
-/*         D Y N A M I C    A R R A Y   E R R O R    C O D E S             */
-/* ------------------------------------------------------------------------*/
-#define CSTL_ARRAY_NOT_INITIALIZED    101
-#define CSTL_ARRAY_INDEX_OUT_OF_BOUND 102
-#define CSTL_ARRAY_INSERT_FAILED      103
+typedef enum {
 
-#define CSTL_DEQUE_NOT_INITIALIZED    201
-#define CSTL_DEQUE_INDEX_OUT_OF_BOUND 202
+    /* ------------------------------------------------------------------------*/
+    /*                 C O M M O N    E R R O R    C O D E                     */
+    /* ------------------------------------------------------------------------*/
+    CSTL_ERROR_SUCCESS        = 0,
+    CSTL_ERROR_MEMORY         = -1,
+    CSTL_RBTREE_KEY_DUPLICATE = -2,
+    CSTL_RBTREE_KEY_NOT_FOUND = -3,
 
-#define CSTL_RBTREE_NOT_INITIALIZED 401
-#define CSTL_RBTREE_KEY_DUPLICATE   402
-#define CSTL_RBTREE_KEY_NOT_FOUND   403
+    CSTL_ERROR_ERROR          = -10,
+    CSTL_ELEMENT_RETURN_ERROR = -11,
 
-#define CSTL_SET_NOT_INITIALIZED 501
-#define CSTL_SET_INVALID_INPUT   502
+    /* ------------------------------------------------------------------------*/
+    /*         D Y N A M I C    A R R A Y   E R R O R    C O D E S             */
+    /* ------------------------------------------------------------------------*/
+    CSTL_ARRAY_NOT_INITIALIZED    = -101,
+    CSTL_ARRAY_INDEX_OUT_OF_BOUND = -102,
+    CSTL_ARRAY_INSERT_FAILED      = -103,
 
-#define CSTL_MAP_NOT_INITIALIZED 501
-#define CSTL_MAP_INVALID_INPUT   502
+    CSTL_DEQUE_NOT_INITIALIZED    = -201,
+    CSTL_DEQUE_INDEX_OUT_OF_BOUND = -202,
 
-#define CSTL_SLIST_INSERT_FAILED 601
+    CSTL_RBTREE_NOT_INITIALIZED = -401,
+
+    CSTL_SET_NOT_INITIALIZED = -501,
+    CSTL_SET_INVALID_INPUT   = -502,
+
+    CSTL_MAP_NOT_INITIALIZED = -501,
+    CSTL_MAP_INVALID_INPUT   = -502,
+
+    CSTL_SLIST_INSERT_FAILED = -601
+} cstl_error;
 
 #endif /* __C_STL_ERRORS_H__ */

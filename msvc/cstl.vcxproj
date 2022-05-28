@@ -169,14 +169,14 @@
     <ClInclude Include="..\inc\c_stl_lib.h" />
     <ClInclude Include="..\inc\c_list.h" />
     <ClInclude Include="..\inc\c_map.h" />
-    <ClInclude Include="..\inc\c_rb.h" />
+    <ClInclude Include="..\inc\rb-tree.h" />
     <ClInclude Include="..\inc\c_set.h" />
     <ClCompile Include="..\src\c_algorithms.c" />
     <ClCompile Include="..\src\c_array.c" />
     <ClCompile Include="..\src\c_deque.c" />
     <ClCompile Include="..\src\c_list.c" />
     <ClCompile Include="..\src\c_map.c" />
-    <ClCompile Include="..\src\c_rb.c" />
+    <ClCompile Include="..\src\rb-tree.c" />
     <ClCompile Include="..\src\c_set.c" />
     <ClCompile Include="..\src\c_util.c" />
   </ItemGroup>

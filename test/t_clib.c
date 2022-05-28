@@ -30,6 +30,10 @@ extern void test_c_array();
 extern void test_c_deque();
 extern void test_c_rb();
 extern void test_c_rb2(void);
+void test_c_rb2_alloc(void);
+void test_rbt_string(void);
+void test_rbt_string2(void);
+
 extern void test_c_set();
 extern void test_c_map();
 extern void test_c_slist();
@@ -76,15 +80,17 @@ void on_atexit(void)
 int main(int argc, char **argv)
 {
     clock_t t = clock();
-    size_t i  = 0;
     (void)argc;
     (void)argv;
     MEM_CHECK_BEGIN();
     atexit(on_atexit);
-    for (i = 0; i < 1; i++) {
+    {
         printf("Performing test for red-black tree\n");
         test_c_rb();
         test_c_rb2();
+        test_c_rb2_alloc();
+        test_rbt_string();
+        test_rbt_string2();
 
         printf("Performing test for dynamic array\n");
         test_c_array();

@@ -25,105 +25,102 @@
 #include "c_set.h"
 #include <assert.h>
 #include <stdio.h>
-#include "c_rb.h"
 #include "c_stl_lib.h"
+#include "rb-tree.h"
 
 struct cstl_set {
-    struct cstl_rb *root;
+    struct rbt_tree *tree;
 };
 
 struct cstl_set *cstl_set_new(cstl_compare fn_c, cstl_destroy fn_d)
 {
-    struct cstl_set *pSet =
-        (struct cstl_set *)calloc(1, sizeof(struct cstl_set));
-    if (pSet == (struct cstl_set *)0) {
+    struct cstl_set *s = (struct cstl_set *)calloc(1, sizeof(struct cstl_set));
+    if (s == (struct cstl_set *)0) {
         return (struct cstl_set *)0;
     }
-    pSet->root = cstl_rb_create(fn_c, fn_d, (void *)0);
-    if (pSet->root == (struct cstl_rb *)0) {
+    s->tree = rbt_tree_create(false, fn_c, fn_d);
+    if (s->tree == (struct rbt_tree *)0) {
+        free(s);
         return (struct cstl_set *)0;
     }
-    return pSet;
+    return s;
 }
 
 cstl_error cstl_set_insert(struct cstl_set *pSet, void *key, size_t key_size)
 {
+    rbt_status e;
     if (pSet == (struct cstl_set *)0) {
         return CSTL_SET_NOT_INITIALIZED;
     }
-    return cstl_rb_insert(pSet->root, key, key_size, (void *)0, 0);
+    e = rbt_tree_insert(pSet->tree, key, key_size);
+    return e == RBT_STATUS_SUCCESS ? CSTL_ERROR_SUCCESS : CSTL_ERROR_ERROR;
 }
 
-cstl_bool cstl_set_exists(struct cstl_set *pSet, void *key)
+bool cstl_set_exists(struct cstl_set *pSet, void *key)
 {
-    cstl_bool found = cstl_false;
-    struct cstl_rb_node *node;
+    bool found = false;
+    struct rbt_node *node;
 
     if (pSet == (struct cstl_set *)0) {
-        return cstl_false;
+        return false;
     }
-    node = cstl_rb_find(pSet->root, key);
-    if (node != (struct cstl_rb_node *)0) {
-        return cstl_true;
+    node = rbt_tree_find(pSet->tree, key);
+    if (rbt_node_is_valid(node)) {
+        return true;
     }
     return found;
 }
 
 cstl_error cstl_set_remove(struct cstl_set *pSet, void *key)
 {
-    cstl_error rc = CSTL_ERROR_SUCCESS;
-    struct cstl_rb_node *node;
     if (pSet == (struct cstl_set *)0) {
         return CSTL_SET_NOT_INITIALIZED;
     }
-    node = cstl_rb_remove(pSet->root, key);
-    if (node != (struct cstl_rb_node *)0) {
-        cstl_rb_node_clearup(node, cstl_true);
-    }
-    return rc;
+    return (cstl_error)rbt_tree_remove_node(pSet->tree, key);
 }
 
 const void *cstl_set_find(struct cstl_set *pSet, const void *key)
 {
-    struct cstl_rb_node *node;
+    struct rbt_node *node;
 
     if (pSet == (struct cstl_set *)0) {
         return NULL;
     }
-    node = cstl_rb_find(pSet->root, key);
-    if (node == (struct cstl_rb_node *)0) {
+    node = rbt_tree_find(pSet->tree, key);
+    if (node == (struct rbt_node *)0) {
         return NULL;
     }
-    return cstl_rb_node_get_key(node);
+    return rbt_node_get_key(node);
 }
 
 cstl_error cstl_set_delete(struct cstl_set *x)
 {
     cstl_error rc = CSTL_ERROR_SUCCESS;
     if (x != (struct cstl_set *)0) {
-        rc = cstl_rb_delete(x->root);
+        rc = (cstl_error)rbt_tree_destroy(x->tree);
         free(x);
     }
     return rc;
 }
 
-static struct cstl_rb_node *cstl_set_minimum(struct cstl_set *x)
+static struct rbt_node *cstl_set_minimum(struct cstl_set *x)
 {
-    return cstl_rb_minimum(x->root, cstl_rb_get_root(x->root));
+    return rbt_tree_minimum(x->tree, rbt_tree_get_root(x->tree));
 }
 
 static const void *cstl_set_get_next(struct cstl_iterator *pIterator)
 {
-    struct cstl_set *x       = (struct cstl_set *)pIterator->pContainer;
-    struct cstl_rb_node *ptr = NULL;
-    if (!pIterator->current_element) {
+    struct cstl_set *x   = (struct cstl_set *)pIterator->pContainer;
+    struct rbt_node *ptr = NULL;
+    if (NULL == pIterator->current_element) {
         pIterator->current_element = cstl_set_minimum(x);
     } else {
-        pIterator->current_element = cstl_rb_tree_successor(
-            x->root, (struct cstl_rb_node *)pIterator->current_element);
+        pIterator->current_element =
+            rbt_tree_successor(x->tree,
+                               (struct rbt_node *)pIterator->current_element);
     }
-    ptr = (struct cstl_rb_node *)pIterator->current_element;
-    if (ptr == NULL || cstl_rb_node_get_key(ptr) == NULL) {
+    ptr = (struct rbt_node *)pIterator->current_element;
+    if (ptr == NULL || rbt_node_get_key(ptr) == NULL) {
         return NULL;
     }
     return ptr;
@@ -131,9 +128,8 @@ static const void *cstl_set_get_next(struct cstl_iterator *pIterator)
 
 static const void *cstl_set_get_key(struct cstl_iterator *pIterator)
 {
-    struct cstl_rb_node *current =
-        (struct cstl_rb_node *)pIterator->current_element;
-    return cstl_rb_node_get_key(current);
+    struct rbt_node *current = (struct rbt_node *)pIterator->current_element;
+    return rbt_node_get_key(current);
 }
 
 static const void *cstl_set_get_value(struct cstl_iterator *pIterator)
@@ -166,7 +162,7 @@ void cstl_set_container_traverse(struct cstl_set *set, fn_cstl_set_iter fn,
 {
     struct cstl_iterator *iterator;
     const void *element;
-    cstl_bool stop = cstl_false;
+    bool stop = false;
     if (set == NULL || fn == NULL) {
         return;
     }
@@ -174,7 +170,7 @@ void cstl_set_container_traverse(struct cstl_set *set, fn_cstl_set_iter fn,
     while ((element = iterator->next(iterator))) {
         const void *obj = *((const void **)iterator->current_value(iterator));
         fn(set, obj, &stop, p);
-        if (stop != cstl_false) {
+        if (stop != false) {
             break;
         }
     }
@@ -189,6 +185,6 @@ void cstl_set_container_add(struct cstl_set *set, void *obj)
 
 void cstl_set_container_remove(struct cstl_set *set, void *obj)
 {
-    assert(cstl_true == cstl_set_exists(set, &obj));
+    assert(true == cstl_set_exists(set, &obj));
     cstl_set_remove(set, &obj);
 }

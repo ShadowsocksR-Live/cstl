@@ -16,6 +16,10 @@ add_definitions(-Wall -Werror -ggdb3 -std=c90 -Wextra -pedantic)
 add_definitions("-D_DEFAULT_SOURCE -D_GNU_SOURCE")
 endif()
 
+if (MSVC)
+add_compile_options(/wd4996)
+endif()
+
 set(CSTL_SRC_FILES
     inc/c_algorithms.h
     inc/c_array.h
@@ -25,14 +29,14 @@ set(CSTL_SRC_FILES
     inc/c_stl_lib.h
     inc/c_list.h
     inc/c_map.h
-    inc/c_rb.h
+    inc/rb-tree.h
     inc/c_set.h
     src/c_algorithms.c
     src/c_array.c
     src/c_deque.c
     src/c_list.c
     src/c_map.c
-    src/c_rb.c
+    src/rb-tree.c
     src/c_set.c
     src/c_util.c
 )

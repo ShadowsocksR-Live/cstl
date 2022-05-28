@@ -32,7 +32,7 @@ extern struct cstl_map *cstl_map_new(cstl_compare fn_c_k, cstl_destroy fn_k_d,
 extern cstl_error cstl_map_insert(struct cstl_map *pMap, const void *key,
                                   size_t key_size, const void *value,
                                   size_t value_size);
-extern cstl_bool cstl_map_exists(struct cstl_map *pMap, const void *key);
+extern bool cstl_map_exists(struct cstl_map *pMap, const void *key);
 extern cstl_error cstl_map_replace(struct cstl_map *pMap, const void *key,
                                    const void *value, size_t value_size);
 extern cstl_error cstl_map_remove(struct cstl_map *pMap, const void *key);
@@ -43,12 +43,12 @@ extern struct cstl_iterator *cstl_map_new_iterator(struct cstl_map *pMap);
 extern void cstl_map_delete_iterator(struct cstl_iterator *pItr);
 
 typedef void (*map_iter_callback)(struct cstl_map *map, const void *key,
-                                  const void *value, cstl_bool *stop, void *p);
+                                  const void *value, bool *stop, void *p);
 extern void cstl_map_traverse(struct cstl_map *map, map_iter_callback cb,
                               void *p);
 
-typedef void (*fn_map_walker)(const void *key, const void *value,
-                              cstl_bool *stop, void *p);
+typedef void (*fn_map_walker)(const void *key, const void *value, bool *stop,
+                              void *p);
 void cstl_map_const_traverse(struct cstl_map *map, fn_map_walker fn, void *p);
 
 #endif /* __C_STL_MAP_H__ */

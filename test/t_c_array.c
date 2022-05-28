@@ -74,12 +74,12 @@ static void test_with_int()
     int *p_rv                  = (int *)0;
     int rv                     = 0;
     struct cstl_array *myArray = cstl_array_new(8, compare_e, NULL);
-    assert(cstl_true == cstl_array_empty(myArray));
+    assert(true == cstl_array_empty(myArray));
 
     for (i = 0; i < (int)size; i++) {
         cstl_array_push_back(myArray, &i, sizeof(int));
     }
-    assert(cstl_false == cstl_array_empty(myArray));
+    assert(false == cstl_array_empty(myArray));
     assert(size == cstl_array_size(myArray));
     for (i = 0; i < (int)size; i++) {
         p_rv = (int *)cstl_array_element_at(myArray, i);
@@ -141,14 +141,14 @@ static void test_with_pointers()
     int *rv;
     int **p_rv                 = (int **)0;
     struct cstl_array *myArray = cstl_array_new(8, compare_e_ptr, free_e);
-    assert(cstl_true == cstl_array_empty(myArray));
+    assert(true == cstl_array_empty(myArray));
 
     for (i = 0; i < (int)size; i++) {
         int *v = (int *)calloc(1, sizeof(int));
         *v     = i;
         cstl_array_push_back(myArray, &v, sizeof(int *));
     }
-    assert(cstl_false == cstl_array_empty(myArray));
+    assert(false == cstl_array_empty(myArray));
     assert(size == cstl_array_size(myArray));
     for (i = 0; i < (int)size; i++) {
         p_rv = (int **)cstl_array_element_at(myArray, i);
@@ -199,7 +199,7 @@ static void test_with_strings()
     char *rv;
     char **p_rv                = (char **)0;
     struct cstl_array *myArray = cstl_array_new(8, compare_e_str, free_e);
-    assert(cstl_true == cstl_array_empty(myArray));
+    assert(true == cstl_array_empty(myArray));
 
     input_array[0]  = "STRING_0";
     input_array[1]  = "STRING_1";
@@ -214,10 +214,10 @@ static void test_with_strings()
     input_array[10] = "STRING_10";
 
     for (i = 0; i < (int)size; i++) {
-        char *v = cstl_strdup(input_array[i]);
+        char *v = strdup(input_array[i]);
         cstl_array_push_back(myArray, &v, sizeof(char *));
     }
-    assert(cstl_false == cstl_array_empty(myArray));
+    assert(false == cstl_array_empty(myArray));
     assert(size == cstl_array_size(myArray));
     for (i = 0; i < (int)size; i++) {
         p_rv = (char **)cstl_array_element_at(myArray, i);
@@ -295,12 +295,12 @@ static struct cstl_array *create_array()
     int rv    = 0;
 
     struct cstl_array *myArray = cstl_array_new(8, compare_e, NULL);
-    assert(cstl_true == cstl_array_empty(myArray));
+    assert(true == cstl_array_empty(myArray));
 
     for (i = 0; i < size; i++) {
         cstl_array_push_back(myArray, &i, sizeof(int));
     }
-    assert(cstl_false == cstl_array_empty(myArray));
+    assert(false == cstl_array_empty(myArray));
     assert((size_t)size == cstl_array_size(myArray));
     for (i = 0; i < size; i++) {
         p_rv = (int *)cstl_array_element_at(myArray, i);

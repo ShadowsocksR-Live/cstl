@@ -68,7 +68,7 @@ static void test_with_iterators()
     }
     for (index = 0; index < size; index++) {
         int v = test[index];
-        assert(cstl_true == cstl_set_exists(pSet, &v));
+        assert(true == cstl_set_exists(pSet, &v));
         (void)v;
     }
     printf("------------------------------------------------\n");
@@ -97,7 +97,7 @@ void test_c_set()
         }
         for (index = 0; index < size; index++) {
             int v = test[index];
-            assert(cstl_true == cstl_set_exists(pSet, &v));
+            assert(true == cstl_set_exists(pSet, &v));
             (void)v;
         }
 
@@ -131,12 +131,12 @@ void test_c_set()
         size                  = sizeof(ti) / sizeof(ti[0]);
 
         for (index = 0; index < size; index++) {
-            char *temp = cstl_strdup(ti[index].string);
+            char *temp = strdup(ti[index].string);
             cstl_set_insert(pSet, &temp, sizeof(char *));
         }
         for (index = 0; index < size; index++) {
             v = ti[index].string;
-            assert(cstl_true == cstl_set_exists(pSet, &v));
+            assert(true == cstl_set_exists(pSet, &v));
             /* cstl_set_remove(pSet, &v); */
         }
         {

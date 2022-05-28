@@ -181,18 +181,18 @@ cstl_error cstl_deque_pop_front(struct cstl_deque *pDeq)
     return CSTL_ERROR_SUCCESS;
 }
 
-cstl_bool cstl_deque_empty(struct cstl_deque *pDeq)
+bool cstl_deque_empty(struct cstl_deque *pDeq)
 {
     if (pDeq == (struct cstl_deque *)0) {
-        return cstl_true;
+        return true;
     }
-    return pDeq->count == 0 ? cstl_true : cstl_false;
+    return pDeq->count == 0 ? true : false;
 }
 
 size_t cstl_deque_size(struct cstl_deque *pDeq)
 {
     if (pDeq == (struct cstl_deque *)0) {
-        return cstl_true;
+        return true;
     }
     return pDeq->count;
 }

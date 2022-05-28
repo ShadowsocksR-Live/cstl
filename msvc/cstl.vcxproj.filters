@@ -16,7 +16,7 @@
     <ClCompile Include="..\src\c_map.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\c_rb.c">
+    <ClCompile Include="..\src\rb-tree.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="..\src\c_set.c">
@@ -51,7 +51,7 @@
     <ClInclude Include="..\inc\c_map.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\inc\c_rb.h">
+    <ClInclude Include="..\inc\rb-tree.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\inc\c_set.h">
