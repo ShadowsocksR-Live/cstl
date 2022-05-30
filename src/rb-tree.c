@@ -72,10 +72,7 @@ const void *rbt_node_get_key(const struct rbt_node *node)
     assert(node);
     tree = node->tree;
     assert(tree);
-    if (node != tree->nil) {
-        return node->key;
-    }
-    return (void *)0;
+    return (node != tree->nil) ? node->key : (void *)0;
 }
 
 static void _do_node_destruct(struct rbt_node *node)
@@ -524,18 +521,25 @@ struct rbt_node *rbt_tree_minimum(struct rbt_tree *tree, struct rbt_node *x)
     return __tree_minimum(x);
 }
 
-struct rbt_node *rbt_tree_maximum(struct rbt_tree *tree, struct rbt_node *x)
+struct rbt_node *__tree_maximum(struct rbt_node *x)
 {
-    assert(tree);
+    struct rbt_tree *tree;
     assert(x);
+    tree = x->tree;
+    assert(tree);
     if (x == NULL || x == tree->nil) {
         return x;
     }
     while (x->right != tree->nil) {
         x = x->right;
     }
-    (void)tree;
     return x;
+}
+
+struct rbt_node *rbt_tree_maximum(struct rbt_tree *tree, struct rbt_node *x)
+{
+    (void)tree;
+    return __tree_maximum(x);
 }
 
 bool rbt_tree_is_empty(struct rbt_tree *tree)
@@ -553,7 +557,7 @@ struct rbt_node *rbt_tree_successor(struct rbt_tree *tree, struct rbt_node *x)
     if (x->right != tree->nil) {
         return __tree_minimum(x->right);
     }
-    if (x == rbt_tree_maximum(tree, tree->root)) {
+    if (x == __tree_maximum(tree->root)) {
         return tree->nil;
     }
     y = x->parent;

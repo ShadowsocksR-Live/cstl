@@ -196,6 +196,9 @@ void test_c_rb2(void)
 
     srand((unsigned int)time(NULL));
 
+    assert(rbt_tree_is_empty(t));
+    assert(rbt_node_is_valid(rbt_tree_get_root(t)) == false);
+
     for (i = 0; i < 5000; i++) {
         int x = rand() % 10000;
         if (RBT_STATUS_KEY_DUPLICATE == rbt_tree_insert(t, &x, sizeof(x))) {
