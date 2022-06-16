@@ -25,7 +25,6 @@
 #ifndef __C_STL_LIB_H__
 #define __C_STL_LIB_H__
 
-#include <stdbool.h>
 #include <stdlib.h>
 
 #include "c_errors.h"
@@ -34,23 +33,23 @@
 /*       C O M M O N       D E F I N I T O N S                             */
 /* ------------------------------------------------------------------------*/
 
-typedef void (*cstl_destroy)(void *);
-typedef int (*cstl_compare)(const void *, const void *);
-typedef void (*cstl_traversal)(void *);
+typedef void (*cstl_destroy)(void*);
+typedef int (*cstl_compare)(const void*, const void*);
+typedef void (*cstl_traversal)(void*);
 
 /* ------------------------------------------------------------------------*/
 /*                            P  A  I   R                                  */
 /* ------------------------------------------------------------------------*/
 
 struct cstl_iterator {
-    const void *(*next)(struct cstl_iterator *pIterator);
-    void (*replace_current_value)(struct cstl_iterator *pIterator,
-                                  void *new_value, size_t size);
-    const void *(*current_key)(struct cstl_iterator *pIterator);
-    const void *(*current_value)(struct cstl_iterator *pIterator);
-    void *pContainer;
+    const void* (*next)(struct cstl_iterator* pIterator);
+    void (*replace_current_value)(struct cstl_iterator* pIterator,
+                                  void* new_value, size_t size);
+    const void* (*current_key)(struct cstl_iterator* pIterator);
+    const void* (*current_value)(struct cstl_iterator* pIterator);
+    void* pContainer;
     size_t current_index;
-    void *current_element;
+    void* current_element;
 };
 
 #include "c_algorithms.h"
@@ -64,16 +63,16 @@ struct cstl_iterator {
 /*            H E L P E R       F U N C T I O N S                          */
 /* ------------------------------------------------------------------------*/
 
-extern void cstl_copy(void *destination, void *source, size_t size);
-extern void cstl_get(void *destination, void *source, size_t size);
+extern void cstl_copy(void* destination, void* source, size_t size);
+extern void cstl_get(void* destination, void* source, size_t size);
 
 struct cstl_object;
 
-extern struct cstl_object *cstl_object_new(const void *inObject,
+extern struct cstl_object* cstl_object_new(const void* inObject,
                                            size_t obj_size);
-extern const void *cstl_object_get_data(struct cstl_object *inObject);
-extern void cstl_object_delete(struct cstl_object *inObject);
-extern void cstl_object_replace_raw(struct cstl_object *current_object,
-                                    const void *elem, size_t elem_size);
+extern const void* cstl_object_get_data(struct cstl_object* inObject);
+extern void cstl_object_delete(struct cstl_object* inObject);
+extern void cstl_object_replace_raw(struct cstl_object* current_object,
+                                    const void* elem, size_t elem_size);
 
 #endif /* __C_STL_LIB_H__ */

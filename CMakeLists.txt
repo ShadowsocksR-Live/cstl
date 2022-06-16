@@ -12,7 +12,7 @@ cmake_dependent_option(BUILD_CSTL_TESTING
   ON "CMAKE_SOURCE_DIR STREQUAL PROJECT_SOURCE_DIR" OFF)
 
 if (UNIX)
-add_definitions(-Wall -Werror -ggdb3 -std=c99 -Wextra -pedantic)
+add_definitions(-Wall -Werror -ggdb3 -std=c90 -Wextra -pedantic)
 add_definitions("-D_DEFAULT_SOURCE -D_GNU_SOURCE")
 endif()
 

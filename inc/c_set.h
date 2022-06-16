@@ -29,22 +29,22 @@
 
 struct cstl_set;
 
-extern struct cstl_set *cstl_set_new(cstl_compare fn_c, cstl_destroy fn_d);
-extern cstl_error cstl_set_insert(struct cstl_set *pSet, void *key,
+extern struct cstl_set* cstl_set_new(cstl_compare fn_c, cstl_destroy fn_d);
+extern cstl_error cstl_set_insert(struct cstl_set* pSet, void* key,
                                   size_t key_size);
-extern bool cstl_set_exists(struct cstl_set *pSet, void *key);
-extern cstl_error cstl_set_remove(struct cstl_set *pSet, void *key);
-extern const void *cstl_set_find(struct cstl_set *pSet, const void *key);
-extern cstl_error cstl_set_delete(struct cstl_set *pSet);
+extern int cstl_set_is_key_exists(struct cstl_set* pSet, void* key);
+extern cstl_error cstl_set_remove(struct cstl_set* pSet, void* key);
+extern const void* cstl_set_find(struct cstl_set* pSet, const void* key);
+extern cstl_error cstl_set_delete(struct cstl_set* pSet);
 
-extern struct cstl_iterator *cstl_set_new_iterator(struct cstl_set *pSet);
-extern void cstl_set_delete_iterator(struct cstl_iterator *pItr);
+extern struct cstl_iterator* cstl_set_new_iterator(struct cstl_set* pSet);
+extern void cstl_set_delete_iterator(struct cstl_iterator* pItr);
 
-typedef void (*fn_cstl_set_iter)(struct cstl_set *set, const void *obj,
-                                 bool *stop, void *p);
-extern void cstl_set_container_traverse(struct cstl_set *set,
-                                        fn_cstl_set_iter fn, void *p);
-extern void cstl_set_container_add(struct cstl_set *set, void *obj);
-extern void cstl_set_container_remove(struct cstl_set *set, void *obj);
+typedef void (*fn_cstl_set_iter)(struct cstl_set* set, const void* obj,
+                                 int* stop, void* p);
+extern void cstl_set_container_traverse(struct cstl_set* set,
+                                        fn_cstl_set_iter fn, void* p);
+extern void cstl_set_container_add(struct cstl_set* set, void* obj);
+extern void cstl_set_container_remove(struct cstl_set* set, void* obj);
 
 #endif /* __C_STL_SET_H__ */

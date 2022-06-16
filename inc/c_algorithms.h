@@ -27,7 +27,7 @@
 struct cstl_iterator;
 
 extern void
-cstl_for_each(struct cstl_iterator *pIterator,
-              void (*fn)(const void *value, const void *key, void *p), void *p);
+cstl_for_each(struct cstl_iterator* pIterator,
+              void (*fn)(const void* value, const void* key, void* p), void* p);
 
 #endif /* __C_STL_ALGORITHMS__ */

@@ -1,7 +1,13 @@
 ---
+
+#
+# usage: find . -regex '.*\.\(c\|h\|cpp\|hpp\|cc\|cxx\)' -exec clang-format -style=file -i {} \;
+# ref link: https://freebug.top/blog/2021/08/23/%E5%A4%9A%E7%BC%96%E7%A0%81%E8%A7%84%E8%8C%83%E4%B8%8B%E7%9A%84clang-format%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88/
+#
+
 AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
-AlignConsecutiveAssignments: true
+AlignConsecutiveAssignments: false
 AlignConsecutiveDeclarations: false
 AlignConsecutiveMacros: true
 AlignEscapedNewlines: true
@@ -25,7 +31,7 @@ AlwaysBreakTemplateDeclarations: false
 BinPackArguments: true
 BinPackParameters: true
 
-BreakBeforeBraces: Custom
+BreakBeforeBraces: Stroustrup
 BraceWrapping:
   AfterCaseLabel: false
   AfterClass: true
@@ -115,7 +121,7 @@ PenaltyBreakString: 10
 PenaltyExcessCharacter: 100
 PenaltyReturnTypeOnItsOwnLine: 60
 
-PointerAlignment: Right
+PointerAlignment: Left
 ReflowComments: false
 SortUsingDeclarations: true
 SpaceAfterCStyleCast: false
@@ -136,3 +142,4 @@ Standard: Cpp03
 TabWidth: 4
 UseTab: Never
 ...
+

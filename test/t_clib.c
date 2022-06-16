@@ -77,7 +77,7 @@ void on_atexit(void)
     MEM_CHECK_DUMP_LEAKS();
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     clock_t t = clock();
     (void)argc;

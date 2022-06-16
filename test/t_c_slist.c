@@ -29,74 +29,74 @@
 #include <stdlib.h>
 #include <string.h>
 
-static void free_element(void *ptr)
+static void free_element(void* ptr)
 {
     if (ptr) {
-        void *p = *((void **)ptr);
+        void* p = *((void**)ptr);
         if (p) {
             free(p);
         }
     }
 }
 
-void add_elements_to_list(struct cstl_list *ll, int x, int y)
+void add_elements_to_list(struct cstl_list* ll, int x, int y)
 {
     int i = 0;
     for (i = x; i <= y; i++) {
-        int *v = (int *)calloc(1, sizeof(int));
+        int* v = (int*)calloc(1, sizeof(int));
         memcpy(v, &i, sizeof(int));
-        cstl_list_push_back(ll, &v, sizeof(int *));
+        cstl_list_push_back(ll, &v, sizeof(int*));
     }
 }
-void print_e(const void *ptr, void *p)
+void print_e(const void* ptr, void* p)
 {
     (void)p;
     if (ptr) {
-        printf("%d\n", **((int **)ptr));
+        printf("%d\n", **((int**)ptr));
     }
 }
 
-static int compare_element(const void *left, const void *right)
+static int compare_element(const void* left, const void* right)
 {
-    int *l = *((int **)left);
-    int *r = *((int **)right);
+    int* l = *((int**)left);
+    int* r = *((int**)right);
     return (*l - *r);
 }
-static void print_using_iterators(struct cstl_list *pList)
+static void print_using_iterators(struct cstl_list* pList)
 {
-    struct cstl_iterator *myItr;
-    const void *pElement;
+    struct cstl_iterator* myItr;
+    const void* pElement;
     printf("------------------------------------------------\n");
     myItr = cstl_list_new_iterator(pList);
     while ((pElement = myItr->next(myItr)) != NULL) {
-        const void *value = myItr->current_value(myItr);
-        printf("%d\n", **((int **)value));
+        const void* value = myItr->current_value(myItr);
+        printf("%d\n", **((int**)value));
     }
     cstl_list_delete_iterator(myItr);
 }
 
-static void replace_values_using_iterators(struct cstl_list *pList)
+static void replace_values_using_iterators(struct cstl_list* pList)
 {
-    struct cstl_iterator *myItr;
-    const void *pElement;
+    struct cstl_iterator* myItr;
+    const void* pElement;
     printf("------------------------------------------------\n");
     myItr = cstl_list_new_iterator(pList);
     while ((pElement = myItr->next(myItr)) != NULL) {
-        int *v;
-        const void *old_value = myItr->current_value(myItr);
-        int new_value         = **((int **)old_value);
-        new_value             = new_value * 2;
+        int* v;
+        const void* old_value = myItr->current_value(myItr);
+        int new_value = **((int**)old_value);
+        new_value = new_value * 2;
 
-        v  = (int *)calloc(1, sizeof(int));
+        v = (int*)calloc(1, sizeof(int));
         *v = new_value;
-        myItr->replace_current_value(myItr, &v, sizeof(int *));
+        myItr->replace_current_value(myItr, &v, sizeof(int*));
     }
     cstl_list_delete_iterator(myItr);
 }
 
 static void test_with_iterators()
 {
-    struct cstl_list *pList = cstl_list_new(free_element, compare_element);
+    struct cstl_list* pList = cstl_list_new(free_element, compare_element);
     add_elements_to_list(pList, 1, 10);
     print_using_iterators(pList);
     replace_values_using_iterators(pList);
@@ -106,19 +106,19 @@ static void test_with_iterators()
 
 void test_c_slist()
 {
-    int *tmp;
+    int* tmp;
     int i = 0;
-    int *v;
-    const void *outValue;
-    struct cstl_list *list = cstl_list_new(free_element, compare_element);
+    int* v;
+    const void* outValue;
+    struct cstl_list* list = cstl_list_new(free_element, compare_element);
 
     add_elements_to_list(list, 1, 10);
     cstl_list_for_each(list, print_e, NULL);
 
-    i  = 55;
-    v  = (int *)calloc(1, sizeof(int));
+    i = 55;
+    v = (int*)calloc(1, sizeof(int));
     *v = i;
-    cstl_list_insert(list, 4, &v, sizeof(int *));
+    cstl_list_insert(list, 4, &v, sizeof(int*));
     cstl_list_for_each(list, print_e, NULL);
 
     cstl_list_remove(list, 4);
@@ -130,40 +130,40 @@ void test_c_slist()
     cstl_list_remove(list, 100);
     cstl_list_for_each(list, print_e, NULL);
 
-    i  = 1;
-    v  = (int *)calloc(1, sizeof(int));
+    i = 1;
+    v = (int*)calloc(1, sizeof(int));
     *v = i;
-    cstl_list_insert(list, 0, &v, sizeof(int *));
+    cstl_list_insert(list, 0, &v, sizeof(int*));
     cstl_list_for_each(list, print_e, NULL);
 
     i = 11;
-    v = (int *)calloc(1, sizeof(int));
+    v = (int*)calloc(1, sizeof(int));
     memcpy(v, &i, sizeof(int));
-    cstl_list_insert(list, 10, &v, sizeof(int *));
+    cstl_list_insert(list, 10, &v, sizeof(int*));
     cstl_list_for_each(list, print_e, NULL);
 
     i = 12;
-    v = (int *)calloc(1, sizeof(int));
+    v = (int*)calloc(1, sizeof(int));
     memcpy(v, &i, sizeof(int));
-    cstl_list_insert(list, 200, &v, sizeof(int *));
+    cstl_list_insert(list, 200, &v, sizeof(int*));
     cstl_list_for_each(list, print_e, NULL);
 
     cstl_list_remove(list, cstl_list_count(list) - 1);
     cstl_list_for_each(list, print_e, NULL);
 
-    tmp  = (int *)calloc(1, sizeof(int));
+    tmp = (int*)calloc(1, sizeof(int));
     *tmp = 10;
     if ((outValue = cstl_list_find(list, &tmp))) {
-        assert(*tmp == **((int **)outValue));
+        assert(*tmp == **((int**)outValue));
     }
 
-    *tmp     = 100;
+    *tmp = 100;
     outValue = cstl_list_find(list, &tmp);
     assert(outValue == NULL);
     free(tmp);
 
     outValue = cstl_list_element_at(list, 7);
-    assert(**((int **)outValue) == 8);
+    assert(**((int**)outValue) == 8);
 
     assert(cstl_list_size(list) == 11);
 

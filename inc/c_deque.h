@@ -27,24 +27,24 @@
 
 struct cstl_deque;
 
-extern struct cstl_deque *cstl_deque_new(size_t deq_size, cstl_compare fn_c,
+extern struct cstl_deque* cstl_deque_new(size_t deq_size, cstl_compare fn_c,
                                          cstl_destroy fn_d);
-extern size_t cstl_deque_count(struct cstl_deque *deque);
-extern cstl_error cstl_deque_push_back(struct cstl_deque *pDeq, void *elem,
+extern size_t cstl_deque_count(struct cstl_deque* deque);
+extern cstl_error cstl_deque_push_back(struct cstl_deque* pDeq, void* elem,
                                        size_t elem_size);
-extern cstl_error cstl_deque_push_front(struct cstl_deque *pDeq, void *elem,
+extern cstl_error cstl_deque_push_front(struct cstl_deque* pDeq, void* elem,
                                         size_t elem_size);
 
-extern const void *cstl_deque_front(struct cstl_deque *pDeq);
-extern const void *cstl_deque_back(struct cstl_deque *pDeq);
-extern cstl_error cstl_deque_pop_back(struct cstl_deque *pDeq);
-extern cstl_error cstl_deque_pop_front(struct cstl_deque *pDeq);
-extern bool cstl_deque_empty(struct cstl_deque *pDeq);
-extern size_t cstl_deque_size(struct cstl_deque *pDeq);
-extern cstl_error cstl_deque_delete(struct cstl_deque *pDeq);
-extern const void *cstl_deque_element_at(struct cstl_deque *pDeq, size_t index);
+extern const void* cstl_deque_front(struct cstl_deque* pDeq);
+extern const void* cstl_deque_back(struct cstl_deque* pDeq);
+extern cstl_error cstl_deque_pop_back(struct cstl_deque* pDeq);
+extern cstl_error cstl_deque_pop_front(struct cstl_deque* pDeq);
+extern int cstl_deque_is_empty(struct cstl_deque* pDeq);
+extern size_t cstl_deque_size(struct cstl_deque* pDeq);
+extern cstl_error cstl_deque_delete(struct cstl_deque* pDeq);
+extern const void* cstl_deque_element_at(struct cstl_deque* pDeq, size_t index);
 
-extern struct cstl_iterator *cstl_deque_new_iterator(struct cstl_deque *pDeq);
-extern void cstl_deque_delete_iterator(struct cstl_iterator *pItr);
+extern struct cstl_iterator* cstl_deque_new_iterator(struct cstl_deque* pDeq);
+extern void cstl_deque_delete_iterator(struct cstl_iterator* pItr);
 
 #endif /* __C_STL_DEQUE_H__ */

@@ -27,57 +27,57 @@
 #include <string.h>
 #include "c_stl_lib.h"
 
-void cstl_copy(void *destination, void *source, size_t size)
+void cstl_copy(void* destination, void* source, size_t size)
 {
-    memcpy((char *)destination, source, size);
+    memcpy((char*)destination, source, size);
 }
 
-void cstl_get(void *destination, void *source, size_t size)
+void cstl_get(void* destination, void* source, size_t size)
 {
-    memcpy(destination, (char *)source, size);
+    memcpy(destination, (char*)source, size);
 }
 
 struct cstl_object {
-    void *raw_data;
+    void* raw_data;
     size_t size;
 };
 
-struct cstl_object *cstl_object_new(const void *inObject, size_t obj_size)
+struct cstl_object* cstl_object_new(const void* inObject, size_t obj_size)
 {
-    struct cstl_object *tmp =
-        (struct cstl_object *)calloc(1, sizeof(struct cstl_object));
-    void *raw_data = (void *)0;
+    struct cstl_object* tmp =
+        (struct cstl_object*)calloc(1, sizeof(struct cstl_object));
+    void* raw_data = (void*)0;
     if (!tmp) {
-        return (struct cstl_object *)0;
+        return (struct cstl_object*)0;
     }
     tmp->size = obj_size;
-    raw_data  = (void *)calloc(obj_size, sizeof(char));
+    raw_data = (void*)calloc(obj_size, sizeof(char));
     if (!raw_data) {
         free(tmp);
-        return (struct cstl_object *)0;
+        return (struct cstl_object*)0;
     }
     memcpy(raw_data, inObject, obj_size);
     tmp->raw_data = raw_data;
     return tmp;
 }
 
-const void *cstl_object_get_data(struct cstl_object *inObject)
+const void* cstl_object_get_data(struct cstl_object* inObject)
 {
     return inObject->raw_data;
 }
 
-void cstl_object_replace_raw(struct cstl_object *current_object,
-                             const void *elem, size_t elem_size)
+void cstl_object_replace_raw(struct cstl_object* current_object,
+                             const void* elem, size_t elem_size)
 {
     assert(current_object);
     free(current_object->raw_data);
-    current_object->raw_data = (void *)calloc(elem_size, sizeof(char));
+    current_object->raw_data = (void*)calloc(elem_size, sizeof(char));
     if (current_object->raw_data) {
         memcpy(current_object->raw_data, elem, elem_size);
     }
 }
 
-void cstl_object_delete(struct cstl_object *inObject)
+void cstl_object_delete(struct cstl_object* inObject)
 {
     if (inObject) {
         free(inObject->raw_data);
