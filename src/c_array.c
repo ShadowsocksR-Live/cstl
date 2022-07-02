@@ -22,6 +22,7 @@
  *  THE SOFTWARE.
  ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** ** **/
 
+#include <assert.h>
 #include <stdio.h>
 #include <string.h>
 #include "c_stl_lib.h"
@@ -34,14 +35,21 @@ struct cstl_array {
     cstl_destroy destruct_fn;       /* Destructor function pointer*/
 };
 
-static struct cstl_array* cstl_array_check_and_grow(struct cstl_array* pArray)
+static struct cstl_array* cstl_array_check_and_grow(struct cstl_array* pArray, size_t new_size)
 {
-    if (pArray->count >= pArray->capacity) {
+    if (new_size >= pArray->capacity) {
         size_t size;
-        pArray->capacity = 2 * pArray->capacity;
+        void* tmp;
+        while (new_size >= pArray->capacity) {
+            pArray->capacity = 2 * pArray->capacity;
+        }
         size = pArray->capacity * sizeof(struct cstl_object*);
-        pArray->pElements =
-            (struct cstl_object**)realloc(pArray->pElements, size);
+        tmp = realloc(pArray->pElements, size);
+        if (tmp) {
+            pArray->pElements = (struct cstl_object**)tmp;
+        } else {
+            assert(!"memory out!!!");
+        }
     }
     return pArray;
 }
@@ -90,7 +98,7 @@ cstl_error cstl_array_push_back(struct cstl_array* pArray, void* elem,
     if (!pArray) {
         return CSTL_ARRAY_NOT_INITIALIZED;
     }
-    cstl_array_check_and_grow(pArray);
+    cstl_array_check_and_grow(pArray, pArray->count);
 
     rc = cstl_array_insert(pArray, pArray->count, elem, elem_size);
 
@@ -140,7 +148,7 @@ cstl_error cstl_array_reserve(struct cstl_array* pArray, size_t new_size)
     if (new_size <= pArray->capacity) {
         return CSTL_ERROR_SUCCESS;
     }
-    cstl_array_check_and_grow(pArray);
+    cstl_array_check_and_grow(pArray, new_size);
     return CSTL_ERROR_SUCCESS;
 }
 
@@ -164,7 +172,8 @@ cstl_error cstl_array_insert_at(struct cstl_array* pArray, size_t index,
     if (index > pArray->capacity) {
         return CSTL_ARRAY_INDEX_OUT_OF_BOUND;
     }
-    cstl_array_check_and_grow(pArray);
+    assert(index <= pArray->count);
+    cstl_array_check_and_grow(pArray, pArray->count);
 
     memmove(&(pArray->pElements[index + 1]), &pArray->pElements[index],
             (pArray->count - index) * sizeof(struct cstl_object*));
