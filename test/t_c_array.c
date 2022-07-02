@@ -156,7 +156,7 @@ static void test_with_int2()
     }
     size = cstl_array_size(myArray);
 
-    cstl_array_quick_sort(myArray, 0, size - 1);
+    cstl_array_quick_sort(myArray);
 
     printf("--------------- test_with_int2 ---------------\n");
     for (i = 0; i < (int)size; i++) {
@@ -303,7 +303,7 @@ static void test_with_strings()
     print_string_with_iterators(myArray);
 
     size = cstl_array_size(myArray);
-    cstl_array_quick_sort(myArray, 0, size - 1);
+    cstl_array_quick_sort(myArray);
     print_string_with_iterators(myArray);
 
     cstl_array_delete(myArray);

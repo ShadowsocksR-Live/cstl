@@ -294,20 +294,18 @@ static void swap(struct cstl_object** a, struct cstl_object** b)
 }
 
 /* quick sort */
-void cstl_array_quick_sort(struct cstl_array* pArray, int left, int right)
+void _cstl_array_quick_sort(struct cstl_array* pArray, int left, int right)
 {
     int i = left, j = right;
-    const void* pivot;
+    const void* mid;
     assert(left < (int)pArray->count);
     assert(right < (int)pArray->count);
-    pivot = cstl_array_element_at(pArray, (left + right) / 2);
+    mid = cstl_array_element_at(pArray, (left + right) / 2);
     while (i <= j) {
-        while (pArray->compare_fn(cstl_array_element_at(pArray, i), pivot) <
-               0) {
+        while (pArray->compare_fn(cstl_array_element_at(pArray, i), mid) < 0) {
             i++;
         }
-        while (pArray->compare_fn(cstl_array_element_at(pArray, j), pivot) >
-               0) {
+        while (pArray->compare_fn(cstl_array_element_at(pArray, j), mid) > 0) {
             j--;
         }
         if (i <= j) {
@@ -319,9 +317,17 @@ void cstl_array_quick_sort(struct cstl_array* pArray, int left, int right)
         }
     }
     if (left < j) {
-        cstl_array_quick_sort(pArray, left, j);
+        _cstl_array_quick_sort(pArray, left, j);
     }
     if (i < right) {
-        cstl_array_quick_sort(pArray, i, right);
+        _cstl_array_quick_sort(pArray, i, right);
+    }
+}
+
+void cstl_array_quick_sort(struct cstl_array* pArray)
+{
+    size_t size = cstl_array_size(pArray);
+    if (size > 0) {
+        _cstl_array_quick_sort(pArray, 0, size - 1);
     }
 }
