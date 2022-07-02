@@ -47,4 +47,7 @@ extern cstl_error cstl_array_delete(struct cstl_array* pArray);
 extern struct cstl_iterator* cstl_array_new_iterator(struct cstl_array* pArray);
 extern void cstl_array_delete_iterator(struct cstl_iterator* pItr);
 
+extern void cstl_array_quick_sort(struct cstl_array* pArray, int left,
+                                  int right);
+
 #endif /* __C_STL_ARRAY_H__ */

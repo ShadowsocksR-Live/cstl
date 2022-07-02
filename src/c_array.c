@@ -35,7 +35,8 @@ struct cstl_array {
     cstl_destroy destruct_fn;       /* Destructor function pointer*/
 };
 
-static struct cstl_array* cstl_array_check_and_grow(struct cstl_array* pArray, size_t new_size)
+static struct cstl_array* cstl_array_check_and_grow(struct cstl_array* pArray,
+                                                    size_t new_size)
 {
     if (new_size >= pArray->capacity) {
         size_t size;
@@ -47,7 +48,8 @@ static struct cstl_array* cstl_array_check_and_grow(struct cstl_array* pArray, s
         tmp = realloc(pArray->pElements, size);
         if (tmp) {
             pArray->pElements = (struct cstl_object**)tmp;
-        } else {
+        }
+        else {
             assert(!"memory out!!!");
         }
     }
@@ -280,4 +282,46 @@ struct cstl_iterator* cstl_array_new_iterator(struct cstl_array* pArray)
 void cstl_array_delete_iterator(struct cstl_iterator* pItr)
 {
     free(pItr);
+}
+
+static void swap(struct cstl_object** a, struct cstl_object** b)
+{
+    if (a != b) {
+        struct cstl_object* tmp = *a;
+        *a = *b;
+        *b = tmp;
+    }
+}
+
+/* quick sort */
+void cstl_array_quick_sort(struct cstl_array* pArray, int left, int right)
+{
+    int i = left, j = right;
+    const void* pivot;
+    assert(left < (int)pArray->count);
+    assert(right < (int)pArray->count);
+    pivot = cstl_array_element_at(pArray, (left + right) / 2);
+    while (i <= j) {
+        while (pArray->compare_fn(cstl_array_element_at(pArray, i), pivot) <
+               0) {
+            i++;
+        }
+        while (pArray->compare_fn(cstl_array_element_at(pArray, j), pivot) >
+               0) {
+            j--;
+        }
+        if (i <= j) {
+            if (i != j) {
+                swap(&pArray->pElements[i], &pArray->pElements[j]);
+            }
+            i++;
+            j--;
+        }
+    }
+    if (left < j) {
+        cstl_array_quick_sort(pArray, left, j);
+    }
+    if (i < right) {
+        cstl_array_quick_sort(pArray, i, right);
+    }
 }

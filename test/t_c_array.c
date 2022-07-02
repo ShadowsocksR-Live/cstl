@@ -28,26 +28,36 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 static int compare_e(const void* left, const void* right)
 {
-    int* l = (int*)left;
-    int* r = (int*)right;
-    return (*l - *r);
+    if (left != right) {
+        int* l = (int*)left;
+        int* r = (int*)right;
+        return (*l - *r);
+    }
+    return 0;
 }
 
 static int compare_e_ptr(const void* left, const void* right)
 {
-    int* l = *((int**)left);
-    int* r = *((int**)right);
-    return (*l - *r);
+    if (left != right) {
+        int* l = *((int**)left);
+        int* r = *((int**)right);
+        return (*l - *r);
+    }
+    return 0;
 }
 
 static int compare_e_str(const void* left, const void* right)
 {
-    char* l = *((char**)left);
-    char* r = *((char**)right);
-    return strcmp(l, r);
+    if (left != right) {
+        char* l = *((char**)left);
+        char* r = *((char**)right);
+        return strcmp(l, r);
+    }
+    return 0;
 }
 
 static void free_e(void* ptr)
@@ -134,6 +144,28 @@ static void test_with_int()
     (void)rv;
 }
 
+static void test_with_int2()
+{
+    struct cstl_array* myArray = cstl_array_new(8, compare_e, NULL);
+    int i;
+    size_t size;
+    srand((unsigned int)time(NULL));
+    for (i = 0; i < 30; i++) {
+        int x = rand() % 10000;
+        cstl_array_push_back(myArray, &x, sizeof(int));
+    }
+    size = cstl_array_size(myArray);
+
+    cstl_array_quick_sort(myArray, 0, size - 1);
+
+    printf("--------------- test_with_int2 ---------------\n");
+    for (i = 0; i < (int)size; i++) {
+        int* p_rv = (int*)cstl_array_element_at(myArray, (size_t)i);
+        print_e(p_rv);
+    }
+    cstl_array_delete(myArray);
+}
+
 static void test_with_pointers()
 {
     size_t size = 10;
@@ -191,6 +223,19 @@ static void test_with_pointers()
     (void)rv;
 }
 
+static void print_string_with_iterators(struct cstl_array* myArray)
+{
+    struct cstl_iterator* myItr;
+    const void* pElement;
+    printf("--------------- print_string_with_iterators ---------------\n");
+    myItr = cstl_array_new_iterator(myArray);
+    while ((pElement = myItr->next(myItr)) != NULL) {
+        char** value = (char**)myItr->current_value(myItr);
+        printf("%s\n", *value);
+    }
+    cstl_array_delete_iterator(myItr);
+}
+
 static void test_with_strings()
 {
     size_t size = 10;
@@ -201,16 +246,16 @@ static void test_with_strings()
     struct cstl_array* myArray = cstl_array_new(8, compare_e_str, free_e);
     assert(0 != cstl_array_is_empty(myArray));
 
-    input_array[0] = "STRING_0";
-    input_array[1] = "STRING_1";
-    input_array[2] = "STRING_2";
-    input_array[3] = "STRING_3";
-    input_array[4] = "STRING_4";
-    input_array[5] = "STRING_5";
-    input_array[6] = "STRING_6";
-    input_array[7] = "STRING_7";
-    input_array[8] = "STRING_8";
-    input_array[9] = "STRING_9";
+    input_array[0] = "STRING_050";
+    input_array[1] = "STRING_030";
+    input_array[2] = "STRING_040";
+    input_array[3] = "STRING_090";
+    input_array[4] = "STRING_100";
+    input_array[5] = "STRING_010";
+    input_array[6] = "STRING_005";
+    input_array[7] = "STRING_400";
+    input_array[8] = "STRING_123";
+    input_array[9] = "STRING_080";
     input_array[10] = "STRING_10";
 
     for (i = 0; i < (int)size; i++) {
@@ -254,6 +299,12 @@ static void test_with_strings()
     p_rv = (char**)cstl_array_element_at(myArray, size - 1);
     rv = *((char**)p_rv);
     assert(strcmp(rv, input_array[8]) == 0);
+
+    print_string_with_iterators(myArray);
+
+    size = cstl_array_size(myArray);
+    cstl_array_quick_sort(myArray, 0, size - 1);
+    print_string_with_iterators(myArray);
 
     cstl_array_delete(myArray);
     (void)rv;
@@ -323,6 +374,7 @@ void test_with_iterator_function()
 void test_c_array()
 {
     test_with_int();
+    test_with_int2();
     test_with_pointers();
     test_with_strings();
     test_with_iterator_function();
