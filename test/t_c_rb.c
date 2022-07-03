@@ -102,7 +102,8 @@ static void test_all_elements(struct rbt_tree* tree, TS ts[], int size)
 static struct rbt_tree* create_tree(TS ts[], int size)
 {
     int i = 0;
-    struct rbt_tree* tree = rbt_tree_create(0, compare_rb_e, NULL);
+    struct rbt_tree* tree =
+        rbt_tree_create(malloc, free, 0, compare_rb_e, NULL);
     for (i = 0; i < size; i++) {
         rbt_tree_insert(tree, &(ts[i].element), sizeof((ts[i].element)));
     }
@@ -161,21 +162,21 @@ void test_c_rb()
         size = (sizeof(ts) / sizeof(TS));
         size_after_delete = (sizeof(ts_delete_leaf_13) / sizeof(TS));
         s = rbt_tree_remove_node(tree, &i);
-        assert(s == RBT_STATUS_SUCCESS);
+        assert(s == rbt_status_success);
         test_all_elements(tree, ts_delete_leaf_13, size_after_delete);
     }
     {
         i = 9;
         size_after_delete = (sizeof(ts_delete_9) / sizeof(TS));
         s = rbt_tree_remove_node(tree, &i);
-        assert(s == RBT_STATUS_SUCCESS);
+        assert(s == rbt_status_success);
         test_all_elements(tree, ts_delete_9, size_after_delete);
     }
     {
         i = 15;
         size_after_delete = (sizeof(ts_delete_15) / sizeof(TS));
         s = rbt_tree_remove_node(tree, &i);
-        assert(s == RBT_STATUS_SUCCESS);
+        assert(s == rbt_status_success);
         test_all_elements(tree, ts_delete_15, size_after_delete);
     }
     {
@@ -194,7 +195,7 @@ void test_c_rb2(void)
 {
     struct rbt_node* node;
     int i;
-    struct rbt_tree* t = rbt_tree_create(0, compare_rb_e, NULL);
+    struct rbt_tree* t = rbt_tree_create(malloc, free, 0, compare_rb_e, NULL);
 
     srand((unsigned int)time(NULL));
 
@@ -203,7 +204,7 @@ void test_c_rb2(void)
 
     for (i = 0; i < 5000; i++) {
         int x = rand() % 10000;
-        if (RBT_STATUS_KEY_DUPLICATE == rbt_tree_insert(t, &x, sizeof(x))) {
+        if (rbt_status_key_duplicate == rbt_tree_insert(t, &x, sizeof(x))) {
             continue;
         }
         node = (struct rbt_node*)rbt_tree_find(t, &x);
@@ -247,14 +248,14 @@ void test_c_rb2_alloc(void)
     struct rbt_node* node;
     int i;
     struct rbt_tree* t =
-        rbt_tree_create(0, compare_rb_e_alloc, destroy_e_alloc);
+        rbt_tree_create(malloc, free, 0, compare_rb_e_alloc, destroy_e_alloc);
 
     srand((unsigned int)time(NULL));
 
     for (i = 0; i < 5000; i++) {
         int* x = (int*)calloc(1, sizeof(*x));
         *x = rand() % 10000;
-        if (RBT_STATUS_KEY_DUPLICATE == rbt_tree_insert(t, &x, sizeof(x))) {
+        if (rbt_status_key_duplicate == rbt_tree_insert(t, &x, sizeof(x))) {
             free(x);
             continue;
         }
@@ -303,7 +304,7 @@ void test_rbt_string(void)
     const struct rbt_node* node;
     size_t i;
     struct rbt_tree* t =
-        rbt_tree_create(0, str_ptr_compare, string_ptr_destroy);
+        rbt_tree_create(malloc, free, 0, str_ptr_compare, string_ptr_destroy);
     for (i = 0; i < sizeof(strArr) / sizeof(strArr[0]); i++) {
         char* y;
         char* p = strdup(strArr[i]);
@@ -339,11 +340,12 @@ void test_rbt_string2(void)
     const struct rbt_node* node;
     rbt_status s;
     size_t i;
-    struct rbt_tree* t = rbt_tree_create(0, string_ptr_compare2, NULL);
+    struct rbt_tree* t =
+        rbt_tree_create(malloc, free, 0, string_ptr_compare2, NULL);
     for (i = 0; i < sizeof(strArr) / sizeof(strArr[0]); i++) {
         char* y;
         char* p = strArr[i];
-        if (RBT_STATUS_SUCCESS != rbt_tree_insert(t, p, strlen(p) + 1)) {
+        if (rbt_status_success != rbt_tree_insert(t, p, strlen(p) + 1)) {
             continue;
         }
         node = rbt_tree_find(t, strArr[i]);
@@ -353,7 +355,7 @@ void test_rbt_string2(void)
     }
 
     s = rbt_tree_remove_node(t, strArr[0]);
-    assert(s == RBT_STATUS_SUCCESS);
+    assert(s == rbt_status_success);
     (void)s;
 
     printf("\n==== test_rbt_string2 ====\n");

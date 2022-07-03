@@ -327,7 +327,7 @@ void _cstl_array_quick_sort(struct cstl_array* pArray, int left, int right)
 void cstl_array_quick_sort(struct cstl_array* pArray)
 {
     size_t size = cstl_array_size(pArray);
-    if (size > 0) {
-        _cstl_array_quick_sort(pArray, 0, size - 1);
+    if (size > 1) {
+        _cstl_array_quick_sort(pArray, 0, (int)(size - 1));
     }
 }

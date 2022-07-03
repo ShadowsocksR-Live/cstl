@@ -73,7 +73,8 @@ struct cstl_map* cstl_map_new(cstl_compare fn_c_k, cstl_destroy fn_k_d,
         pMap->fn_c_k = fn_c_k;
         pMap->fn_k_d = fn_k_d;
         pMap->fn_v_d = fn_v_d;
-        pMap->tree = rbt_tree_create(0, _item_compare, _item_destruct);
+        pMap->tree =
+            rbt_tree_create(malloc, free, 0, _item_compare, _item_destruct);
         if (pMap->tree == (struct rbt_tree*)NULL) {
             free(pMap);
             pMap = NULL;
@@ -151,7 +152,7 @@ cstl_error cstl_map_insert(struct cstl_map* pMap, const void* key,
     map_item_init(pMap, &dummy, key, key_size, value, value_size);
 
     rcrb = rbt_tree_insert(pMap->tree, &dummy, sizeof(dummy));
-    if (rcrb == RBT_STATUS_SUCCESS) {
+    if (rcrb == rbt_status_success) {
         pMap->map_changed = 1;
     }
     else {
@@ -211,7 +212,7 @@ cstl_error cstl_map_remove(struct cstl_map* pMap, const void* key)
         return CSTL_MAP_NOT_INITIALIZED;
     }
     rcrb = rbt_tree_remove_node(pMap->tree, &dummy);
-    if (RBT_STATUS_SUCCESS == rcrb) {
+    if (rbt_status_success == rcrb) {
         pMap->map_changed = 1;
     }
     return rc;

@@ -24,6 +24,8 @@ struct rbt_tree {
     int allow_dup;
     rbt_node_destruct node_destruct;
     rbt_node_compare node_compare;
+    rbt_mem_allocate allocator;
+    rbt_mem_release releaser;
 };
 
 static void debug_verify_properties(struct rbt_tree*);
@@ -135,11 +137,17 @@ static void __right_rotate(struct rbt_tree* T, struct rbt_node* x)
 
 #define rb_sentinel(tree) &(tree)->sentinel
 
-struct rbt_tree* rbt_tree_create(int allow_dup, rbt_node_compare cmp,
-                                 rbt_node_destruct dest)
+struct rbt_tree* rbt_tree_create(rbt_mem_allocate allocator,
+                                 rbt_mem_release releaser, int allow_dup,
+                                 rbt_node_compare cmp, rbt_node_destruct dest)
 {
-    struct rbt_tree* tree = (struct rbt_tree*)calloc(1, sizeof(*tree));
+    struct rbt_tree* tree;
+    assert(allocator);
+    assert(releaser);
+    tree = (struct rbt_tree*)allocator(sizeof(*tree));
     if (tree != (struct rbt_tree*)0) {
+        tree->allocator = allocator;
+        tree->releaser = releaser;
         tree->node_compare = cmp;
         tree->node_destruct = dest;
         tree->nil = rb_sentinel(tree);
@@ -254,7 +262,7 @@ struct rbt_node* rbt_tree_find(struct rbt_tree* tree, const void* key)
 
 static struct rbt_node* _create_node(struct rbt_tree* tree, void* key, size_t s)
 {
-    struct rbt_node* node = (struct rbt_node*)calloc(1, sizeof(*node));
+    struct rbt_node* node = (struct rbt_node*)tree->allocator(sizeof(*node));
     if (node) {
         node->left = tree->nil;
         node->right = tree->nil;
@@ -263,9 +271,9 @@ static struct rbt_node* _create_node(struct rbt_tree* tree, void* key, size_t s)
         node->tree = tree;
 
         assert(key && s);
-        node->key = calloc(s, sizeof(char));
+        node->key = tree->allocator(s * sizeof(char));
         if (node->key == NULL) {
-            free(node);
+            tree->releaser(node);
             node = NULL;
         }
         else {
@@ -280,10 +288,11 @@ static void _node_destroy(struct rbt_node* node)
 {
     assert(node);
     if (node) {
+        struct rbt_tree* tree = node->tree;
         _do_node_destruct(node);
-        free(node->key);
+        tree->releaser(node->key);
         node->key = NULL;
-        free(node);
+        tree->releaser(node);
     }
 }
 
@@ -328,19 +337,19 @@ rbt_status rbt_tree_insert(struct rbt_tree* tree, void* key, size_t size)
     struct rbt_node* x;
     if (tree->allow_dup == 0) {
         if (rbt_tree_find(tree, key) != tree->nil) {
-            return RBT_STATUS_KEY_DUPLICATE;
+            return rbt_status_key_duplicate;
         }
     }
     x = _create_node(tree, key, size);
     if (x == (struct rbt_node*)NULL) {
-        return RBT_STATUS_MEMORY_OUT;
+        return rbt_status_memory_out;
     }
     __rb_insert(tree, x);
 
 #ifndef NDEBUG
     debug_verify_properties(tree);
 #endif
-    return RBT_STATUS_SUCCESS;
+    return rbt_status_success;
 }
 
 static void __rb_delete_fixup(struct rbt_tree* T, struct rbt_node* x)
@@ -467,7 +476,7 @@ rbt_status rbt_tree_remove_node(struct rbt_tree* tree, const void* key)
 {
     struct rbt_node* z = rbt_tree_find(tree, key);
     if (z == tree->nil) {
-        return RBT_STATUS_KEY_NOT_EXIST;
+        return rbt_status_key_not_exist;
     }
     __rb_delete(tree, z);
     _node_destroy(z);
@@ -475,14 +484,14 @@ rbt_status rbt_tree_remove_node(struct rbt_tree* tree, const void* key)
 #ifndef NDEBUG
     debug_verify_properties(tree);
 #endif
-    return RBT_STATUS_SUCCESS;
+    return rbt_status_success;
 }
 
 #if 1
 
 rbt_status rbt_tree_destroy(struct rbt_tree* tree)
 {
-    rbt_status rc = RBT_STATUS_SUCCESS;
+    rbt_status rc = rbt_status_success;
     struct rbt_node* z = tree->root;
 
     while (z != tree->nil) {
@@ -510,7 +519,7 @@ rbt_status rbt_tree_destroy(struct rbt_tree* tree)
             }
         }
     }
-    free(tree);
+    tree->releaser(tree);
     return rc;
 }
 
@@ -518,6 +527,7 @@ rbt_status rbt_tree_destroy(struct rbt_tree* tree)
 
 void _rbt_node_destroy_recurse(struct rbt_node* node)
 {
+    struct rbt_tree* tree = node->tree;
     if (node != tree->nil) {
         if (node->left != tree->nil) {
             _rbt_node_destroy_recurse(node->left);
@@ -533,9 +543,9 @@ rbt_status rbt_tree_destroy(struct rbt_tree* tree)
 {
     if (tree) {
         _rbt_node_destroy_recurse(tree->root);
-        free(tree);
+        tree->releaser(tree);
     }
-    return RBT_STATUS_SUCCESS;
+    return rbt_status_success;
 }
 
 #endif

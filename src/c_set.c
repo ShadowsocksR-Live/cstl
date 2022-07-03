@@ -38,7 +38,7 @@ struct cstl_set* cstl_set_new(cstl_compare fn_c, cstl_destroy fn_d)
     if (s == (struct cstl_set*)0) {
         return (struct cstl_set*)0;
     }
-    s->tree = rbt_tree_create(0, fn_c, fn_d);
+    s->tree = rbt_tree_create(malloc, free, 0, fn_c, fn_d);
     if (s->tree == (struct rbt_tree*)0) {
         free(s);
         return (struct cstl_set*)0;
@@ -53,7 +53,7 @@ cstl_error cstl_set_insert(struct cstl_set* pSet, void* key, size_t key_size)
         return CSTL_SET_NOT_INITIALIZED;
     }
     e = rbt_tree_insert(pSet->tree, key, key_size);
-    return e == RBT_STATUS_SUCCESS ? CSTL_ERROR_SUCCESS : CSTL_ERROR_ERROR;
+    return e == rbt_status_success ? CSTL_ERROR_SUCCESS : CSTL_ERROR_ERROR;
 }
 
 int cstl_set_is_key_exists(struct cstl_set* pSet, void* key)

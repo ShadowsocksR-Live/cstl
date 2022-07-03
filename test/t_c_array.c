@@ -300,8 +300,6 @@ static void test_with_strings()
     rv = *((char**)p_rv);
     assert(strcmp(rv, input_array[8]) == 0);
 
-    print_string_with_iterators(myArray);
-
     size = cstl_array_size(myArray);
     cstl_array_quick_sort(myArray);
     print_string_with_iterators(myArray);
